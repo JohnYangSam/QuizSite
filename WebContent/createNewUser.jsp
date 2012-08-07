@@ -13,7 +13,7 @@
 <body>
 	<div class="main">
 		<div class="login">
-			<h2>Have an account?</h2>
+			<h2>Create an account</h2>
 			<form action="#" method="post">
 				<ul>
 					<li>
@@ -25,14 +25,13 @@
 						<input type="password">	
 					</li>
 					<li>
-						<input class="login_button" type="submit" name="Go!" value="Go!">					
+						<input class="login_button" type="submit" name="Create" value="Create">					
 					</li>
 				</ul>
 			</form>
 			
 			<div class="no_account">
-				<span>Don't have an account yet? No problems!</span><br/>
-				<a href="createNewUser.jsp">Create a new one</a>
+				<a href="index.jsp">Back</a>
 			</div>
 		</div>
 		
