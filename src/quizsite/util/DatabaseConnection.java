@@ -20,7 +20,6 @@ public class DatabaseConnection {
 
 //	Single DatabaseConnection instance is used for all database tables
 //	so we don't store tablename here.
-	
 	private Statement stmt;
 
 	/**
@@ -60,10 +59,17 @@ public class DatabaseConnection {
 		return rows;
 	}
 	
+	/**
+	 * Used to execute raw SQL queries
+	 */
 	public ResultSet executeQuery(String sqlQuery) throws SQLException {
 		return stmt.executeQuery(sqlQuery);
 	}
+	
 
+	/**
+	 * Fetches all rows from given table as a vector of vector of strings
+	 * */
 	public Vector< Vector<String> > getAllRows(String tablename) throws SQLException {
 		ResultSet rs = executeQuery("SELECT * FROM " + tablename);
 		return parseResultData(rs);

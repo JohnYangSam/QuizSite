@@ -13,6 +13,7 @@ public class Quiz {
 	private int quizID;
 	
 	private ArrayList<Question> questions;
+	private String url;	// url to access quiz
 	
 	public Quiz(boolean onePage, boolean practice, boolean immediateCheck, int creatorID, int quizID, ArrayList<Question> questions)
 	{
@@ -41,5 +42,10 @@ public class Quiz {
 	
 	public ArrayList<Question> getQustions()
 	{ return questions; }
+
+	// URL to access quiz
+	public String getURL() {
+		return url;
+	}
 
 }
