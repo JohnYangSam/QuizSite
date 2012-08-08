@@ -1,6 +1,7 @@
 package quizsite.models;
 
 import java.util.ArrayList;
+import quizsite.models.questions.*;
 
 public class Quiz {
 	

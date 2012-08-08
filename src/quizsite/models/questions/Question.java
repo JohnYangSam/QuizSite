@@ -1,14 +1,20 @@
-package quizsite.models;
+package quizsite.models.questions;
 
 import java.util.Iterator;
 import java.util.Set;
 
 public abstract class Question {
+	
 	protected Set<String> answers;
 	protected String text;
 	
+	public Question(String text)
+	{
+		this.text = text;
+	}
+	
 	/**
-	 *  
+	 * Given user's answers as a set of strings, the total score will be an intersection of two sets   
 	 * @param userAnswers Set of user answers
 	 * @return number of matched answers
 	 */
@@ -24,12 +30,5 @@ public abstract class Question {
 	}
 	
 	public String getText()
-	{
-		return text;
-	}
-	
-	public void setText(String newText)
-	{
-		text = newText;
-	}
+	{ return text; } 
 }
