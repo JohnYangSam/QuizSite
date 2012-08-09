@@ -2,7 +2,9 @@
  * File: Challenge.java
  * Created: Aug 6, 2012
  */
-package quizsite.models;
+package quizsite.models.messages;
+
+import quizsite.models.*;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package quizsite.models.questions;
+package quizsite.models;
 
 import java.util.Iterator;
 import java.util.Set;

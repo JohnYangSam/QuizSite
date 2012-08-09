@@ -1,5 +1,7 @@
 package quizsite.models.questions;
 
+import quizsite.models.Question;
+
 public class PictureQuestion extends Question {
 	private String imageUrl;
 	
