@@ -6,4 +6,5 @@
 *.ear
 
 .classpath
-
+bin
+build
