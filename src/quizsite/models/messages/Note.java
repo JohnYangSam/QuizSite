@@ -9,7 +9,7 @@ import quizsite.models.User;
 public class Note extends Message {
 	private String content;
 	
-	public Note(User recipient, User sender, String content) {
+	public Note(User recipient, User sender, String content) throws SQLException {
 		super(recipient, sender);
 		setContent(content);
 		formatString = content;

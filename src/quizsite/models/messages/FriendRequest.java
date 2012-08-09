@@ -4,6 +4,8 @@
  */
 package quizsite.models.messages;
 
+import java.sql.SQLException;
+
 import quizsite.models.Message;
 import quizsite.models.User;
 
@@ -14,7 +16,7 @@ public class FriendRequest extends Message {
 	
 	private String callbackURL;
 	
-	public FriendRequest(User recipient, User sender, String url) {
+	public FriendRequest(User recipient, User sender, String url) throws SQLException {
 		super(recipient, sender);
 		setCallbackURL(url);
 		formatString = "This is a friend request from %1$s to %2$s containing the url %3$s";

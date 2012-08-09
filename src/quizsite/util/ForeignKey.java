@@ -1,7 +1,6 @@
 package quizsite.util;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class ForeignKey {
 
@@ -64,9 +63,9 @@ public class ForeignKey {
 		return referencedColumnName;
 	}
 
-	public static String serialize(ForeignKey[] foreignKeys) {
+	public static String serialize(List<ForeignKey> foreignKeys) {
 		StringBuilder sb = new StringBuilder();
-		if (foreignKeys.length > 0) {
+		if (foreignKeys.size() > 0) {
 			for (ForeignKey foreignKey : foreignKeys) {
 				sb.append(" , ");
 				sb.append(foreignKey);

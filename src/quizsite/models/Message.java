@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import quizsite.util.ForeignKey;
+import quizsite.util.MetaData;
 import quizsite.util.PersistentModel;
 
 /**
@@ -17,7 +18,7 @@ import quizsite.util.PersistentModel;
  * formatString = "%1$s is before %2$s which is preceded by %1$s";
  * setBody("Vighnesh", "Rege");
  */
-public abstract class Message extends PersistentModel{
+public class Message extends PersistentModel{
 	/**
 	 * Usage:
 	 * $ Formatter fmt = new Formatter();
@@ -30,13 +31,16 @@ public abstract class Message extends PersistentModel{
 	private User recipient;
 	protected String body;	// Message body - built in subclass constructors
 	
-	protected String tableName = "Message";
-	protected String schema = "body TEXT, sender_id INTEGER, recipient_id INTEGER";
-	protected ForeignKey[] foreignKeys = 
-		{new ForeignKey("sender_id", "User", "id"), new ForeignKey("recipient_id", "User", "id")};
+	// Meta data about the backing database table stored as static fields
+	// to avoid copies of same information in every instantiation
+	public static String TABLE_NAME = "Message";
+	public static String SCHEMA = "body TEXT, sender_id INTEGER, recipient_id INTEGER";
+	public static String[][] FOREIGN_KEYS = 
+		{ {"sender_id", "User", "id"}, {"recipient_id", "User", "id"} };
 
-
-	public Message(User recipient, User sender) {
+	
+	public Message(User recipient, User sender) throws SQLException {
+		super(new MetaData(TABLE_NAME, SCHEMA, FOREIGN_KEYS));
 		this.setRecipient(recipient);
 		this.setSender(sender);
 		this.fmt = new Formatter();
@@ -55,7 +59,7 @@ public abstract class Message extends PersistentModel{
 	}
 
 	@Override
-	public ArrayList<Object> fetchAll() throws SQLException {
+	public ArrayList<PersistentModel> fetchAll() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}

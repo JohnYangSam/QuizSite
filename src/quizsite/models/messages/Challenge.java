@@ -4,6 +4,8 @@
  */
 package quizsite.models.messages;
 
+import java.sql.SQLException;
+
 import quizsite.models.*;
 
 /**
@@ -13,7 +15,7 @@ public class Challenge extends Message {
 
 	private Quiz quiz;
 	
-	public Challenge(User recipient, User sender, Quiz quiz) {
+	public Challenge(User recipient, User sender, Quiz quiz) throws SQLException {
 		super(recipient, sender);
 		setQuiz(quiz);
 		formatString = "%1$s has challenged %2$s to a quiz %3$s";
