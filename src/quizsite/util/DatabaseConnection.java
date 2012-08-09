@@ -103,8 +103,25 @@ public class DatabaseConnection {
 	}
 
 	// Creates the backing table if it doesn't exist
-	public int createTableIfNotExists(String createTableQuery) throws SQLException {
+	public int createTableIfNotExists(PersistentModel pm) throws SQLException {
+		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getTableName() + "( " + pm.getSchema() + ForeignKey.serialize(pm.getForeignKeys()) + " ) ";
 		return executeUpdate(createTableQuery);
 	}
+	
+	/* REST API */
+	// Get a list of all rows
+	public static ArrayList<ArrayList<String> > index(String tablename) throws SQLException {
+		DatabaseConnection db = new DatabaseConnection();
+		ArrayList<ArrayList<String> > ret = db.fetchAllRows(tablename);
+		db.close();
+		return ret;
+	}
+	
+	// Create and save a new row
+	public static void create(PersistentModel pm) {
+		String tableName = pm.getTableName();
+	}
+	
+	
 
 }
