@@ -11,6 +11,12 @@ import java.util.*;
  * File: DBConnection.java
  * Author: Rege
  * Created: Jul 26, 2012
+ * eg.
+ * $ try {
+ * $	DatabaseConnection db = new DatabaseConnection();
+ * $ 	db.executeQuery();
+ * $	db.close();
+ * $ } catch (SQLException e) {}
  */
 public class DatabaseConnection {
 	private static String account = "ccs108rege";  
@@ -21,6 +27,7 @@ public class DatabaseConnection {
 //	Single DatabaseConnection instance is used for all database tables
 //	so we don't store tablename here.
 	private Statement stmt;
+	private Connection conn;
 
 	/**
 	 * Private helper: Sets up connection to the database. Catches ClassNotFoundException and throws {@link SQLException}
@@ -29,9 +36,8 @@ public class DatabaseConnection {
 	private void setUpDBConnection() throws SQLException{
 		try {
 			Class.forName("com.mysql.jdbc.Driver"); 
-			Connection con = 
-				DriverManager.getConnection ( "jdbc:mysql://" + server, account ,password);
-			stmt = con.createStatement();
+			conn = DriverManager.getConnection ( "jdbc:mysql://" + server, account ,password);
+			stmt = conn.createStatement();
 			stmt.executeQuery("USE " + database);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -39,18 +45,18 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * Parses the ResultSet variable obtained from a SQL query and returns it as a vector 
-	 * of rows [each row is a vector of Strings]. Throws {@link SQLException}
+	 * Parses the ResultSet variable obtained from a SQL query and returns it as a ArrayList 
+	 * of rows [each row is a ArrayList of Strings]. Throws {@link SQLException}
 	 * @param	rs	{@link ResultSet} variable obtained from a SQL query
-	 * @return	a Vector of Vector of Strings containing all the rows contained in the parameter 
+	 * @return	a ArrayList of ArrayList of Strings containing all the rows contained in the parameter 
 	 * */
-	public static Vector< Vector<String> > parseResultData( ResultSet rs ) throws SQLException {
+	public static ArrayList< ArrayList<String> > parseResultData( ResultSet rs ) throws SQLException {
 		// Fill in the data
-		Vector< Vector<String> > rows = new Vector< Vector<String> >();
-		Vector<String> newRow;
+		ArrayList< ArrayList<String> > rows = new ArrayList< ArrayList<String> >();
+		ArrayList<String> newRow;
 		int nCol = rs.getMetaData().getColumnCount();
 		while(rs.next()) {
-			newRow = new Vector<String>();
+			newRow = new ArrayList<String>();
 			for (int c = 0; c < nCol; c++) {
 				newRow.add(rs.getString(c + 1));			// Numbering is 1-indexed			
 			}
@@ -66,22 +72,39 @@ public class DatabaseConnection {
 		return stmt.executeQuery(sqlQuery);
 	}
 	
-
 	/**
-	 * Fetches all rows from given table as a vector of vector of strings
+	 * Execute updates on the table - INSERT, UPDATE, DELETE
 	 * */
-	public Vector< Vector<String> > getAllRows(String tablename) throws SQLException {
+	public int executeUpdate(String sqlQuery) throws SQLException {
+		return stmt.executeUpdate(sqlQuery);
+	}
+
+	
+	/**
+	 * Constructor
+	 * */
+	public DatabaseConnection() throws SQLException {
+		setUpDBConnection();
+	}
+	
+	// Closes the JDBC connection - call it once you're done with your db object
+	public void close() throws SQLException {
+		conn.close();
+	}
+	
+	/*** STANDARD SQL QUERIES ***/
+	
+	/**
+	 * Fetches all rows from given table as a ArrayList of ArrayList of strings
+	 * */
+	public ArrayList< ArrayList<String> > fetchAllRows(String tablename) throws SQLException {
 		ResultSet rs = executeQuery("SELECT * FROM " + tablename);
 		return parseResultData(rs);
 	}
 
-	public DatabaseConnection() {
-		try {
-			setUpDBConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	// Creates the backing table if it doesn't exist
+	public int createTableIfNotExists(String createTableQuery) throws SQLException {
+		return executeUpdate(createTableQuery);
 	}
-
 
 }

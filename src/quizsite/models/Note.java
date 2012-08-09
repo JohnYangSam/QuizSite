@@ -1,5 +1,8 @@
 package quizsite.models;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 public class Note extends Message {
 	private String content;
 	
@@ -23,5 +26,7 @@ public class Note extends Message {
 	public String getContent() {
 		return content;
 	}
+
+	
 
 }
