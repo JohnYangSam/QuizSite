@@ -1,9 +1,13 @@
 package quizsite.models;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
-public abstract class Question {
+import quizsite.util.PersistentModel;
+
+public abstract class Question implements PersistentModel {
 	
 	protected Set<String> answers;
 	protected String text;
@@ -11,6 +15,18 @@ public abstract class Question {
 	public Question(String text)
 	{
 		this.text = text;
+	}
+
+	@Override
+	public ArrayList<Object> fetchAll() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void save() throws SQLException {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/**

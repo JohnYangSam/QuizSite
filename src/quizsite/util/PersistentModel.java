@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 /** 
- * This superclass should be extended by any model backed by a database table
+ * Any model backed by a database table should implement this interface
  * */
 public interface PersistentModel {
 	

@@ -1,9 +1,10 @@
 package quizsite.models;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-import quizsite.models.questions.*;
+import quizsite.util.PersistentModel;
 
-public class Quiz {
+public class Quiz implements PersistentModel{
 	
 	/* Quiz settings */
 	private boolean onePage;
@@ -47,6 +48,18 @@ public class Quiz {
 	// URL to access quiz
 	public String getURL() {
 		return url;
+	}
+
+	@Override
+	public void save() throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<Object> fetchAll() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
