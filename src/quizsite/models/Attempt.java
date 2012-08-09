@@ -7,31 +7,18 @@ import quizsite.util.DatabaseConnection;
 import quizsite.util.ForeignKey;
 import quizsite.util.PersistentModel;
 
-public class Attempt implements PersistentModel {
+public class Attempt extends PersistentModel {
 	private Quiz quiz;
 	private int score;
 	private User attempter;
 
 	
-	protected static String tableName = "Attempt";
-	protected static String schema = "id int, quiz_id int, attempter_id int, score int";
-	protected static ForeignKey[] foreignKeys = 
+	protected String tableName = "Attempt";
+	protected String schema = "id int, quiz_id int, attempter_id int, score int";
+	protected ForeignKey[] foreignKeys = 
 		{new ForeignKey("quiz_id", "Quiz", "id"), new ForeignKey("attempter_id", "User", "id")};
  
-	
-	public static String getTableName() {
-		return tableName;
-	}
-
-	public static String getSchema() {
-		return schema;
-	}
-
-	public static ForeignKey[] getForeignKeys() {
-		return foreignKeys;
-	}
-	
-	
+		
 	public Attempt(Quiz quiz, int score, User attempter) {
 		setQuiz(quiz);
 		setScore(score);
