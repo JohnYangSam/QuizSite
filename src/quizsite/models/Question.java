@@ -1,16 +1,39 @@
 package quizsite.models;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
-public abstract class Question {
+import quizsite.util.MetaData;
+import quizsite.util.PersistentModel;
+
+public abstract class Question extends PersistentModel {
 	
 	protected Set<String> answers;
 	protected String text;
 	
-	public Question(String text)
+	public static String TABLE_NAME = "Question";
+	public static String SCHEMA = "";
+	public static String[][] FOREIGN_KEYS = 
+		{ {}, {} };
+	
+	public Question(String text) throws SQLException
 	{
+		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
 		this.text = text;
+	}
+
+	@Override
+	public ArrayList<PersistentModel> fetchAll() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void save() throws SQLException {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/**

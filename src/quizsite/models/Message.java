@@ -40,7 +40,7 @@ public class Message extends PersistentModel{
 
 	
 	public Message(User recipient, User sender) throws SQLException {
-		super(new MetaData(TABLE_NAME, SCHEMA, FOREIGN_KEYS));
+		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
 		this.setRecipient(recipient);
 		this.setSender(sender);
 		this.fmt = new Formatter();

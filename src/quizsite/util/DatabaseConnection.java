@@ -137,10 +137,11 @@ public class DatabaseConnection {
 	// Creates the backing table if it doesn't exist
 	public static int createTableIfNotExists(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
-		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getMetaData().getTableName() + 
-								"( id INTEGER, " + pm.getMetaData().getSchema() 
-								+ ForeignKey.serialize(pm.getMetaData().getForeignKeys()) 
+		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getTableName() + 
+								"( id INTEGER, " + pm.getSchema() 
+								+ ForeignKey.serialize(pm.getForeignKeys()) 
 								+ ", PRIMARY KEY (id) ) ";
+
 		int result = db.executeUpdate(createTableQuery);
 		db.close();
 		return result;
@@ -182,7 +183,7 @@ public class DatabaseConnection {
 	
 	// Create and save a new row
 	public static void create(PersistentModel pm) {
-		String tableName = pm.getMetaData().getTableName();
+		String tableName = pm.getTableName();
 	}
 	
 	

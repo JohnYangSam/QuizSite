@@ -12,7 +12,6 @@ public class Attempt extends PersistentModel {
 	private Quiz quiz;
 	private int score;
 	private User attempter;
-
 	
 	protected static String TABLE_NAME = "Attempt";
 	protected static String SCHEMA = "id int, quiz_id int, attempter_id int, score int";
@@ -21,7 +20,7 @@ public class Attempt extends PersistentModel {
  
 		
 	public Attempt(Quiz quiz, int score, User attempter) throws SQLException {
-		super(new MetaData(TABLE_NAME, SCHEMA, FOREIGN_KEYS));
+		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
 		setQuiz(quiz);
 		setScore(score);
 		setAttempter(attempter);
