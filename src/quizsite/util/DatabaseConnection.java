@@ -64,7 +64,7 @@ public class DatabaseConnection {
 		}
 		return rows;
 	}
-	
+
 	/**
 	 * Used to execute raw SQL queries
 	 */
@@ -103,9 +103,12 @@ public class DatabaseConnection {
 	}
 
 	// Creates the backing table if it doesn't exist
-	public int createTableIfNotExists(PersistentModel pm) throws SQLException {
-		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getTableName() + "( " + pm.getSchema() + ForeignKey.serialize(pm.getForeignKeys()) + " ) ";
-		return executeUpdate(createTableQuery);
+	public static int createTableIfNotExists(PersistentModel pm) throws SQLException {
+		DatabaseConnection db = new DatabaseConnection();
+		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getMetaData().getTableName() + "( " + pm.getMetaData().getSchema() + ForeignKey.serialize(pm.getMetaData().getForeignKeys()) + " ) ";
+		int result = db.executeUpdate(createTableQuery);
+		db.close();
+		return result;
 	}
 	
 	/* REST API */
@@ -119,7 +122,7 @@ public class DatabaseConnection {
 	
 	// Create and save a new row
 	public static void create(PersistentModel pm) {
-		String tableName = pm.getTableName();
+		String tableName = pm.getMetaData().getTableName();
 	}
 	
 	

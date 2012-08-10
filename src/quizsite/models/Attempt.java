@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import quizsite.util.DatabaseConnection;
 import quizsite.util.ForeignKey;
+import quizsite.util.MetaData;
 import quizsite.util.PersistentModel;
 
 public class Attempt extends PersistentModel {
@@ -13,13 +14,14 @@ public class Attempt extends PersistentModel {
 	private User attempter;
 
 	
-	protected String tableName = "Attempt";
-	protected String schema = "id int, quiz_id int, attempter_id int, score int";
-	protected ForeignKey[] foreignKeys = 
-		{new ForeignKey("quiz_id", "Quiz", "id"), new ForeignKey("attempter_id", "User", "id")};
+	protected static String TABLE_NAME = "Attempt";
+	protected static String SCHEMA = "id int, quiz_id int, attempter_id int, score int";
+	protected static String[][] FOREIGN_KEYS = 
+		{{ "quiz_id", "Quiz", "id"}, {"attempter_id", "User", "id"}};
  
 		
-	public Attempt(Quiz quiz, int score, User attempter) {
+	public Attempt(Quiz quiz, int score, User attempter) throws SQLException {
+		super(new MetaData(TABLE_NAME, SCHEMA, FOREIGN_KEYS));
 		setQuiz(quiz);
 		setScore(score);
 		setAttempter(attempter);
@@ -79,7 +81,7 @@ public class Attempt extends PersistentModel {
 
 
 	@Override
-	public ArrayList<Object> fetchAll() throws SQLException {
+	public ArrayList<PersistentModel> fetchAll() throws SQLException {
 		
 		return null;
 	}
