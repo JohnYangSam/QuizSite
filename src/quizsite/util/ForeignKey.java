@@ -63,6 +63,9 @@ public class ForeignKey {
 		return referencedColumnName;
 	}
 
+	/**
+	 * eg. ", FOREIGN KEY( column_name ) REFERENCES table_name (col_name)"*
+	 * */
 	public static String serialize(List<ForeignKey> foreignKeys) {
 		StringBuilder sb = new StringBuilder();
 		if (foreignKeys.size() > 0) {
@@ -74,7 +77,7 @@ public class ForeignKey {
 		return sb.toString();
 	}
 	
-	public static HashMap< String, HashSet<String> > getDependencies(ForeignKey[] fkeys) {
+	public static HashMap< String, HashSet<String> > getDependencies(List<ForeignKey> fkeys) {
 		HashMap< String, HashSet<String> > dep = new HashMap<String, HashSet<String>>();
 		HashSet<String> s;
 		for (ForeignKey fkey : fkeys) {
@@ -88,5 +91,18 @@ public class ForeignKey {
 			}
 		}
 		return dep;
+	}
+	
+	public static HashMap< String, HashSet<String> > getDependencies(String[][] fkeys) {
+		return getDependencies(getList(fkeys));
+	}
+
+	// Returns an array 
+	public static List<ForeignKey> getList(String[][] foreignKeyStrings) {
+		ArrayList<ForeignKey> arr = new ArrayList<ForeignKey>();
+		for (String[] fKey : foreignKeyStrings) {
+			arr.add(new ForeignKey(fKey[0], fKey[1], fKey[2]));
+		}
+		return arr;
 	}
 }

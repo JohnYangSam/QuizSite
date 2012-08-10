@@ -7,6 +7,8 @@ package quizsite.util;
 import java.sql.*;
 import java.util.*;
 
+import com.sun.tools.internal.ws.wsdl.document.jaxws.Exception;
+
 /**
  * File: DBConnection.java
  * Author: Rege
@@ -19,13 +21,37 @@ import java.util.*;
  * $ } catch (SQLException e) {}
  */
 public class DatabaseConnection {
-	private static String account = "ccs108rege";  
-	private static String password = "ahdeetha"; 
-	private static String server = "mysql-user.stanford.edu";
-	private static String database = "c_cs108_rege";
+	private static Mode mode = Mode.PRODUCTION;
+	
+	public enum Mode {
+		PRODUCTION ("ccs108rege", "ahdeetha", "c_cs108_rege", "mysql-user.stanford.edu"),
+		TEST ("ccs108makarst", "yexubohn", "c_cs108_makarst", "mysql-user.stanford.edu");
+		
+		private final String account;
+		private final String password;
+		private final String database;
+		private final String server;
+		Mode(String account, String password, String database, String server) {
+			this.account = account;
+			this.password = password;
+			this.database = database;
+			this.server = server;
+		}
+		public String getAccount() {
+			return account;
+		}
+		public String getPassword() {
+			return password;
+		}
+		public String getDatabase() {
+			return database;
+		}
+		public String getServer() {
+			return server;
+		}
+	}
+	
 
-//	Single DatabaseConnection instance is used for all database tables
-//	so we don't store tablename here.
 	private Statement stmt;
 	private Connection conn;
 
@@ -35,10 +61,10 @@ public class DatabaseConnection {
 	 * */
 	private void setUpDBConnection() throws SQLException{
 		try {
-			Class.forName("com.mysql.jdbc.Driver"); 
-			conn = DriverManager.getConnection ( "jdbc:mysql://" + server, account ,password);
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection ( "jdbc:mysql://" + mode.getServer(), mode.getAccount(), mode.getPassword());
 			stmt = conn.createStatement();
-			stmt.executeQuery("USE " + database);
+			stmt.executeQuery("USE " + mode.getDatabase());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -86,6 +112,12 @@ public class DatabaseConnection {
 	public DatabaseConnection() throws SQLException {
 		setUpDBConnection();
 	}
+
+	// This has been added for testing purposes. Call switchModeTo(Data..ion.TEST) in the setUp()
+	// for JUnit tests and switchModeTo(Data..ion.PRODUCTION) in the tearDown()
+	public static void switchModeTo(Mode newMode) {
+		mode = newMode;
+	}
 	
 	// Closes the JDBC connection - call it once you're done with your db object
 	public void close() throws SQLException {
@@ -105,11 +137,39 @@ public class DatabaseConnection {
 	// Creates the backing table if it doesn't exist
 	public static int createTableIfNotExists(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
-		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getMetaData().getTableName() + "( " + pm.getMetaData().getSchema() + ForeignKey.serialize(pm.getMetaData().getForeignKeys()) + " ) ";
+		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getMetaData().getTableName() + 
+								"( id INTEGER, " + pm.getMetaData().getSchema() 
+								+ ForeignKey.serialize(pm.getMetaData().getForeignKeys()) 
+								+ ", PRIMARY KEY (id) ) ";
 		int result = db.executeUpdate(createTableQuery);
 		db.close();
 		return result;
 	}
+	
+	// Drops the tables, if they exist - CAREFUL
+	public static void dropTablesIfExist(String...tableNames) throws SQLException {
+		DatabaseConnection db = new DatabaseConnection();
+		for (String tableName : tableNames) {
+			String dropTableQuery = "DROP TABLE IF EXISTS " + tableName;
+			db.executeUpdate(dropTableQuery);
+		}
+		db.close();
+	}
+	
+	// Check if table exists
+	public static boolean doesTableExist(String tableName) throws SQLException {
+		DatabaseConnection db = new DatabaseConnection();
+		try {
+			String basicQuery = "SELECT * FROM " + tableName + " LIMIT 0";
+			db.executeQuery(basicQuery);
+			return true;
+		} catch (SQLException e) {
+			return false;
+		} finally {
+			db.close();
+		}
+	}
+	
 	
 	/* REST API */
 	// Get a list of all rows
@@ -124,6 +184,8 @@ public class DatabaseConnection {
 	public static void create(PersistentModel pm) {
 		String tableName = pm.getMetaData().getTableName();
 	}
+	
+	
 	
 	
 
