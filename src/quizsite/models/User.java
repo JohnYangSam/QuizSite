@@ -12,11 +12,20 @@ import quizsite.util.PersistentModel;
 /**
  * 
  */
-public class User implements PersistentModel{
+public class User extends PersistentModel{
 	
 	private String username;
 	private int userId;
 	
+	protected static String TABLE_NAME = "User";
+	protected static String SCHEMA = "";
+	protected static String[][] FOREIGN_KEYS = 
+		{{}, {}};
+	
+	public User() throws SQLException
+	{
+		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
+	}
 
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -30,7 +39,7 @@ public class User implements PersistentModel{
 	}
 
 	@Override
-	public ArrayList<Object> fetchAll() throws SQLException {
+	public ArrayList<PersistentModel> fetchAll() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}

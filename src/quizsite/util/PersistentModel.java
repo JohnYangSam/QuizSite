@@ -16,13 +16,18 @@ public abstract class PersistentModel {
 	public abstract ArrayList<PersistentModel> fetchAll() throws SQLException;
 	
 	// Pass in the static fields containing the meta data, while 
-	public PersistentModel(MetaData meta) throws SQLException {
-		this.metaData = meta;
+	public PersistentModel(String tableName, String schema, String[][] foreignKeys) throws SQLException {
+		this.metaData = new MetaData(tableName, schema, foreignKeys);
 		DatabaseConnection.createTableIfNotExists(this);
 	}
+	
+	public String getTableName()
+	{ return metaData.getTableName(); }
+	
+	public String getSchema()
+	{ return metaData.getSchema(); }
 
-	public MetaData getMetaData() {
-		return metaData;
-	}
+	public ArrayList<ForeignKey> getForeignKeys()
+	{ return metaData.getForeignKeys(); }
 	
 }

@@ -1,5 +1,7 @@
 package quizsite.models.questions;
 
+import java.sql.SQLException;
+
 import quizsite.models.Question;
 
 public class FillBlankQuestion extends Question {
@@ -10,7 +12,7 @@ public class FillBlankQuestion extends Question {
 	private String firstPart;
 	private String secondPart;
 	
-	public FillBlankQuestion(String first, String second) {
+	public FillBlankQuestion(String first, String second) throws SQLException {
 		super("Fill in the blank field.");
 		this.firstPart  = first;
 		this.secondPart = second; 
