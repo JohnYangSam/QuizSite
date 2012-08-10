@@ -33,6 +33,17 @@ public class Quiz extends PersistentModel{
 		this.questions		= questions;
 	}
 	
+	/**
+	 * Depending on the randomized flag, either shuffles an ArrayList of Questions 
+	 * or returns them in the order they've been added to a DB. 
+	 * @return ArrayList of Questions
+	 */
+	public ArrayList<Question> getQuestions()
+	{
+		
+		return questions;
+	}
+	
 	public boolean isOnePage()
 	{ return onePage; }
 	
@@ -52,14 +63,12 @@ public class Quiz extends PersistentModel{
 	{ return questions; }
 
 	// URL to access quiz
-	public String getURL() {
-		return url;
-	}
-
+	public String getURL() 
+	{ return url; } 
+	
 	@Override
 	public void save() throws SQLException {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
