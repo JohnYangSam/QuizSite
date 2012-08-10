@@ -8,16 +8,22 @@ import java.util.Set;
 import quizsite.util.MetaData;
 import quizsite.util.PersistentModel;
 
-public abstract class Question extends PersistentModel {
+public  class Question extends PersistentModel {
 	
 	protected Set<String> answers;
 	protected String text;
 	
 	public static String TABLE_NAME = "Question";
-	public static String SCHEMA = "";
+	public static String[][] SCHEMA = {{}};
 	public static String[][] FOREIGN_KEYS = 
 		{ {}, {} };
 	
+	@Override
+	public Object[] getFields() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public Question(String text) throws SQLException
 	{
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
@@ -53,5 +59,7 @@ public abstract class Question extends PersistentModel {
 	}
 	
 	public String getText()
-	{ return text; } 
+	{ return text; }
+
+	
 }

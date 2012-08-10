@@ -34,7 +34,7 @@ public class Message extends PersistentModel{
 	// Meta data about the backing database table stored as static fields
 	// to avoid copies of same information in every instantiation
 	public static String TABLE_NAME = "Message";
-	public static String SCHEMA = "body TEXT, sender_id INTEGER, recipient_id INTEGER";
+	public static String[][] SCHEMA = {{"body", "TEXT"}, {"sender_id", "INTEGER"}, {"recipient_id", "INTEGER"}};
 	public static String[][] FOREIGN_KEYS = 
 		{ {"sender_id", "User", "id"}, {"recipient_id", "User", "id"} };
 
@@ -99,5 +99,11 @@ public class Message extends PersistentModel{
 	 */
 	public User getSender() {
 		return sender;
+	}
+
+	@Override
+	public Object[] getFields() {
+		Object[] objs = new Object[] {getBody(), getSender().getId(), getRecipient().getId()};
+		return objs;
 	}
 }
