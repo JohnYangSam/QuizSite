@@ -5,23 +5,23 @@ import java.util.ArrayList;
 import quizsite.util.PersistentModel;
 
 public class Quiz extends PersistentModel{
-	
+
 	/* Quiz settings */
 	private boolean onePage;
 	private boolean practice;
 	private boolean immediateCheck;
-	
+
 	private int creatorID;
 	private int quizID;
-	
+
 	private ArrayList<Question> questions;
 	private String url;	// url to access quiz
-	
+
 	public static String TABLE_NAME = "Quiz";
-	public static String SCHEMA = "";
+	public static String[][] SCHEMA = {{}};
 	public static String[][] FOREIGN_KEYS = 
 		{ {}, {} };
-	
+
 	public Quiz(boolean onePage, boolean practice, boolean immediateCheck, int creatorID, int quizID, ArrayList<Question> questions) throws SQLException
 	{
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
@@ -64,6 +64,12 @@ public class Quiz extends PersistentModel{
 
 	@Override
 	public ArrayList<PersistentModel> fetchAll() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object[] getFields() {
 		// TODO Auto-generated method stub
 		return null;
 	}

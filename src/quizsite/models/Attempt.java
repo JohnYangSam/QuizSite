@@ -14,7 +14,8 @@ public class Attempt extends PersistentModel {
 	private User attempter;
 	
 	protected static String TABLE_NAME = "Attempt";
-	protected static String SCHEMA = "id int, quiz_id int, attempter_id int, score int";
+	protected static String[][] SCHEMA = 
+		{{"id", "INTEGER"}, { "quiz_id", "INTEGER"}, {"attempter_id", "INTEGER"}, {"score", "INTEGER"}};
 	protected static String[][] FOREIGN_KEYS = 
 		{{ "quiz_id", "Quiz", "id"}, {"attempter_id", "User", "id"}};
  
@@ -82,6 +83,13 @@ public class Attempt extends PersistentModel {
 	@Override
 	public ArrayList<PersistentModel> fetchAll() throws SQLException {
 		
+		return null;
+	}
+
+
+	@Override
+	public Object[] getFields() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	

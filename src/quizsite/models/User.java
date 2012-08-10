@@ -13,12 +13,11 @@ import quizsite.util.PersistentModel;
  * 
  */
 public class User extends PersistentModel{
-	
+
 	private String username;
-	private int userId;
 	
 	protected static String TABLE_NAME = "User";
-	protected static String SCHEMA = "";
+	protected static String[][] SCHEMA = {{}};
 	protected static String[][] FOREIGN_KEYS = 
 		{{}, {}};
 	
@@ -43,5 +42,12 @@ public class User extends PersistentModel{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Object[] getFields() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

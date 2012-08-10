@@ -28,8 +28,7 @@ public class MessageTest {
 		result += ")";
 		return result;
 	}
-	
-	
+
 	private void createReferencedTables() throws SQLException {
 		referencedTables = ForeignKey.getDependencies(Message.FOREIGN_KEYS);
 	    Iterator< Map.Entry<String, HashSet<String> > > it = referencedTables.entrySet().iterator();

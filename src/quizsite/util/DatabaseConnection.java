@@ -76,10 +76,10 @@ public class DatabaseConnection {
 	 * @param	rs	{@link ResultSet} variable obtained from a SQL query
 	 * @return	a ArrayList of ArrayList of Strings containing all the rows contained in the parameter 
 	 * */
-	public static ArrayList< ArrayList<String> > parseResultData( ResultSet rs ) throws SQLException {
+	public static List< List<String> > parseResultData( ResultSet rs ) throws SQLException {
 		// Fill in the data
-		ArrayList< ArrayList<String> > rows = new ArrayList< ArrayList<String> >();
-		ArrayList<String> newRow;
+		List< List<String> > rows = new ArrayList< List<String> >();
+		List<String> newRow;
 		int nCol = rs.getMetaData().getColumnCount();
 		while(rs.next()) {
 			newRow = new ArrayList<String>();
@@ -102,7 +102,18 @@ public class DatabaseConnection {
 	 * Execute updates on the table - INSERT, UPDATE, DELETE
 	 * */
 	public int executeUpdate(String sqlQuery) throws SQLException {
-		return stmt.executeUpdate(sqlQuery);
+		return stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
+	}
+	
+	public int getGeneratedKey() throws SQLException {
+		ResultSet rs = stmt.getGeneratedKeys();
+		int key = -1;
+		if (rs.next()) {
+			key = rs.getInt(1);
+		} else {
+			throw new SQLException("ResultSet should've contained one key, did you call getGeneratedKey after running executeUpdate");
+		}
+		return key;
 	}
 
 	
@@ -121,6 +132,7 @@ public class DatabaseConnection {
 	
 	// Closes the JDBC connection - call it once you're done with your db object
 	public void close() throws SQLException {
+		stmt.close();
 		conn.close();
 	}
 	
@@ -129,9 +141,23 @@ public class DatabaseConnection {
 	/**
 	 * Fetches all rows from given table as a ArrayList of ArrayList of strings
 	 * */
-	public ArrayList< ArrayList<String> > fetchAllRows(String tablename) throws SQLException {
+	public List< List<String> > fetchAllRows(String tablename) throws SQLException {
 		ResultSet rs = executeQuery("SELECT * FROM " + tablename);
 		return parseResultData(rs);
+	}
+	
+	public List<String> fetchRowById(String tablename, int id) throws SQLException{
+		String findQuery = "SELECT * FROM " + tablename + " WHERE id = '" + id + "'";
+		ResultSet rs = executeQuery(findQuery);
+		List<List<String> > res = parseResultData(rs);
+		switch (res.size()) {
+		case 0:
+			return null;
+		case 1:
+			return res.get(0);
+		default:
+			throw new SQLException("Uniqueness of id violated");
+		}
 	}
 
 	// Creates the backing table if it doesn't exist
@@ -174,19 +200,56 @@ public class DatabaseConnection {
 	
 	/* REST API */
 	// Get a list of all rows
-	public static ArrayList<ArrayList<String> > index(String tablename) throws SQLException {
+	public static List<List<String> > index(String tablename) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
-		ArrayList<ArrayList<String> > ret = db.fetchAllRows(tablename);
+		List<List<String> > ret = db.fetchAllRows(tablename);
 		db.close();
 		return ret;
 	}
 	
-	// Create and save a new row
-	public static void create(PersistentModel pm) {
-		String tableName = pm.getTableName();
+	// Create and save a new row - returns the auto-generated id of the new row
+	public static int create(PersistentModel pm) throws SQLException {
+		DatabaseConnection db = new DatabaseConnection();
+		String createQuery = "INSERT INTO " + pm.getTableName() + " ( " + pm.getColumnNames() + " ) VALUES (" + pm.getColumnValues() + ")";
+		db.executeUpdate(createQuery);
+		int id = db.getGeneratedKey();
+		db.close();
+		return id;
 	}
 	
+	// Delete a row - ensure that the id is populated
+	public static int destroy(PersistentModel pm) throws SQLException {
+		String destroyQuery = "DELETE FROM " + pm.getTableName() + " WHERE id ='" + pm.getId() + "'";
+		DatabaseConnection db = new DatabaseConnection();
+		int res = db.executeUpdate(destroyQuery);
+		db.close();
+		return res;
+	}
 	
+	// Get a specific row by it's id
+	public static List<String> get(String tableName, int id) throws SQLException {
+		DatabaseConnection db = new DatabaseConnection();
+		List<String> res = db.fetchRowById(tableName, id);
+		db.close();
+		return res;
+	}
+	
+	// Update a row corresponding to a specific id
+	public static int update(PersistentModel pm, String[][] updateInfo) throws SQLException {
+		StringBuilder sb = new StringBuilder();
+		for (String[] updates : updateInfo) {
+			sb.append(updates[0]);	// column name
+			sb.append("='");
+			sb.append(updates[1]);	// new value
+			sb.append("',");
+		}
+		String setStr = sb.toString();
+		String updQuery = "UPDATE " + pm.getTableName() + " SET " + setStr.substring(0, setStr.length() - 1) + " WHERE id = '" + pm.getId() + "'";
+		DatabaseConnection db = new DatabaseConnection();
+		int res = db.executeUpdate(updQuery);
+		db.close();
+		return res;
+	}
 	
 	
 
