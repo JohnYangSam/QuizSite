@@ -105,19 +105,6 @@ public class DatabaseConnection {
 		return stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
 	}
 	
-	/** Not using */
-	public int executeUpdateAndReturnGeneratedKey(String sqlQuery) throws SQLException {
-		int status = stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
-		ResultSet rs = stmt.getGeneratedKeys();
-		int key = -1;
-		if (rs.next()) {
-			key = rs.getInt(1);
-		} else {
-			throw new SQLException("ResultSet should've contained one key, did you call getGeneratedKey after running executeUpdate");
-		}
-		return key;
-	}
-	
 	public int getGeneratedKey() throws SQLException {
 		ResultSet rs = stmt.getGeneratedKeys();
 		int key = -1;
@@ -177,11 +164,10 @@ public class DatabaseConnection {
 	public static int createTableIfNotExists(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getTableName() + 
-								"( id INTEGER AUTO_INCREMENT" + pm.getSchema() 
+								"( id INTEGER, " + pm.getSchema() 
 								+ ForeignKey.serialize(pm.getForeignKeys()) 
 								+ ", PRIMARY KEY (id) ) ";
 
-		System.out.println(createTableQuery);
 		int result = db.executeUpdate(createTableQuery);
 		db.close();
 		return result;
@@ -213,7 +199,7 @@ public class DatabaseConnection {
 	
 	
 	/* REST API */
-	/** Get a list of all rows */
+	// Get a list of all rows
 	public static List<List<String> > index(String tablename) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		List<List<String> > ret = db.fetchAllRows(tablename);
@@ -221,7 +207,7 @@ public class DatabaseConnection {
 		return ret;
 	}
 	
-	/** Create and save a new row - returns the auto-generated id of the new row */
+	// Create and save a new row - returns the auto-generated id of the new row
 	public static int create(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		String createQuery = "INSERT INTO " + pm.getTableName() + " ( " + pm.getColumnNames() + " ) VALUES (" + pm.getColumnValues() + ")";
@@ -231,7 +217,7 @@ public class DatabaseConnection {
 		return id;
 	}
 	
-	/** Delete a row - ensure that the id is populated */
+	// Delete a row - ensure that the id is populated
 	public static int destroy(PersistentModel pm) throws SQLException {
 		String destroyQuery = "DELETE FROM " + pm.getTableName() + " WHERE id ='" + pm.getId() + "'";
 		DatabaseConnection db = new DatabaseConnection();
@@ -240,7 +226,7 @@ public class DatabaseConnection {
 		return res;
 	}
 	
-	/** Get a specific row by it's id */
+	// Get a specific row by it's id
 	public static List<String> get(String tableName, int id) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		List<String> res = db.fetchRowById(tableName, id);

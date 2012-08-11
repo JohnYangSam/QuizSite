@@ -10,11 +10,25 @@ public abstract class PersistentModel {
 	private final MetaData metaData;
 	private int id; // TODO: Needs to be filled in after an instance is saved in the database
 	
-	// Saves object as a row in the table - returns the auto generated key
+	/**
+	 * Saves object as a row in the table - returns the auto generated key
+	 * @return
+	 * @throws SQLException
+	 */
 	public abstract int save() throws SQLException;
 	
-	// Fetch an ArrayList of all the rows in the table
+	/**
+	 * Fetch an ArrayList of all the rows in the table
+	 * @return
+	 * @throws SQLException
+	 */
 	public abstract ArrayList<PersistentModel> fetchAll() throws SQLException;
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public abstract Object[] getFields();
 	
 	// Pass in the static fields containing the meta data, while 
 	public PersistentModel(String tableName, String[][] schema, String[][] foreignKeys) throws SQLException {
@@ -47,7 +61,6 @@ public abstract class PersistentModel {
 		return res.substring(0, res.length() - 1);		
 	}
 	
-	public abstract Object[] getFields();
 
 	/**
 	 * @param id the id to set
