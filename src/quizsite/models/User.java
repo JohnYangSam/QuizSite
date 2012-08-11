@@ -17,13 +17,18 @@ public class User extends PersistentModel{
 	private String username;
 	
 	protected static String TABLE_NAME = "User";
-	protected static String[][] SCHEMA = {{}};
-	protected static String[][] FOREIGN_KEYS = 
-		{{}, {}};
+	protected static String[][] SCHEMA = {};
+	protected static String[][] FOREIGN_KEYS = {};
 	
 	public User() throws SQLException
 	{
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
+	}
+	
+	// Temp one for testing purposes - MessageTest/rege
+	public User(int id) throws SQLException {
+		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
+		setId(id);
 	}
 
 	public String getName() {
@@ -32,7 +37,8 @@ public class User extends PersistentModel{
 	}
 
 	@Override
-	public void save() throws SQLException {
+	public int save() throws SQLException {
+		return 0;
 		// TODO Auto-generated method stub
 		
 	}

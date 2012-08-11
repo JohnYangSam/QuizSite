@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import quizsite.models.Message;
+import quizsite.models.User;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.ForeignKey;
 
@@ -58,6 +59,22 @@ public class MessageTest {
 		assertFalse(DatabaseConnection.doesTableExist(Message.TABLE_NAME));
 		Message newM = new Message(null, null);
 		assertTrue(DatabaseConnection.doesTableExist(Message.TABLE_NAME));
+	}
+	
+	@Test
+	public void testCreate() throws SQLException {
+		User sender = new User(1);
+		Message newM = new Message(sender, sender);
+		int mId = DatabaseConnection.create(newM);
+		System.out.println(mId);
+	}
+	
+	@Test
+	public void testSave() throws SQLException {
+		User sender = new User(1);
+		Message newM = new Message(sender, sender);
+		int mId = newM.save();
+		System.out.println(mId);
 	}
 	
 	@After

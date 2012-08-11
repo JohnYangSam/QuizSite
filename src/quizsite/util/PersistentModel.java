@@ -10,8 +10,8 @@ public abstract class PersistentModel {
 	private final MetaData metaData;
 	private int id; // TODO: Needs to be filled in after an instance is saved in the database
 	
-	// Saves object as a row in the table
-	public abstract void save() throws SQLException;
+	// Saves object as a row in the table - returns the auto generated key
+	public abstract int save() throws SQLException;
 	
 	// Fetch an ArrayList of all the rows in the table
 	public abstract ArrayList<PersistentModel> fetchAll() throws SQLException;
