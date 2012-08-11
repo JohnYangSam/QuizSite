@@ -8,7 +8,7 @@ import java.util.Set;
 import quizsite.util.MetaData;
 import quizsite.util.PersistentModel;
 
-public  class Question extends PersistentModel {
+public abstract class Question extends PersistentModel {
 	
 	protected Set<String> answers;
 	protected String text;

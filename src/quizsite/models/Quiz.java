@@ -25,9 +25,10 @@ public class Quiz extends PersistentModel{
 	public static String[][] FOREIGN_KEYS = 
 		{ {}, {} };
 
-	public Quiz(boolean onePage, boolean practice, boolean immediateCheck, int creatorID, int quizID, ArrayList<Question> questions) throws SQLException
+	public Quiz(boolean onePage, boolean practice, boolean immediateCheck, boolean random, int creatorID, int quizID, ArrayList<Question> questions) throws SQLException
 	{
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
+		this.randomized		= random;
 		this.onePage	 	= onePage;
 		this.practice 	 	= practice;
 		this.immediateCheck = immediateCheck;
