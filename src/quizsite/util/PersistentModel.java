@@ -15,7 +15,12 @@ public abstract class PersistentModel {
 	 * @return
 	 * @throws SQLException
 	 */
-	public abstract int save() throws SQLException;
+	public int save() throws SQLException
+	{
+		int newIdx = DatabaseConnection.create(this);
+		setId(newIdx);
+		return getId();
+	}
 	
 	/**
 	 * Fetch an ArrayList of all the rows in the table
@@ -25,8 +30,9 @@ public abstract class PersistentModel {
 	public abstract ArrayList<PersistentModel> fetchAll() throws SQLException;
 	
 	/**
-	 * 
-	 * @return
+	 * Gets an array of Objects that a values for corresponding columns in the db, for this to work
+	 * The order of elements should be the same as the order of columns in a table  
+	 * @return array of Objects
 	 */
 	public abstract Object[] getFields();
 	
@@ -58,7 +64,6 @@ public abstract class PersistentModel {
 	public List<Object> getColumnValues() {
 		return Arrays.asList(getFields());
 	}
-	
 
 	/**
 	 * @param id the id to set

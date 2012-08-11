@@ -7,8 +7,6 @@ package quizsite.util;
 import java.sql.*;
 import java.util.*;
 
-import com.sun.tools.internal.ws.wsdl.document.jaxws.Exception;
-
 /**
  * File: DBConnection.java
  * Author: Rege
@@ -164,9 +162,9 @@ public class DatabaseConnection {
 	public static int createTableIfNotExists(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getTableName() + 
-								"( id INTEGER, " + pm.getSchema() 
-								+ ForeignKey.serialize(pm.getForeignKeys()) 
-								+ ", PRIMARY KEY (id) ) ";
+									"( id INTEGER AUTO_INCREMENT" + pm.getSchema() 
+									+ ForeignKey.serialize(pm.getForeignKeys()) 
+									+ ", PRIMARY KEY (id) ) ";
 
 		int result = db.executeUpdate(createTableQuery);
 		db.close();
@@ -202,8 +200,8 @@ public class DatabaseConnection {
 	 * If the second param true, each word is surrounded with single quotes  
 	 * 
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" }) // for whatever reason java freaks out when I try to be as general as possible
-												   // it refuses to convert a list of string to a list of objects (up casting?)
+	@SuppressWarnings({ "rawtypes", "unchecked" }) // To be as general as possible, we want this function to take List<Object>, but at
+												   // the same time we don't want to change the return type of getColumnNames/Values
 	private String getFormattedStringFromList(List list, boolean isEscaped)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -232,7 +230,8 @@ public class DatabaseConnection {
 		String columnNames  = db.getFormattedStringFromList(pm.getColumnNames(), false);
 		String columnValues = db.getFormattedStringFromList(pm.getColumnValues(), true);
 		
-		String createQuery  = "INSERT INTO " + pm.getTableName() + " ( " + columnNames + " ) VALUES (" + columnValues + ")";
+		String createQuery  = "INSERT INTO " + pm.getTableName() + " ( " + columnNames.substring(0, columnNames.length()-1) + 
+																	 " ) VALUES (" + columnValues.substring(0, columnValues.length()-1) + ")";
 		db.executeUpdate(createQuery);
 		int id = db.getGeneratedKey();
 		db.close();
@@ -280,7 +279,4 @@ public class DatabaseConnection {
 		db.close();
 		return res;
 	}
-	
-	
-
 }
