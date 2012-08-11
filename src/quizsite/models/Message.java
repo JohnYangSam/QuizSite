@@ -7,6 +7,7 @@ package quizsite.models;
 import java.sql.SQLException;
 import java.util.*;
 
+import quizsite.util.DatabaseConnection;
 import quizsite.util.ForeignKey;
 import quizsite.util.MetaData;
 import quizsite.util.PersistentModel;
@@ -53,9 +54,9 @@ public class Message extends PersistentModel{
 	
 	/* Generic SQL queries */
 	@Override
-	public void save() throws SQLException {
-		// TODO Auto-generated method stub
-		
+	public int save() throws SQLException {
+		setId(DatabaseConnection.create(this));
+		return getId();
 	}
 
 	@Override

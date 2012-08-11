@@ -57,7 +57,8 @@ public class Quiz extends PersistentModel{
 	}
 
 	@Override
-	public void save() throws SQLException {
+	public int save() throws SQLException {
+		return 0;
 		// TODO Auto-generated method stub
 		
 	}

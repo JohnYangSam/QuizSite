@@ -72,9 +72,11 @@ public class Attempt extends PersistentModel {
 	}
 
 	
-	/*** METHODS TO COMMUNICATE WITH THE DATABASE ***/
+	/*** METHODS TO COMMUNICATE WITH THE DATABASE 
+	 * @return ***/
 	@Override
-	public void save() throws SQLException {
+	public int save() throws SQLException {
+		return 0;
 		
 		
 	}
