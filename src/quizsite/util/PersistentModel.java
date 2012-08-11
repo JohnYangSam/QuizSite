@@ -45,20 +45,18 @@ public abstract class PersistentModel {
 	public List<ForeignKey> getForeignKeys()
 	{ return metaData.getForeignKeys(); }
 
-	public String getColumnNames() {
+	/**
+	 * @return a list of strings, where each entry is a column name
+	 */
+	public List<String> getColumnNames() {
 		return metaData.getColumnNames();
 	}
 
-	// Fetches a CSV string of all instance variable values, in the order that they appear in the schema
-	public String getColumnValues() {
-		StringBuilder sb = new StringBuilder();
-		for (Object obj : getFields()) {
-			sb.append("'");
-			sb.append(obj);
-			sb.append("',");
-		}
-		String res = sb.toString();
-		return res.substring(0, res.length() - 1);		
+	/**
+	 * @return list of values for a particular model
+	 */
+	public List<Object> getColumnValues() {
+		return Arrays.asList(getFields());
 	}
 	
 

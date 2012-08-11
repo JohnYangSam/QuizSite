@@ -1,5 +1,6 @@
 package quizsite.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MetaData {
@@ -34,16 +35,14 @@ public class MetaData {
 		return foreignKeys;
 	}
 
-	public String getColumnNames() {
-		if (schema.length > 0) {
-			StringBuilder sb = new StringBuilder();
-			for (String[] col : schema) {
-				sb.append(col[0] + ",");
-			}
-			String res = sb.toString();
-			return res.substring(0, res.length() - 1);
-		} else {
-			return "";
+	/**
+	 * @return a list of strings, where each entry is a column name
+	 */
+	public List<String> getColumnNames() {
+		List<String> columnNames = new ArrayList<String>();
+		for (String[] col : schema) {
+			columnNames.add(col[0]);
 		}
+		return columnNames;
 	}
 }

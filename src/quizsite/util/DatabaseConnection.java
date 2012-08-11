@@ -197,6 +197,24 @@ public class DatabaseConnection {
 		}
 	}
 	
+	/*
+	 * Returns a string properly formatted for using inside an sql query
+	 * If the second param true, each word is surrounded with single quotes  
+	 * 
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" }) // for whatever reason java freaks out when I try to be as general as possible
+												   // it refuses to convert a list of string to a list of objects (up casting?)
+	private String getFormattedStringFromList(List list, boolean isEscaped)
+	{
+		StringBuilder sb = new StringBuilder();
+		for (Iterator<Object> itr = list.iterator(); itr.hasNext();) {
+			if (isEscaped) sb.append("'");
+			sb.append(itr.next());	
+			if (isEscaped) sb.append("'");
+			sb.append(", ");
+		}
+		return sb.substring(0, sb.length() - 1);		
+	}
 	
 	/* REST API */
 	// Get a list of all rows
@@ -210,7 +228,11 @@ public class DatabaseConnection {
 	// Create and save a new row - returns the auto-generated id of the new row
 	public static int create(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
-		String createQuery = "INSERT INTO " + pm.getTableName() + " ( " + pm.getColumnNames() + " ) VALUES (" + pm.getColumnValues() + ")";
+		
+		String columnNames  = db.getFormattedStringFromList(pm.getColumnNames(), false);
+		String columnValues = db.getFormattedStringFromList(pm.getColumnValues(), true);
+		
+		String createQuery  = "INSERT INTO " + pm.getTableName() + " ( " + columnNames + " ) VALUES (" + columnValues + ")";
 		db.executeUpdate(createQuery);
 		int id = db.getGeneratedKey();
 		db.close();
@@ -234,17 +256,25 @@ public class DatabaseConnection {
 		return res;
 	}
 	
-	// Update a row corresponding to a specific id
-	public static int update(PersistentModel pm, String[][] updateInfo) throws SQLException {
-		StringBuilder sb = new StringBuilder();
-		for (String[] updates : updateInfo) {
-			sb.append(updates[0]);	// column name
-			sb.append("='");
-			sb.append(updates[1]);	// new value
-			sb.append("',");
+	/**
+	 * Update a row corresponding to a specific id
+	 * @param pm
+	 * @param TODO: what it returns??
+	 * @return An updated row
+	 * @throws SQLException
+	 */
+	public static int update(PersistentModel pm) throws SQLException {
+		List<String> columns = pm.getColumnNames();
+		List<Object> values  = pm.getColumnValues();
+		
+		// construct an update string
+		StringBuilder updateStrBuilder = new StringBuilder();
+		for (int i = 0; i < columns.size(); i++) {
+			updateStrBuilder.append(columns.get(i)+"='"+values.get(i)+"',");
 		}
-		String setStr = sb.toString();
-		String updQuery = "UPDATE " + pm.getTableName() + " SET " + setStr.substring(0, setStr.length() - 1) + " WHERE id = '" + pm.getId() + "'";
+		String updateStr = updateStrBuilder.toString();
+		
+		String updQuery = "UPDATE " + pm.getTableName() + " SET " + updateStr.substring(0, updateStr.length() - 1) + " WHERE id = '" + pm.getId() + "'";
 		DatabaseConnection db = new DatabaseConnection();
 		int res = db.executeUpdate(updQuery);
 		db.close();
