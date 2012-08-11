@@ -2,6 +2,8 @@ package quizsite.models;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import quizsite.util.PersistentModel;
 
 public class Quiz extends PersistentModel{
@@ -10,6 +12,7 @@ public class Quiz extends PersistentModel{
 	private boolean onePage;
 	private boolean practice;
 	private boolean immediateCheck;
+	private boolean randomized;
 
 	private int creatorID;
 	private int quizID;
@@ -40,7 +43,8 @@ public class Quiz extends PersistentModel{
 	 */
 	public ArrayList<Question> getQuestions()
 	{
-		
+		if (isRandomized())
+			Collections.shuffle(questions);
 		return questions;
 	}
 	
@@ -52,6 +56,9 @@ public class Quiz extends PersistentModel{
 	
 	public boolean isImmediate()
 	{ return immediateCheck; }
+	
+	public boolean isRandomized()
+	{ return randomized; }
 	
 	public int getCreatorID()
 	{ return creatorID; }
