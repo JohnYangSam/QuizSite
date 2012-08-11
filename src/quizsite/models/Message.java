@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.util.*;
 
 import quizsite.util.DatabaseConnection;
-import quizsite.util.ForeignKey;
-import quizsite.util.MetaData;
 import quizsite.util.PersistentModel;
 
 /**

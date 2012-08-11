@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
-import quizsite.util.MetaData;
 import quizsite.util.PersistentModel;
 
 public abstract class Question extends PersistentModel {
@@ -14,9 +13,9 @@ public abstract class Question extends PersistentModel {
 	protected String text;
 	
 	public static String TABLE_NAME = "Question";
-	public static String[][] SCHEMA = {{}};
+	public static String[][] SCHEMA = {{"quiz_id", "INTEGER"}, {"body", "TEXT"}};
 	public static String[][] FOREIGN_KEYS = 
-		{ {}, {} };
+		{ {"quiz_id", "Quiz", "id"} };
 	
 	@Override
 	public Object[] getFields() {
@@ -24,10 +23,11 @@ public abstract class Question extends PersistentModel {
 		return null;
 	}
 
-	public Question(String text) throws SQLException
+	public Question(String text, Set<String> answers) throws SQLException
 	{
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
-		this.text = text;
+		this.text 	 = text;
+		this.answers = answers;
 	}
 
 	@Override
