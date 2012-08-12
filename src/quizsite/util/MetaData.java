@@ -17,7 +17,8 @@ public class MetaData {
 		return tableName;
 	}
 
-	public String getSchema() {
+	
+	public String getSchemaStringified() {
 //		if (schema.length > 0) {
 			StringBuilder sb = new StringBuilder();
 			for (String[] col : schema) {
@@ -29,6 +30,12 @@ public class MetaData {
 //			return "";
 //		}
 	}
+	
+	/** Returns the 2D string array of schema information */
+	public String[][] getSchema() {
+		return schema;
+	}
+	
 
 	public List<ForeignKey> getForeignKeys() {
 		return foreignKeys;
@@ -45,5 +52,9 @@ public class MetaData {
 		} else {
 			return "";
 		}
+	}
+
+	public int getNumberOfColumns() {
+		return getSchema().length + 1;
 	}
 }

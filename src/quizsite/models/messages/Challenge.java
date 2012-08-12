@@ -5,6 +5,7 @@
 package quizsite.models.messages;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import quizsite.models.*;
 
@@ -19,7 +20,7 @@ public class Challenge extends Message {
 		super(recipient, sender);
 		setQuiz(quiz);
 		formatString = "%1$s has challenged %2$s to a quiz %3$s";
-		setBody(recipient, sender, quiz.getURL());
+		setBody(formatBody(recipient, sender, quiz.getURL()));
 	}
 
 
@@ -35,6 +36,13 @@ public class Challenge extends Message {
 	 */
 	public Quiz getQuiz() {
 		return quiz;
+	}
+
+
+	@Override
+	public void parse(List<String> dbEntry) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

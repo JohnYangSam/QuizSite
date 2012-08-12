@@ -5,6 +5,7 @@
 package quizsite.models.messages;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import quizsite.models.Message;
 import quizsite.models.User;
@@ -20,7 +21,7 @@ public class FriendRequest extends Message {
 		super(recipient, sender);
 		setCallbackURL(url);
 		formatString = "This is a friend request from %1$s to %2$s containing the url %3$s";
-		setBody(sender, recipient, callbackURL);
+		setBody(formatBody(sender, recipient, callbackURL));
 	}
 
 	/**
@@ -35,5 +36,11 @@ public class FriendRequest extends Message {
 	 */
 	public String getCallbackURL() {
 		return callbackURL;
+	}
+
+	@Override
+	public void parse(List<String> dbEntry) {
+		// TODO Auto-generated method stub
+		
 	}
 }

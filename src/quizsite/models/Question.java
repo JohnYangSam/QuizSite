@@ -3,6 +3,7 @@ package quizsite.models;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import quizsite.util.MetaData;
@@ -31,7 +32,7 @@ public  class Question extends PersistentModel {
 	}
 
 	@Override
-	public ArrayList<PersistentModel> fetchAll() throws SQLException {
+	public ArrayList<PersistentModel> index() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -61,6 +62,18 @@ public  class Question extends PersistentModel {
 	
 	public String getText()
 	{ return text; }
+
+
+	public static Question get(int id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void parse(List<String> dbEntry) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 }

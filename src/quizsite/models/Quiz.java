@@ -2,6 +2,8 @@ package quizsite.models;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 import quizsite.util.PersistentModel;
 
 public class Quiz extends PersistentModel{
@@ -64,7 +66,7 @@ public class Quiz extends PersistentModel{
 	}
 
 	@Override
-	public ArrayList<PersistentModel> fetchAll() throws SQLException {
+	public ArrayList<PersistentModel> index() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -73,6 +75,18 @@ public class Quiz extends PersistentModel{
 	public Object[] getFields() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	
+	public static Quiz get(int id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void parse(List<String> dbEntry) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -76,7 +76,7 @@ public class DatabaseConnection {
 	 * @param	rs	{@link ResultSet} variable obtained from a SQL query
 	 * @return	a ArrayList of ArrayList of Strings containing all the rows contained in the parameter 
 	 * */
-	public static List< List<String> > parseResultData( ResultSet rs ) throws SQLException {
+	private static List< List<String> > parseResultData( ResultSet rs ) throws SQLException {
 		// Fill in the data
 		List< List<String> > rows = new ArrayList< List<String> >();
 		List<String> newRow;
@@ -128,8 +128,31 @@ public class DatabaseConnection {
 		}
 		return key;
 	}
-
 	
+	/*** STANDARD SQL QUERIES ***/
+	
+	/**
+	 * Fetches all rows from given table as a ArrayList of ArrayList of strings
+	 * */
+	private List< List<String> > fetchAllRows(String tablename) throws SQLException {
+		ResultSet rs = executeQuery("SELECT * FROM " + tablename);
+		return parseResultData(rs);
+	}
+	
+	private List<String> fetchRowById(String tablename, int id) throws SQLException{
+		String findQuery = "SELECT * FROM " + tablename + " WHERE id = '" + id + "'";
+		ResultSet rs = executeQuery(findQuery);
+		List<List<String> > res = parseResultData(rs);
+		switch (res.size()) {
+		case 0:
+			return null;
+		case 1:
+			return res.get(0);
+		default:
+			throw new SQLException("Uniqueness of id violated");
+		}
+	}
+
 	/**
 	 * Constructor
 	 * */
@@ -149,30 +172,7 @@ public class DatabaseConnection {
 		conn.close();
 	}
 	
-	/*** STANDARD SQL QUERIES ***/
 	
-	/**
-	 * Fetches all rows from given table as a ArrayList of ArrayList of strings
-	 * */
-	public List< List<String> > fetchAllRows(String tablename) throws SQLException {
-		ResultSet rs = executeQuery("SELECT * FROM " + tablename);
-		return parseResultData(rs);
-	}
-	
-	public List<String> fetchRowById(String tablename, int id) throws SQLException{
-		String findQuery = "SELECT * FROM " + tablename + " WHERE id = '" + id + "'";
-		ResultSet rs = executeQuery(findQuery);
-		List<List<String> > res = parseResultData(rs);
-		switch (res.size()) {
-		case 0:
-			return null;
-		case 1:
-			return res.get(0);
-		default:
-			throw new SQLException("Uniqueness of id violated");
-		}
-	}
-
 	// Creates the backing table if it doesn't exist
 	public static int createTableIfNotExists(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
