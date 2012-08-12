@@ -41,8 +41,8 @@ public class FriendRequest extends Message {
 	}
 
 	@Override
-	public void parse(List<String> dbEntry) {
-		// TODO Auto-generated method stub
-		
+	public void parse(List<String> dbEntry) throws IllegalArgumentException, SQLException {
+		super.parse(dbEntry);
+		// Not parsing callbackURL
 	}
 }

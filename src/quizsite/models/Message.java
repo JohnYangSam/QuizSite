@@ -40,6 +40,7 @@ public abstract class Message extends PersistentModel{
 	// to avoid copies of same information in every instantiation
 	public static String TABLE_NAME = "Message";
 	public static String[][] SCHEMA = {{"body", "TEXT"}, {"sender_id", "INTEGER"}, {"recipient_id", "INTEGER"}, {"type", "TINYTEXT"}};
+	public final static int I_BODY = 1, I_SENDER_ID = 2, I_RECIPIENT_ID = 3, I_TYPE = 4;
 	public static String[][] FOREIGN_KEYS = 
 	{ {"sender_id", "User", "id"}, {"recipient_id", "User", "id"} };
 
@@ -59,15 +60,23 @@ public abstract class Message extends PersistentModel{
 		private String getRepr() {
 			return this.repr;
 		}
-		public static Message instantiate(String type) throws SQLException {
-			if (type.equals("challenge")) {
-				return new Challenge(null, null, null);
-			} else if (type.equals("friend_request")) {
-				return new FriendRequest(null, null, "");
-			} else if (type.equals("note")) {
-				return new Note(null, null, "");
+		public static Message instantiate(List<String> row) throws SQLException {
+			if (row != null) {
+				String type = row.get(I_TYPE);
+				Message curr;
+				if (type.equals("challenge")) {
+					curr = new Challenge(null, null, null);
+				} else if (type.equals("friend_request")) {
+					curr = new FriendRequest(null, null, "");
+				} else if (type.equals("note")) {
+					curr = new Note(null, null, "");
+				} else {
+					throw new IllegalArgumentException("This type doesn't exist : " + type);
+				}
+				curr.parse(row);	// Pops down to the right parse function
+				return curr;
 			} else {
-				throw new IllegalArgumentException("This type doesn't exist : " + type);
+				return null;
 			}
 		}
 	};
@@ -123,9 +132,9 @@ public abstract class Message extends PersistentModel{
 	@Override
 	public void parse(List<String> dbEntry) throws IllegalArgumentException, SQLException {
 		super.parse(dbEntry);
-		setBody(dbEntry.get(1));
-		int senderId = Integer.parseInt(dbEntry.get(2)); 
-		int recipientId = Integer.parseInt(dbEntry.get(3));
+		setBody(dbEntry.get(I_BODY));
+		int senderId = Integer.parseInt(dbEntry.get(I_SENDER_ID)); 
+		int recipientId = Integer.parseInt(dbEntry.get(I_RECIPIENT_ID));
 
 		User sender = User.get(senderId);
 		User recipient = User.get(recipientId);
@@ -133,14 +142,13 @@ public abstract class Message extends PersistentModel{
 		setSender(sender);
 		setRecipient(recipient);
 		
-		setType(dbEntry.get(4));
+		setType(dbEntry.get(I_TYPE));
 	}
 	
 	public static List<Message> parseRows(List<List<String>> rows) throws SQLException {
 		List<Message> ret = new ArrayList<Message>();
 		for (List<String> row : rows) {
-			Message curr = Type.instantiate(row.get(4));
-			curr.parse(row);
+			Message curr = Type.instantiate(row);
 			ret.add(curr);
 		}
 		return ret;
@@ -148,9 +156,14 @@ public abstract class Message extends PersistentModel{
 
 	
 
+	/** 
+	 * Returns the correctly instantiated type as it's supertype - Message 
+	 * Returns null if no such row exists
+	 * */
 	public static Message get(int id) throws SQLException {
-
-		return null;
+		List<String> entry = DatabaseConnection.get(TABLE_NAME, id);
+		Message curr = Type.instantiate(entry);
+		return curr;
 	}	
 
 	/* The usual getters and setters */

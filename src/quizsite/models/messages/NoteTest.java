@@ -104,23 +104,25 @@ public class NoteTest {
 		User sender = new User(1);
 		Note newM = new Note(sender, sender, sampleBody);
 		int mId = newM.save();
-		Note newN = Note.get(mId);
-		System.out.println(newN.getBody());
-		assertEquals(newM.getBody(), newN.getBody());
+		Message newN = Message.get(mId);
+		assertTrue(newN.getType().equals(Message.Type.NOTE));
+		Note newO = (Note) newN;
+		System.out.println(newO.getBody());
+		assertEquals(newM.getBody(), newO.getBody());
 	}
 	@Test
 	public void testDelete() throws SQLException{
 		User sender = new User(1);
 		Note newM = new Note(sender, sender, sampleBody);
 		int mId = newM.save();
-		Note newN = Note.get(mId);
+		Note newN = (Note)Message.get(mId);
 		System.out.println(newN.getBody());
 		assertEquals(newM.getBody(), newN.getBody());
 		newM.delete();
-		Note newO = Note.get(mId);
+		Message newO = Message.get(mId);
 		assertNull(newO);
 		newN.delete();
-		Note newP = Note.get(mId);
+		Message newP = Message.get(mId);
 		assertNull(newP);
 	}
 	@Test

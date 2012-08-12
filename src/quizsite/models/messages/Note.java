@@ -33,7 +33,10 @@ public class Note extends Message {
 		return content;
 	}
 
-	/** Gets a row from Message table and parses it assuming it is a note */
+	/** 
+	 * Gets a row from Message table and parses it assuming it is a note 
+	 * DEPRECATED! Prefer Message.get()
+	 * */
 	public static Note get(int id) throws SQLException {
 		Note newN = new Note(null, null, "");
 		List<String> entry = DatabaseConnection.get(newN.getTableName(), id);
