@@ -211,7 +211,7 @@ public class DatabaseConnection {
 			if (isEscaped) sb.append("'");
 			sb.append(", ");
 		}
-		return sb.substring(0, sb.length() - 1);		
+		return sb.substring(0, sb.length() - 1); //Removes the trailing comma ','
 	}
 	
 	/* REST API */
