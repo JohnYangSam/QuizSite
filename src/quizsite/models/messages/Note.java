@@ -37,8 +37,12 @@ public class Note extends Message {
 	public static Note get(int id) throws SQLException {
 		Note newN = new Note(null, null, "");
 		List<String> entry = DatabaseConnection.get(newN.getTableName(), id);
-		newN.parse(entry);
-		return newN;
+		if (entry != null) {
+			newN.parse(entry);
+			return newN;
+		} else {
+			return null;
+		}
 	}
 
 	@Override

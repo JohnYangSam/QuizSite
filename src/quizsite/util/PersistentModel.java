@@ -23,6 +23,10 @@ public abstract class PersistentModel {
 		return getId();
 	}
 	
+	public void delete() throws SQLException {
+		DatabaseConnection.destroy(this);
+	}
+	
 	
 	/** Parses the row obtained from the entry in the database and fills in the instance variables
 	 * @throws SQLException 

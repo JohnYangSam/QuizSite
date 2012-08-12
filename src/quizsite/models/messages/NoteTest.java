@@ -20,6 +20,7 @@ import quizsite.util.ForeignKey;
 
 public class NoteTest {
 
+	private int START = 1;// Starting pt of the auto genrated ids
 	private Map< String, HashSet<String> > referencedTables;
 	private String sampleBody = "This body is for testing purposes";
 	
@@ -71,6 +72,7 @@ public class NoteTest {
 		Note newM = new Note(sender, sender, sampleBody);
 		int mId = DatabaseConnection.create(newM);
 		System.out.println(mId);
+		assertEquals(START, mId);
 	}
 	
 	/** Similar to testDBCreate, but tests wrapper method in Model */
@@ -80,6 +82,7 @@ public class NoteTest {
 		Note newM = new Note(sender, sender, sampleBody);
 		int mId = newM.save();
 		System.out.println(mId);
+		assertEquals(START, mId);
 	}
 	
 	@Test
@@ -88,6 +91,7 @@ public class NoteTest {
 		FriendRequest newM = new FriendRequest(sender, sender, "example.com");
 		int mId = newM.save();
 		List<String> out = DatabaseConnection.get(Note.TABLE_NAME, mId);
+		assertEquals(mId, Integer.parseInt(out.get(0)));
 		System.out.println(out);
 		System.out.println(mId);
 	}
@@ -104,7 +108,21 @@ public class NoteTest {
 		System.out.println(newN.getBody());
 		assertEquals(newM.getBody(), newN.getBody());
 	}
-	
+	@Test
+	public void testDelete() throws SQLException{
+		User sender = new User(1);
+		Note newM = new Note(sender, sender, sampleBody);
+		int mId = newM.save();
+		Note newN = Note.get(mId);
+		System.out.println(newN.getBody());
+		assertEquals(newM.getBody(), newN.getBody());
+		newM.delete();
+		Note newO = Note.get(mId);
+		assertNull(newO);
+		newN.delete();
+		Note newP = Note.get(mId);
+		assertNull(newP);
+	}
 	@Test
 	public void testIndexToFrom() throws SQLException {
 		User sender = new User(1);
@@ -130,6 +148,8 @@ public class NoteTest {
 		assertEquals(1, Message.indexFromTo(sender, sender).size());
 		assertEquals(1, Message.indexFromTo(recipient, recipient).size());
 	}
+	
+	
 	
 	@After
 	public void tearDown() throws Exception {

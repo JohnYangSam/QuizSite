@@ -144,6 +144,13 @@ public class DatabaseConnection {
 		String whereQuery = "SELECT * FROM " + tableName + " " + whereQuery(conditions);
 		return parseResultData(executeQuery(whereQuery));
 	}
+	
+	/** Use with caution. Runs a raw SQL query 
+	 * @throws SQLException */
+	List<List<String> > fetchRowsRawSQL(String tableName, String condition) throws SQLException {
+		String rawQuery = "SELECT * FROM " + tableName + " " + condition;
+		return parseResultData(executeQuery(rawQuery));
+	}
 
 	/**
 	 * Constructor
@@ -236,7 +243,7 @@ public class DatabaseConnection {
 	}
 
 	/* REST API */
-	// Get a list of all rows
+	/** Get a list of all rows */
 	public static List<List<String> > index(String tableName) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		List<List<String> > ret = db.fetchAllRows(tableName);
@@ -244,9 +251,25 @@ public class DatabaseConnection {
 		return ret;
 	}
 
+	/** Runs an AND-ed WHERE query on given tableName
+	 * $ stuff = "something";
+	 * $ conditions = {{"id", ">", "23"},{"data", "=", stuff}} => 'WHERE id > '23' AND data = 'something'
+	 * */
 	public static List< List<String> > indexWhere(String tableName, String[][] conditions) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		List<List<String> > ret = db.fetchRowsWhere(tableName, conditions);
+		db.close();
+		return ret;
+	}
+	
+	/** Executes a raw SQL query on the given tableName
+	 * $ condition = "WHERE id = '23'"; tableName = Message.TABLE_NAME;
+	 * => Query run = "SELECT * FROM Message WHERE id = '23'"
+	 * @throws SQLException 
+	 * */
+	public static List<List<String> > indexQueryRaw(String tableName, String condition) throws SQLException {
+		DatabaseConnection db = new DatabaseConnection();
+		List<List<String> > ret = db.fetchRowsRawSQL(tableName, condition);
 		db.close();
 		return ret;
 	}
