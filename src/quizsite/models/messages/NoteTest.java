@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import quizsite.models.Message;
 import quizsite.models.User;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.ForeignKey;
@@ -102,6 +103,21 @@ public class NoteTest {
 		Note newN = Note.get(mId);
 		System.out.println(newN.getBody());
 		assertEquals(newM.getBody(), newN.getBody());
+	}
+	
+	@Test
+	public void testIndexTo() throws SQLException {
+		User sender = new User(1);
+		Note newN = new Note(sender, sender, sampleBody);
+		newN.save();
+		newN = new Note(sender, sender, sampleBody);
+		newN.save();
+		newN = new Note(sender, sender, sampleBody);
+		newN.save();
+		assertEquals(3, Message.indexTo(sender).size());
+		assertTrue(sampleBody.equals(Message.indexTo(sender).get(0).getBody()));
+		assertTrue(sampleBody.equals(Message.indexTo(sender).get(1).getBody()));
+		assertTrue(sampleBody.equals(Message.indexTo(sender).get(2).getBody()));
 	}
 	
 	@After

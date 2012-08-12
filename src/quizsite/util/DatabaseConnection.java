@@ -119,13 +119,13 @@ public class DatabaseConnection {
 	/**
 	 * Fetches all rows from given table as a ArrayList of ArrayList of strings
 	 * */
-	List< List<String> > fetchAllRows(String tablename) throws SQLException {
-		ResultSet rs = executeQuery("SELECT * FROM " + tablename);
+	List< List<String> > fetchAllRows(String tableName) throws SQLException {
+		ResultSet rs = executeQuery("SELECT * FROM " + tableName);
 		return parseResultData(rs);
 	}
 	
-	List<String> fetchRowById(String tablename, int id) throws SQLException{
-		String findQuery = "SELECT * FROM " + tablename + " WHERE id = '" + id + "'";
+	List<String> fetchRowById(String tableName, int id) throws SQLException{
+		String findQuery = "SELECT * FROM " + tableName + " WHERE id = '" + id + "'";
 		ResultSet rs = executeQuery(findQuery);
 		List<List<String> > res = parseResultData(rs);
 		switch (res.size()) {
@@ -136,6 +136,17 @@ public class DatabaseConnection {
 		default:
 			throw new SQLException("Uniqueness of id violated");
 		}
+	}
+	
+	/** Runs a where SQL query for the AND of all conditions 
+	 * @throws SQLException */
+	List<List<String> > fetchRowsWhere(String tableName, String[] conditions) throws SQLException {
+		StringBuilder sb = new StringBuilder("SELECT * FROM " + tableName + " WHERE ");
+		for (String condition : conditions) {
+			sb.append(condition);
+		}
+		String whereQuery = sb.toString();
+		return parseResultData(executeQuery(whereQuery));
 	}
 
 	/**
@@ -202,8 +213,7 @@ public class DatabaseConnection {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" }) // To be as general as possible, we want this function to take List<Object>, but at
 												   // the same time we don't want to change the return type of getColumnNames/Values
-	private String getFormattedStringFromList(List list, boolean isEscaped)
-	{
+	private String getFormattedStringFromList(List list, boolean isEscaped) {
 		StringBuilder sb = new StringBuilder();
 		for (Iterator<Object> itr = list.iterator(); itr.hasNext();) {
 			if (isEscaped) sb.append("'");
@@ -216,9 +226,16 @@ public class DatabaseConnection {
 	
 	/* REST API */
 	// Get a list of all rows
-	public static List<List<String> > index(String tablename) throws SQLException {
+	public static List<List<String> > index(String tableName) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
-		List<List<String> > ret = db.fetchAllRows(tablename);
+		List<List<String> > ret = db.fetchAllRows(tableName);
+		db.close();
+		return ret;
+	}
+	
+	public static List< List<String> > indexWhere(String tableName, String[] conditions) throws SQLException {
+		DatabaseConnection db = new DatabaseConnection();
+		List<List<String> > ret = db.fetchRowsWhere(tableName, conditions);
 		db.close();
 		return ret;
 	}

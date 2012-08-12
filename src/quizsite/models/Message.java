@@ -5,9 +5,13 @@
 package quizsite.models;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
+import quizsite.models.messages.Challenge;
+import quizsite.models.messages.FriendRequest;
+import quizsite.models.messages.Note;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 
@@ -55,6 +59,17 @@ public abstract class Message extends PersistentModel{
 		private String getRepr() {
 			return this.repr;
 		}
+		public static Message instantiate(String type) throws SQLException {
+			if (type.equals("challenge")) {
+				return new Challenge(null, null, null);
+			} else if (type.equals("friend_request")) {
+				return new FriendRequest(null, null, "");
+			} else if (type.equals("note")) {
+				return new Note(null, null, "");
+			} else {
+				throw new IllegalArgumentException("This type doesn't exist : " + type);
+			}
+		}
 	};
 
 	public Message(User recipient, User sender) throws SQLException {
@@ -82,9 +97,10 @@ public abstract class Message extends PersistentModel{
 	}
 
 
-	public static List<Message> index() throws SQLException {
-		
-		return null;
+	public static List<Message> indexTo(User recipient) throws SQLException {
+		String[] conditions = {"recipient_id = '" + recipient.getId() + "'"};
+		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
+		return parseRows(rows);
 	}
 
 	@Override
@@ -107,7 +123,19 @@ public abstract class Message extends PersistentModel{
 		setRecipient(recipient);
 		
 		setType(dbEntry.get(4));
-;	}
+	}
+	
+	public static List<Message> parseRows(List<List<String>> rows) throws SQLException {
+		List<Message> ret = new ArrayList<Message>();
+		for (List<String> row : rows) {
+			Message curr = Type.instantiate(row.get(4));
+			curr.parse(row);
+			ret.add(curr);
+		}
+		return ret;
+	}
+
+	
 
 	public static Message get(int id) throws SQLException {
 

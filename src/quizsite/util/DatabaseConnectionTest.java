@@ -124,6 +124,30 @@ public class DatabaseConnectionTest {
 			fail(e.getMessage());
 		}
 	}
+	
+	/**
+	 * Test method for fetchRowWhere
+	 * @throws SQLException 
+	 * */
+	@Test
+	public void testFetchRowWhere() throws SQLException {
+		assertTrue(dbInstance.fetchRowById(TEST_TABLE, 1) == null); // no such index
+		dbInstance.executeUpdate("insert into test_table (data) VALUES('a');");
+		String[][] conditions = {{"id = 1"}, {"id = 1 and data = 'a'"}, {"data = 'a'"}};
+		assertTrue(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[0]).size() == 1);
+		assertTrue(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[1]).size() == 1);
+		assertTrue(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[2]).size() == 1);
+		
+		assertTrue(Integer.parseInt(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[0]).get(0).get(0)) == 1);
+		assertTrue(Integer.parseInt(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[1]).get(0).get(0)) == 1);
+		assertTrue(Integer.parseInt(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[2]).get(0).get(0)) == 1);
+		
+		dbInstance.executeUpdate("insert into test_table (data) VALUES('a');");
+		assertTrue(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[0]).size() == 1);
+		assertTrue(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[1]).size() == 1);
+		assertTrue(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[2]).size() == 2);
+		
+	}
 
 	/**
 	 * Test method for {@link quizsite.util.DatabaseConnection#create(quizsite.util.PersistentModel)}.
