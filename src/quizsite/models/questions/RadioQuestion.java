@@ -9,6 +9,7 @@ public class RadioQuestion extends Question {
 
 	public RadioQuestion(Set<String> answers, String text) throws SQLException {
 		super(text, answers);
+		setType(Type.RADIO);
 	}
 
 }

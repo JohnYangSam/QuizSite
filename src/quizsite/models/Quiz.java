@@ -81,8 +81,8 @@ public class Quiz extends PersistentModel{
 		// TODO Auto-generated method stub
 	}
 
-	@Override
-	public ArrayList<PersistentModel> index() throws SQLException {
+	
+	public static List<Quiz> index() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}

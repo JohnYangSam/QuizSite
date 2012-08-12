@@ -21,6 +21,7 @@ public class Challenge extends Message {
 		setQuiz(quiz);
 		formatString = "%1$s has challenged %2$s to a quiz %3$s";
 		setBody(formatBody(recipient, sender, quiz.getURL()));
+		setType(Type.CHALLENGE);
 	}
 
 

@@ -79,9 +79,7 @@ public class Attempt extends PersistentModel {
 		
 	}
 
-
-	@Override
-	public ArrayList<PersistentModel> index() throws SQLException {
+	public static List<Attempt> index() throws SQLException {
 		
 		return null;
 	}

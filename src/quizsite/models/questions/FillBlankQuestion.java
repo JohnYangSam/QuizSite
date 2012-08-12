@@ -16,7 +16,8 @@ public class FillBlankQuestion extends Question {
 	public FillBlankQuestion(Set<String> answers, String first, String second) throws SQLException {
 		super("Fill in the blank field.", answers);
 		this.firstPart  = first;
-		this.secondPart = second; 
+		this.secondPart = second;
+		setType(Type.FILL_BLANK);
 	}
 
 	public String getFirstPart()

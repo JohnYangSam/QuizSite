@@ -12,6 +12,7 @@ public class PictureQuestion extends Question {
 	{
 		super(text, answers);
 		this.imageUrl = url;
+		setType(Type.PICTURE);
 	}
 	
 	public String getUrl()

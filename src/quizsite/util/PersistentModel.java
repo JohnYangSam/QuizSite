@@ -3,22 +3,26 @@ package quizsite.util;
 import java.sql.*;
 import java.util.*;
 
+import quizsite.models.messages.Note;
+
 /** 
- * Any model backed by a database table should implement this interface
+ * Any model backed by a database table should extend this class
+ * Additionally, add the following static methods [look up Note.java for examples]:
+ * 1. public static Note get(int id) throws SQLException
+ * 2. public static List<Note> index() throws SQLException
  * */
 public abstract class PersistentModel {
 	private final MetaData metaData;
 	private int id; // TODO: Needs to be filled in after an instance is saved in the database
 	
-	/** Saves object as a row in the table - returns the auto generated key */
-	public int save() throws SQLException {
+	/** Saves object as a row in the table - returns the auto generated key 
+	 * @throws SQLException */
+	public int save() throws SQLException  {
 		int newIdx = DatabaseConnection.create(this);
 		setId(newIdx);
 		return getId();
 	}
 	
-	/** Fetch a List of all the rows in the table */
-	public abstract List<PersistentModel> index() throws SQLException;
 	
 	/** Parses the row obtained from the entry in the database and fills in the instance variables
 	 * @throws SQLException 

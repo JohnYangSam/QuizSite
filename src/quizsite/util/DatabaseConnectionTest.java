@@ -213,9 +213,5 @@ class Something extends PersistentModel
 		return objs;
 	}
 
-	@Override
-	public List<PersistentModel> index() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}	
+	
 }

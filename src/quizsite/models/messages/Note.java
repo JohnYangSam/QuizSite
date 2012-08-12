@@ -15,6 +15,8 @@ public class Note extends Message {
 		setContent(content);
 		formatString = content;
 		setBody(formatBody());
+		
+		setType(Type.NOTE);
 	}
 
 	/**

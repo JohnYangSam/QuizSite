@@ -5,7 +5,6 @@
 package quizsite.models;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
@@ -27,7 +26,8 @@ public abstract class Message extends PersistentModel{
 	 * */
 	protected Formatter fmt;
 	protected String formatString;	// To be set in subclass constructor
-
+	private String type;
+	
 	private User sender;
 	private User recipient;
 	protected String body;	// Message body - built in subclass constructors
@@ -35,10 +35,27 @@ public abstract class Message extends PersistentModel{
 	// Meta data about the backing database table stored as static fields
 	// to avoid copies of same information in every instantiation
 	public static String TABLE_NAME = "Message";
-	public static String[][] SCHEMA = {{"body", "TEXT"}, {"sender_id", "INTEGER"}, {"recipient_id", "INTEGER"}};
+	public static String[][] SCHEMA = {{"body", "TEXT"}, {"sender_id", "INTEGER"}, {"recipient_id", "INTEGER"}, {"type", "VARCHAR"}};
 	public static String[][] FOREIGN_KEYS = 
 	{ {"sender_id", "User", "id"}, {"recipient_id", "User", "id"} };
 
+	public enum Type{
+		CHALLENGE("challenge"), 
+		FRIEND_REQUEST("friend_request"), 
+		NOTE("note");
+		
+		private final String repr;
+		Type(String repr) {
+			this.repr = repr;
+		}
+		@Override
+		public String toString() {
+			return getRepr();
+		}
+		private String getRepr() {
+			return this.repr;
+		}
+	};
 
 	public Message(User recipient, User sender) throws SQLException {
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
@@ -64,15 +81,15 @@ public abstract class Message extends PersistentModel{
 		return getId();
 	}
 
-	@Override
-	public ArrayList<PersistentModel> index() throws SQLException {
-		// TODO Auto-generated method stub
+
+	public static List<Message> index() throws SQLException {
+		
 		return null;
 	}
 
 	@Override
 	public Object[] getFields() {
-		Object[] objs = new Object[] {getBody(), getSender().getId(), getRecipient().getId()};
+		Object[] objs = new Object[] {getBody(), getSender().getId(), getRecipient().getId(), getType()};
 		return objs;
 	}
 
@@ -88,7 +105,9 @@ public abstract class Message extends PersistentModel{
 
 		setSender(sender);
 		setRecipient(recipient);
-	}
+		
+		setType(dbEntry.get(4));
+;	}
 
 	public static Message get(int id) throws SQLException {
 
@@ -138,5 +157,24 @@ public abstract class Message extends PersistentModel{
 			  	"Body: " + getBody();
 	}
 
+	/**
+	 * Use this one when reading from a database entry
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	/** Use this one in constructors */
+	public void setType(Type type) {
+		String typ = type.toString();
+		setType(typ);
+	}
 
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
 }

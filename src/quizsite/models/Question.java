@@ -6,17 +6,39 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 
 public abstract class Question extends PersistentModel {
 	
 	protected Set<String> answers;
 	protected String text;
+	private String type;
+	
+	public enum Type{
+		CHECKBOX("checkbox"), 
+		FILL_BLANK("fill_blank"), 
+		PICTURE("picture"), 
+		RADIO("radio"), 
+		RESPONSE("response");
+		
+		private final String repr;
+		Type(String repr) {
+			this.repr = repr;
+		}
+		@Override
+		public String toString() {
+			return getRepr();
+		}
+		private String getRepr() {
+			return this.repr;
+		}		
+	};
 	
 	public static String TABLE_NAME = "Question";
-	public static String[][] SCHEMA = {{"quiz_id", "INTEGER"}, {"body", "TEXT"}};
-	public static String[][] FOREIGN_KEYS = 
-		{ {"quiz_id", "Quiz", "id"} };
+	public static String[][] SCHEMA = { {"quiz_id", "INTEGER"}, {"body", "TEXT"}, {"type", "VARCHAR"} };
+	public static String[][] FOREIGN_KEYS = { {"quiz_id", "Quiz", "id"} };
+//	public static String[] INDEX = {"type"}; /** Which columns should be indexed for faster search? */
 	
 	@Override
 	public Object[] getFields() {
@@ -31,9 +53,10 @@ public abstract class Question extends PersistentModel {
 		this.answers = answers;
 	}
 
-	@Override
-	public ArrayList<PersistentModel> index() throws SQLException {
-		// TODO Auto-generated method stub
+	
+	public static List<Question> index() throws SQLException {
+		List<List<String> > allRows = DatabaseConnection.index(TABLE_NAME);
+		
 		return null;
 	}
 	
@@ -49,8 +72,7 @@ public abstract class Question extends PersistentModel {
 	 * @param userAnswers Set of user answers
 	 * @return number of matched answers
 	 */
-	public int getScore(Set<String> userAnswers)
-	{
+	public int getScore(Set<String> userAnswers) {
 		int score = 0;
 		for (Iterator<String> itr = userAnswers.iterator(); itr.hasNext();) {
 			String answ = (String) itr.next();
@@ -73,6 +95,24 @@ public abstract class Question extends PersistentModel {
 	public void parse(List<String> dbEntry) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	public void setType(Type type) {
+		setType(type.toString());
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
 	}
 
 	

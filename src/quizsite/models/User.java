@@ -44,8 +44,8 @@ public class User extends PersistentModel{
 		
 	}
 
-	@Override
-	public ArrayList<PersistentModel> index() throws SQLException {
+	
+	public static List<User> index() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}

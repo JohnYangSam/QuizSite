@@ -258,7 +258,7 @@ public class DatabaseConnection {
 	/**
 	 * Update a row corresponding to a specific id
 	 * @param pm
-	 * @param TODO: what it returns??
+	 * @param status of the update operation [eg. 1 row affected]
 	 * @return An updated row
 	 * @throws SQLException
 	 */

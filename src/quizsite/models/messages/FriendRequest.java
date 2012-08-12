@@ -22,6 +22,8 @@ public class FriendRequest extends Message {
 		setCallbackURL(url);
 		formatString = "This is a friend request from %1$s to %2$s containing the url %3$s";
 		setBody(formatBody(sender, recipient, callbackURL));
+		
+		setType(Type.FRIEND_REQUEST);
 	}
 
 	/**
