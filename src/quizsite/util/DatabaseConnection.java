@@ -222,9 +222,9 @@ public class DatabaseConnection {
 			if (isEscaped) sb.append("'");
 			sb.append(itr.next());	
 			if (isEscaped) sb.append("'");
-			sb.append(", ");
+			sb.append(", "); // extra appending at the end of the loop needs to be removed when returning
 		}
-		return sb.substring(0, sb.length() - 1); //Removes the trailing comma ','
+		return sb.substring(0, sb.length() - 2)+" "; //Removes the trailing comma ', ' then add space
 	}
 
 	private String whereQuery(String[][] conditions) {
@@ -281,8 +281,8 @@ public class DatabaseConnection {
 		String columnNames  = db.getFormattedStringFromList(pm.getColumnNames(), false);
 		String columnValues = db.getFormattedStringFromList(pm.getColumnValues(), true);
 
-		String createQuery  = "INSERT INTO " + pm.getTableName() + " ( " + columnNames.substring(0, columnNames.length()-1) + 
-		" ) VALUES (" + columnValues.substring(0, columnValues.length()-1) + ")";
+		String createQuery  = "INSERT INTO " + pm.getTableName() + " ( " + columnNames + 
+		" ) VALUES (" + columnValues + ")";
 		db.executeUpdate(createQuery);
 		int id = db.getGeneratedKey();
 		db.close();
