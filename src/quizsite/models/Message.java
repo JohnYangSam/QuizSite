@@ -35,7 +35,7 @@ public abstract class Message extends PersistentModel{
 	// Meta data about the backing database table stored as static fields
 	// to avoid copies of same information in every instantiation
 	public static String TABLE_NAME = "Message";
-	public static String[][] SCHEMA = {{"body", "TEXT"}, {"sender_id", "INTEGER"}, {"recipient_id", "INTEGER"}, {"type", "VARCHAR"}};
+	public static String[][] SCHEMA = {{"body", "TEXT"}, {"sender_id", "INTEGER"}, {"recipient_id", "INTEGER"}, {"type", "TINYTEXT"}};
 	public static String[][] FOREIGN_KEYS = 
 	{ {"sender_id", "User", "id"}, {"recipient_id", "User", "id"} };
 

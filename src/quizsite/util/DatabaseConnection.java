@@ -165,7 +165,7 @@ public class DatabaseConnection {
 									"( id INTEGER AUTO_INCREMENT" + pm.getSchema() 
 									+ ForeignKey.serialize(pm.getForeignKeys()) 
 									+ ", PRIMARY KEY (id) ) ";
-
+		System.out.println(createTableQuery);
 		int result = db.executeUpdate(createTableQuery);
 		db.close();
 		return result;

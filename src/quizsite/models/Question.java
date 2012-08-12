@@ -36,7 +36,7 @@ public abstract class Question extends PersistentModel {
 	};
 	
 	public static String TABLE_NAME = "Question";
-	public static String[][] SCHEMA = { {"quiz_id", "INTEGER"}, {"body", "TEXT"}, {"type", "VARCHAR"} };
+	public static String[][] SCHEMA = { {"quiz_id", "INTEGER"}, {"body", "TEXT"}, {"type", "TINYTEXT"} };
 	public static String[][] FOREIGN_KEYS = { {"quiz_id", "Quiz", "id"} };
 //	public static String[] INDEX = {"type"}; /** Which columns should be indexed for faster search? */
 	
