@@ -13,12 +13,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import quizsite.models.Message;
 import quizsite.models.User;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.ForeignKey;
 
 public class NoteTest {
 
+	private int START = 1;// Starting pt of the auto genrated ids
 	private Map< String, HashSet<String> > referencedTables;
 	private String sampleBody = "This body is for testing purposes";
 	
@@ -70,6 +72,7 @@ public class NoteTest {
 		Note newM = new Note(sender, sender, sampleBody);
 		int mId = DatabaseConnection.create(newM);
 		System.out.println(mId);
+		assertEquals(START, mId);
 	}
 	
 	/** Similar to testDBCreate, but tests wrapper method in Model */
@@ -79,6 +82,7 @@ public class NoteTest {
 		Note newM = new Note(sender, sender, sampleBody);
 		int mId = newM.save();
 		System.out.println(mId);
+		assertEquals(START, mId);
 	}
 	
 	@Test
@@ -87,6 +91,7 @@ public class NoteTest {
 		FriendRequest newM = new FriendRequest(sender, sender, "example.com");
 		int mId = newM.save();
 		List<String> out = DatabaseConnection.get(Note.TABLE_NAME, mId);
+		assertEquals(mId, Integer.parseInt(out.get(0)));
 		System.out.println(out);
 		System.out.println(mId);
 	}
@@ -99,10 +104,54 @@ public class NoteTest {
 		User sender = new User(1);
 		Note newM = new Note(sender, sender, sampleBody);
 		int mId = newM.save();
-		Note newN = Note.get(mId);
+		Message newN = Message.get(mId);
+		assertTrue(newN.getType().equals(Message.Type.NOTE));
+		Note newO = (Note) newN;
+		System.out.println(newO.getBody());
+		assertEquals(newM.getBody(), newO.getBody());
+	}
+	@Test
+	public void testDelete() throws SQLException{
+		User sender = new User(1);
+		Note newM = new Note(sender, sender, sampleBody);
+		int mId = newM.save();
+		Note newN = (Note)Message.get(mId);
 		System.out.println(newN.getBody());
 		assertEquals(newM.getBody(), newN.getBody());
+		newM.delete();
+		Message newO = Message.get(mId);
+		assertNull(newO);
+		newN.delete();
+		Message newP = Message.get(mId);
+		assertNull(newP);
 	}
+	@Test
+	public void testIndexToFrom() throws SQLException {
+		User sender = new User(1);
+		User recipient = new User(2);
+		Note newN = new Note(sender, recipient, sampleBody);
+		newN.save();
+		newN = new Note(sender, recipient, sampleBody);
+		newN.save();
+		newN = new Note(recipient, recipient, sampleBody);
+		newN.save();
+		newN = new Note(sender, sender, sampleBody);
+		newN.save();
+		assertEquals(3, Message.indexTo(recipient).size());
+		assertEquals(1, Message.indexTo(sender).size());
+		assertTrue(sampleBody.equals(Message.indexTo(recipient).get(0).getBody()));
+		assertTrue(sampleBody.equals(Message.indexTo(recipient).get(1).getBody()));
+		assertTrue(sampleBody.equals(Message.indexTo(recipient).get(2).getBody()));
+		
+		assertEquals(1, Message.indexFrom(recipient).size());
+		assertEquals(3, Message.indexFrom(sender).size());
+		
+		assertEquals(2, Message.indexFromTo(sender, recipient).size());
+		assertEquals(1, Message.indexFromTo(sender, sender).size());
+		assertEquals(1, Message.indexFromTo(recipient, recipient).size());
+	}
+	
+	
 	
 	@After
 	public void tearDown() throws Exception {

@@ -10,8 +10,8 @@ import quizsite.util.DatabaseConnection;
 public class Note extends Message {
 	private String content;
 	
-	public Note(User recipient, User sender, String content) throws SQLException {
-		super(recipient, sender);
+	public Note(User sender, User recipient, String content) throws SQLException {
+		super( sender, recipient );
 		setContent(content);
 		formatString = content;
 		setBody(formatBody());
@@ -33,12 +33,19 @@ public class Note extends Message {
 		return content;
 	}
 
-	/** Gets a row from Message table and parses it assuming it is a note */
+	/** 
+	 * Gets a row from Message table and parses it assuming it is a note 
+	 * DEPRECATED! Prefer Message.get()
+	 * */
 	public static Note get(int id) throws SQLException {
 		Note newN = new Note(null, null, "");
 		List<String> entry = DatabaseConnection.get(newN.getTableName(), id);
-		newN.parse(entry);
-		return newN;
+		if (entry != null) {
+			newN.parse(entry);
+			return newN;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
