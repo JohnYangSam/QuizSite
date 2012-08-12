@@ -133,7 +133,7 @@ public class DatabaseConnectionTest {
 	public void testFetchRowWhere() throws SQLException {
 		assertTrue(dbInstance.fetchRowById(TEST_TABLE, 1) == null); // no such index
 		dbInstance.executeUpdate("insert into test_table (data) VALUES('a');");
-		String[][] conditions = {{"id = 1"}, {"id = 1 and data = 'a'"}, {"data = 'a'"}};
+		String[][][] conditions = {{{"id", "=", "1"}},{ {"id", "=", "1"}, {"data", "=", "a"} }, {{"data", "=", "a"}}};
 		assertTrue(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[0]).size() == 1);
 		assertTrue(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[1]).size() == 1);
 		assertTrue(dbInstance.fetchRowsWhere(TEST_TABLE, conditions[2]).size() == 1);

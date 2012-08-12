@@ -17,8 +17,8 @@ public class FriendRequest extends Message {
 	
 	private String callbackURL;
 	
-	public FriendRequest(User recipient, User sender, String url) throws SQLException {
-		super(recipient, sender);
+	public FriendRequest(User sender, User recipient, String url) throws SQLException {
+		super( sender, recipient );
 		setCallbackURL(url);
 		formatString = "This is a friend request from %1$s to %2$s containing the url %3$s";
 		setBody(formatBody(sender, recipient, callbackURL));

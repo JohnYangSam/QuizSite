@@ -20,11 +20,11 @@ import java.util.*;
  */
 public class DatabaseConnection {
 	private static Mode mode = Mode.PRODUCTION;
-	
+
 	public enum Mode {
 		PRODUCTION ("ccs108rege", "ahdeetha", "c_cs108_rege", "mysql-user.stanford.edu"),
 		TEST ("ccs108makarst", "yexubohn", "c_cs108_makarst", "mysql-user.stanford.edu");
-		
+
 		private final String account;
 		private final String password;
 		private final String database;
@@ -48,7 +48,7 @@ public class DatabaseConnection {
 			return server;
 		}
 	}
-	
+
 
 	private Statement stmt;
 	private Connection conn;
@@ -95,14 +95,14 @@ public class DatabaseConnection {
 	public ResultSet executeQuery(String sqlQuery) throws SQLException {
 		return stmt.executeQuery(sqlQuery);
 	}
-	
+
 	/**
 	 * Execute updates on the table - INSERT, UPDATE, DELETE
 	 * */
 	public int executeUpdate(String sqlQuery) throws SQLException {
 		return stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
 	}
-	
+
 	public int getGeneratedKey() throws SQLException {
 		ResultSet rs = stmt.getGeneratedKeys();
 		int key = -1;
@@ -113,9 +113,9 @@ public class DatabaseConnection {
 		}
 		return key;
 	}
-	
+
 	/*** STANDARD SQL QUERIES ***/
-	
+
 	/**
 	 * Fetches all rows from given table as a ArrayList of ArrayList of strings
 	 * */
@@ -123,7 +123,7 @@ public class DatabaseConnection {
 		ResultSet rs = executeQuery("SELECT * FROM " + tableName);
 		return parseResultData(rs);
 	}
-	
+
 	List<String> fetchRowById(String tableName, int id) throws SQLException{
 		String findQuery = "SELECT * FROM " + tableName + " WHERE id = '" + id + "'";
 		ResultSet rs = executeQuery(findQuery);
@@ -137,15 +137,11 @@ public class DatabaseConnection {
 			throw new SQLException("Uniqueness of id violated");
 		}
 	}
-	
+
 	/** Runs a where SQL query for the AND of all conditions 
 	 * @throws SQLException */
-	List<List<String> > fetchRowsWhere(String tableName, String[] conditions) throws SQLException {
-		StringBuilder sb = new StringBuilder("SELECT * FROM " + tableName + " WHERE ");
-		for (String condition : conditions) {
-			sb.append(condition);
-		}
-		String whereQuery = sb.toString();
+	List<List<String> > fetchRowsWhere(String tableName, String[][] conditions) throws SQLException {
+		String whereQuery = "SELECT * FROM " + tableName + " " + whereQuery(conditions);
 		return parseResultData(executeQuery(whereQuery));
 	}
 
@@ -161,27 +157,27 @@ public class DatabaseConnection {
 	public static void switchModeTo(Mode newMode) {
 		mode = newMode;
 	}
-	
+
 	// Closes the JDBC connection - call it once you're done with your db object
 	public void close() throws SQLException {
 		stmt.close();
 		conn.close();
 	}
-	
-	
+
+
 	// Creates the backing table if it doesn't exist
 	public static int createTableIfNotExists(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getTableName() + 
-									"( id INTEGER AUTO_INCREMENT" + pm.getSchema() 
-									+ ForeignKey.serialize(pm.getForeignKeys()) 
-									+ ", PRIMARY KEY (id) ) ";
+		"( id INTEGER AUTO_INCREMENT" + pm.getSchema() 
+		+ ForeignKey.serialize(pm.getForeignKeys()) 
+		+ ", PRIMARY KEY (id) ) ";
 		System.out.println(createTableQuery);
 		int result = db.executeUpdate(createTableQuery);
 		db.close();
 		return result;
 	}
-	
+
 	// Drops the tables, if they exist - CAREFUL
 	public static void dropTablesIfExist(String...tableNames) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
@@ -191,7 +187,7 @@ public class DatabaseConnection {
 		}
 		db.close();
 	}
-	
+
 	// Check if table exists
 	public static boolean doesTableExist(String tableName) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
@@ -205,14 +201,14 @@ public class DatabaseConnection {
 			db.close();
 		}
 	}
-	
+
 	/*
 	 * Returns a string properly formatted for using inside an sql query
 	 * If the second param true, each word is surrounded with single quotes  
 	 * 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" }) // To be as general as possible, we want this function to take List<Object>, but at
-												   // the same time we don't want to change the return type of getColumnNames/Values
+	// the same time we don't want to change the return type of getColumnNames/Values
 	private String getFormattedStringFromList(List list, boolean isEscaped) {
 		StringBuilder sb = new StringBuilder();
 		for (Iterator<Object> itr = list.iterator(); itr.hasNext();) {
@@ -223,7 +219,22 @@ public class DatabaseConnection {
 		}
 		return sb.substring(0, sb.length() - 1);		
 	}
-	
+
+	private String whereQuery(String[][] conditions) {
+		if (conditions.length > 0) {
+			String whereClause;
+			StringBuilder sb = new StringBuilder(" WHERE ");
+			for (String[] condition : conditions) {
+				whereClause = condition[0] + " " + condition[1] + " '" + condition[2] + "' AND ";
+				sb.append(whereClause);
+			}
+			String whereQuery = sb.toString();
+			return whereQuery.substring(0, whereQuery.length() - 4);
+		} else {
+			return "";
+		}
+	}
+
 	/* REST API */
 	// Get a list of all rows
 	public static List<List<String> > index(String tableName) throws SQLException {
@@ -232,29 +243,29 @@ public class DatabaseConnection {
 		db.close();
 		return ret;
 	}
-	
-	public static List< List<String> > indexWhere(String tableName, String[] conditions) throws SQLException {
+
+	public static List< List<String> > indexWhere(String tableName, String[][] conditions) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		List<List<String> > ret = db.fetchRowsWhere(tableName, conditions);
 		db.close();
 		return ret;
 	}
-	
+
 	// Create and save a new row - returns the auto-generated id of the new row
 	public static int create(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
-		
+
 		String columnNames  = db.getFormattedStringFromList(pm.getColumnNames(), false);
 		String columnValues = db.getFormattedStringFromList(pm.getColumnValues(), true);
-		
+
 		String createQuery  = "INSERT INTO " + pm.getTableName() + " ( " + columnNames.substring(0, columnNames.length()-1) + 
-																	 " ) VALUES (" + columnValues.substring(0, columnValues.length()-1) + ")";
+		" ) VALUES (" + columnValues.substring(0, columnValues.length()-1) + ")";
 		db.executeUpdate(createQuery);
 		int id = db.getGeneratedKey();
 		db.close();
 		return id;
 	}
-	
+
 	// Delete a row - ensure that the id is populated
 	public static int destroy(PersistentModel pm) throws SQLException {
 		String destroyQuery = "DELETE FROM " + pm.getTableName() + " WHERE id ='" + pm.getId() + "'";
@@ -263,7 +274,7 @@ public class DatabaseConnection {
 		db.close();
 		return res;
 	}
-	
+
 	// Get a specific row by it's id
 	public static List<String> get(String tableName, int id) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
@@ -271,7 +282,7 @@ public class DatabaseConnection {
 		db.close();
 		return res;
 	}
-	
+
 	/**
 	 * Update a row corresponding to a specific id
 	 * @param pm
@@ -282,14 +293,14 @@ public class DatabaseConnection {
 	public static int update(PersistentModel pm) throws SQLException {
 		List<String> columns = pm.getColumnNames();
 		List<Object> values  = pm.getColumnValues();
-		
+
 		// construct an update string
 		StringBuilder updateStrBuilder = new StringBuilder();
 		for (int i = 0; i < columns.size(); i++) {
 			updateStrBuilder.append(columns.get(i)+"='"+values.get(i)+"',");
 		}
 		String updateStr = updateStrBuilder.toString();
-		
+
 		String updQuery = "UPDATE " + pm.getTableName() + " SET " + updateStr.substring(0, updateStr.length() - 1) + " WHERE id = '" + pm.getId() + "'";
 		DatabaseConnection db = new DatabaseConnection();
 		int res = db.executeUpdate(updQuery);

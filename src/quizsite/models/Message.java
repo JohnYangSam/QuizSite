@@ -72,7 +72,7 @@ public abstract class Message extends PersistentModel{
 		}
 	};
 
-	public Message(User recipient, User sender) throws SQLException {
+	public Message( User sender, User recipient) throws SQLException {
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
 		this.setRecipient(recipient);
 		this.setSender(sender);
@@ -96,13 +96,24 @@ public abstract class Message extends PersistentModel{
 		return getId();
 	}
 
-
 	public static List<Message> indexTo(User recipient) throws SQLException {
-		String[] conditions = {"recipient_id = '" + recipient.getId() + "'"};
+		String[][] conditions = { {"recipient_id", "=", "" + recipient.getId()} };
 		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
 		return parseRows(rows);
 	}
 
+	public static List<Message> indexFrom(User sender) throws SQLException {
+		String[][] conditions = { {"sender_id", "=", ""+ sender.getId()} };
+		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
+		return parseRows(rows);
+	}
+	
+	public static List<Message> indexFromTo(User sender, User recipient) throws SQLException {
+		String[][] conditions = { {"sender_id", "=", "" + sender.getId()}, {"recipient_id", "=", "" + recipient.getId()} };
+		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
+		return parseRows(rows);
+	}
+	
 	@Override
 	public Object[] getFields() {
 		Object[] objs = new Object[] {getBody(), getSender().getId(), getRecipient().getId(), getType()};

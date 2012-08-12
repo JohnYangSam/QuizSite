@@ -106,18 +106,29 @@ public class NoteTest {
 	}
 	
 	@Test
-	public void testIndexTo() throws SQLException {
+	public void testIndexToFrom() throws SQLException {
 		User sender = new User(1);
-		Note newN = new Note(sender, sender, sampleBody);
+		User recipient = new User(2);
+		Note newN = new Note(sender, recipient, sampleBody);
+		newN.save();
+		newN = new Note(sender, recipient, sampleBody);
+		newN.save();
+		newN = new Note(recipient, recipient, sampleBody);
 		newN.save();
 		newN = new Note(sender, sender, sampleBody);
 		newN.save();
-		newN = new Note(sender, sender, sampleBody);
-		newN.save();
-		assertEquals(3, Message.indexTo(sender).size());
-		assertTrue(sampleBody.equals(Message.indexTo(sender).get(0).getBody()));
-		assertTrue(sampleBody.equals(Message.indexTo(sender).get(1).getBody()));
-		assertTrue(sampleBody.equals(Message.indexTo(sender).get(2).getBody()));
+		assertEquals(3, Message.indexTo(recipient).size());
+		assertEquals(1, Message.indexTo(sender).size());
+		assertTrue(sampleBody.equals(Message.indexTo(recipient).get(0).getBody()));
+		assertTrue(sampleBody.equals(Message.indexTo(recipient).get(1).getBody()));
+		assertTrue(sampleBody.equals(Message.indexTo(recipient).get(2).getBody()));
+		
+		assertEquals(1, Message.indexFrom(recipient).size());
+		assertEquals(3, Message.indexFrom(sender).size());
+		
+		assertEquals(2, Message.indexFromTo(sender, recipient).size());
+		assertEquals(1, Message.indexFromTo(sender, sender).size());
+		assertEquals(1, Message.indexFromTo(recipient, recipient).size());
 	}
 	
 	@After

@@ -36,8 +36,6 @@ public abstract class PersistentModel {
 	}
 	
 	
-	
-	
 	public abstract Object[] getFields();
 	
 	

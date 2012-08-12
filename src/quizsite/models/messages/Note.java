@@ -10,8 +10,8 @@ import quizsite.util.DatabaseConnection;
 public class Note extends Message {
 	private String content;
 	
-	public Note(User recipient, User sender, String content) throws SQLException {
-		super(recipient, sender);
+	public Note(User sender, User recipient, String content) throws SQLException {
+		super( sender, recipient );
 		setContent(content);
 		formatString = content;
 		setBody(formatBody());

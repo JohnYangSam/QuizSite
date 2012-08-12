@@ -17,7 +17,7 @@ public class Challenge extends Message {
 	private Quiz quiz;
 	
 	public Challenge(User recipient, User sender, Quiz quiz) throws SQLException {
-		super(recipient, sender);
+		super( sender, recipient );
 		setQuiz(quiz);
 		formatString = "%1$s has challenged %2$s to a quiz %3$s";
 		setBody(formatBody(recipient, sender, quiz.getURL()));
