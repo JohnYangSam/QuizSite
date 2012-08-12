@@ -7,8 +7,6 @@ package quizsite.util;
 import java.sql.*;
 import java.util.*;
 
-import com.sun.tools.internal.ws.wsdl.document.jaxws.Exception;
-
 /**
  * File: DBConnection.java
  * Author: Rege
@@ -76,7 +74,7 @@ public class DatabaseConnection {
 	 * @param	rs	{@link ResultSet} variable obtained from a SQL query
 	 * @return	a ArrayList of ArrayList of Strings containing all the rows contained in the parameter 
 	 * */
-	private static List< List<String> > parseResultData( ResultSet rs ) throws SQLException {
+	static List< List<String> > parseResultData( ResultSet rs ) throws SQLException {
 		// Fill in the data
 		List< List<String> > rows = new ArrayList< List<String> >();
 		List<String> newRow;
@@ -105,19 +103,6 @@ public class DatabaseConnection {
 		return stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
 	}
 	
-	/** Not using */
-	public int executeUpdateAndReturnGeneratedKey(String sqlQuery) throws SQLException {
-		int status = stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
-		ResultSet rs = stmt.getGeneratedKeys();
-		int key = -1;
-		if (rs.next()) {
-			key = rs.getInt(1);
-		} else {
-			throw new SQLException("ResultSet should've contained one key, did you call getGeneratedKey after running executeUpdate");
-		}
-		return key;
-	}
-	
 	public int getGeneratedKey() throws SQLException {
 		ResultSet rs = stmt.getGeneratedKeys();
 		int key = -1;
@@ -134,12 +119,12 @@ public class DatabaseConnection {
 	/**
 	 * Fetches all rows from given table as a ArrayList of ArrayList of strings
 	 * */
-	private List< List<String> > fetchAllRows(String tablename) throws SQLException {
+	List< List<String> > fetchAllRows(String tablename) throws SQLException {
 		ResultSet rs = executeQuery("SELECT * FROM " + tablename);
 		return parseResultData(rs);
 	}
 	
-	private List<String> fetchRowById(String tablename, int id) throws SQLException{
+	List<String> fetchRowById(String tablename, int id) throws SQLException{
 		String findQuery = "SELECT * FROM " + tablename + " WHERE id = '" + id + "'";
 		ResultSet rs = executeQuery(findQuery);
 		List<List<String> > res = parseResultData(rs);
@@ -177,11 +162,10 @@ public class DatabaseConnection {
 	public static int createTableIfNotExists(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getTableName() + 
-								"( id INTEGER AUTO_INCREMENT" + pm.getSchema() 
-								+ ForeignKey.serialize(pm.getForeignKeys()) 
-								+ ", PRIMARY KEY (id) ) ";
+									"( id INTEGER AUTO_INCREMENT" + pm.getSchema() 
+									+ ForeignKey.serialize(pm.getForeignKeys()) 
+									+ ", PRIMARY KEY (id) ) ";
 
-		System.out.println(createTableQuery);
 		int result = db.executeUpdate(createTableQuery);
 		db.close();
 		return result;
@@ -211,9 +195,27 @@ public class DatabaseConnection {
 		}
 	}
 	
+	/*
+	 * Returns a string properly formatted for using inside an sql query
+	 * If the second param true, each word is surrounded with single quotes  
+	 * 
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" }) // To be as general as possible, we want this function to take List<Object>, but at
+												   // the same time we don't want to change the return type of getColumnNames/Values
+	private String getFormattedStringFromList(List list, boolean isEscaped)
+	{
+		StringBuilder sb = new StringBuilder();
+		for (Iterator<Object> itr = list.iterator(); itr.hasNext();) {
+			if (isEscaped) sb.append("'");
+			sb.append(itr.next());	
+			if (isEscaped) sb.append("'");
+			sb.append(", ");
+		}
+		return sb.substring(0, sb.length() - 1);		
+	}
 	
 	/* REST API */
-	/** Get a list of all rows */
+	// Get a list of all rows
 	public static List<List<String> > index(String tablename) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		List<List<String> > ret = db.fetchAllRows(tablename);
@@ -221,17 +223,22 @@ public class DatabaseConnection {
 		return ret;
 	}
 	
-	/** Create and save a new row - returns the auto-generated id of the new row */
+	// Create and save a new row - returns the auto-generated id of the new row
 	public static int create(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
-		String createQuery = "INSERT INTO " + pm.getTableName() + " ( " + pm.getColumnNames() + " ) VALUES (" + pm.getColumnValues() + ")";
+		
+		String columnNames  = db.getFormattedStringFromList(pm.getColumnNames(), false);
+		String columnValues = db.getFormattedStringFromList(pm.getColumnValues(), true);
+		
+		String createQuery  = "INSERT INTO " + pm.getTableName() + " ( " + columnNames.substring(0, columnNames.length()-1) + 
+																	 " ) VALUES (" + columnValues.substring(0, columnValues.length()-1) + ")";
 		db.executeUpdate(createQuery);
 		int id = db.getGeneratedKey();
 		db.close();
 		return id;
 	}
 	
-	/** Delete a row - ensure that the id is populated */
+	// Delete a row - ensure that the id is populated
 	public static int destroy(PersistentModel pm) throws SQLException {
 		String destroyQuery = "DELETE FROM " + pm.getTableName() + " WHERE id ='" + pm.getId() + "'";
 		DatabaseConnection db = new DatabaseConnection();
@@ -240,7 +247,7 @@ public class DatabaseConnection {
 		return res;
 	}
 	
-	/** Get a specific row by it's id */
+	// Get a specific row by it's id
 	public static List<String> get(String tableName, int id) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		List<String> res = db.fetchRowById(tableName, id);
@@ -248,23 +255,28 @@ public class DatabaseConnection {
 		return res;
 	}
 	
-	// Update a row corresponding to a specific id
-	public static int update(PersistentModel pm, String[][] updateInfo) throws SQLException {
-		StringBuilder sb = new StringBuilder();
-		for (String[] updates : updateInfo) {
-			sb.append(updates[0]);	// column name
-			sb.append("='");
-			sb.append(updates[1]);	// new value
-			sb.append("',");
+	/**
+	 * Update a row corresponding to a specific id
+	 * @param pm
+	 * @param TODO: what it returns??
+	 * @return An updated row
+	 * @throws SQLException
+	 */
+	public static int update(PersistentModel pm) throws SQLException {
+		List<String> columns = pm.getColumnNames();
+		List<Object> values  = pm.getColumnValues();
+		
+		// construct an update string
+		StringBuilder updateStrBuilder = new StringBuilder();
+		for (int i = 0; i < columns.size(); i++) {
+			updateStrBuilder.append(columns.get(i)+"='"+values.get(i)+"',");
 		}
-		String setStr = sb.toString();
-		String updQuery = "UPDATE " + pm.getTableName() + " SET " + setStr.substring(0, setStr.length() - 1) + " WHERE id = '" + pm.getId() + "'";
+		String updateStr = updateStrBuilder.toString();
+		
+		String updQuery = "UPDATE " + pm.getTableName() + " SET " + updateStr.substring(0, updateStr.length() - 1) + " WHERE id = '" + pm.getId() + "'";
 		DatabaseConnection db = new DatabaseConnection();
 		int res = db.executeUpdate(updQuery);
 		db.close();
 		return res;
 	}
-	
-	
-
 }

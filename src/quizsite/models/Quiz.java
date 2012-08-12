@@ -3,6 +3,7 @@ package quizsite.models;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 import quizsite.util.PersistentModel;
 
@@ -12,6 +13,7 @@ public class Quiz extends PersistentModel{
 	private boolean onePage;
 	private boolean practice;
 	private boolean immediateCheck;
+	private boolean randomized;
 
 	private int creatorID;
 	private int quizID;
@@ -24,15 +26,28 @@ public class Quiz extends PersistentModel{
 	public static String[][] FOREIGN_KEYS = 
 		{ {}, {} };
 
-	public Quiz(boolean onePage, boolean practice, boolean immediateCheck, int creatorID, int quizID, ArrayList<Question> questions) throws SQLException
+	public Quiz(boolean onePage, boolean practice, boolean immediateCheck, boolean random, int creatorID, int quizID, ArrayList<Question> questions) throws SQLException
 	{
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
+		this.randomized		= random;
 		this.onePage	 	= onePage;
 		this.practice 	 	= practice;
 		this.immediateCheck = immediateCheck;
 		this.creatorID 		= creatorID;
 		this.quizID 		= quizID;
 		this.questions		= questions;
+	}
+	
+	/**
+	 * Depending on the randomized flag, either shuffles an ArrayList of Questions 
+	 * or returns them in the order they've been added to a DB. 
+	 * @return ArrayList of Questions
+	 */
+	public ArrayList<Question> getQuestions()
+	{
+		if (isRandomized())
+			Collections.shuffle(questions);
+		return questions;
 	}
 	
 	public boolean isOnePage()
@@ -44,6 +59,9 @@ public class Quiz extends PersistentModel{
 	public boolean isImmediate()
 	{ return immediateCheck; }
 	
+	public boolean isRandomized()
+	{ return randomized; }
+	
 	public int getCreatorID()
 	{ return creatorID; }
 
@@ -54,15 +72,13 @@ public class Quiz extends PersistentModel{
 	{ return questions; }
 
 	// URL to access quiz
-	public String getURL() {
-		return url;
-	}
-
+	public String getURL() 
+	{ return url; } 
+	
 	@Override
 	public int save() throws SQLException {
 		return 0;
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

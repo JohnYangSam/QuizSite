@@ -1,7 +1,6 @@
 package quizsite.models.messages;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import quizsite.models.Message;

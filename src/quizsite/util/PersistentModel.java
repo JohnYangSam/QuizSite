@@ -11,7 +11,11 @@ public abstract class PersistentModel {
 	private int id; // TODO: Needs to be filled in after an instance is saved in the database
 	
 	/** Saves object as a row in the table - returns the auto generated key */
-	public abstract int save() throws SQLException;
+	public int save() throws SQLException {
+		int newIdx = DatabaseConnection.create(this);
+		setId(newIdx);
+		return getId();
+	}
 	
 	/** Fetch a List of all the rows in the table */
 	public abstract List<PersistentModel> index() throws SQLException;
@@ -27,6 +31,8 @@ public abstract class PersistentModel {
 		setId(Integer.parseInt(dbEntry.get(0)));
 	}
 	
+	
+	public abstract Object[] getFields();
 	
 	
 	/** Pass in the static fields containing the meta data, while */ 
@@ -47,23 +53,19 @@ public abstract class PersistentModel {
 	public List<ForeignKey> getForeignKeys()
 	{ return metaData.getForeignKeys(); }
 
-	public String getColumnNames() {
+	/**
+	 * @return a list of strings, where each entry is a column name
+	 */
+	public List<String> getColumnNames() {
 		return metaData.getColumnNames();
 	}
 
-	// Fetches a CSV string of all instance variable values, in the order that they appear in the schema
-	public String getColumnValues() {
-		StringBuilder sb = new StringBuilder();
-		for (Object obj : getFields()) {
-			sb.append("'");
-			sb.append(obj);
-			sb.append("',");
-		}
-		String res = sb.toString();
-		return res.substring(0, res.length() - 1);		
+	/**
+	 * @return list of values for a particular model
+	 */
+	public List<Object> getColumnValues() {
+		return Arrays.asList(getFields());
 	}
-	
-	public abstract Object[] getFields();
 
 	/**
 	 * @param id the id to set
@@ -78,5 +80,7 @@ public abstract class PersistentModel {
 	public int getId() {
 		return id;
 	}
+
+	
 	
 }

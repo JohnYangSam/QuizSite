@@ -4,9 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import quizsite.util.DatabaseConnection;
-import quizsite.util.ForeignKey;
-import quizsite.util.MetaData;
 import quizsite.util.PersistentModel;
 
 public class Attempt extends PersistentModel {

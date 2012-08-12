@@ -2,6 +2,7 @@ package quizsite.models.messages;
 
 import static org.junit.Assert.*;
 
+
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -12,9 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import quizsite.models.Message;
 import quizsite.models.User;
-import quizsite.models.messages.FriendRequest;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.ForeignKey;
 
@@ -102,6 +101,7 @@ public class NoteTest {
 		int mId = newM.save();
 		Note newN = Note.get(mId);
 		System.out.println(newN.getBody());
+		assertEquals(newM.getBody(), newN.getBody());
 	}
 	
 	@After
