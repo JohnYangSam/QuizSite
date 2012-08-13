@@ -3,7 +3,6 @@ package quizsite.util;
 import java.sql.*;
 import java.util.*;
 
-import quizsite.models.messages.Note;
 
 /** 
  * Any model backed by a database table should extend this class

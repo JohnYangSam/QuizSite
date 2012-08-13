@@ -18,7 +18,6 @@ public class QuizTest {
 
 	@Before
 	public void setUp() throws Exception {
-		quizObj = new Quiz(onePage, practice, immediateCheck, randomized, 0, 0, questions);
 	}
 
 

@@ -23,7 +23,7 @@ public class QuestionTest {
 	public void setUp() throws Exception {
 		DatabaseConnection.switchModeTo(DatabaseConnection.Mode.TEST);
 		answers  = new HashSet<String>(Arrays.asList("a","b","c"));
-		questObj = new ResponseQuestion(answers, "text");
+		questObj = new ResponseQuestion(answers, "text", 1);
 		DatabaseConnection.dropTablesIfExist(questObj.getTableName());
 	}
 
