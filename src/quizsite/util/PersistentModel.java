@@ -26,7 +26,8 @@ public abstract class PersistentModel {
 		DatabaseConnection.destroy(this);
 	}
 	
-	
+
+	/* NEEDS TO BE IMPLEMENTED BY SUBCLASS - before implementing call super.parse(dbEntry) */
 	/** Parses the row obtained from the entry in the database and fills in the instance variables
 	 * @throws SQLException 
 	 * @throws IllegalArgumentException */
@@ -37,8 +38,14 @@ public abstract class PersistentModel {
 		// First row is id, remaining depend upon the SCHEMA order
 		setId(Integer.parseInt(dbEntry.get(0)));
 	}
-	
-	
+
+	/* NEEDS TO BE IMPLEMENTED BY SUBCLASS */
+	/** Returns an array of the fields that should be written to the database in the order
+	 * that they appear in the database. For instance: a model with the instance variables:
+	 * a b c d e and a relation with schema: A B C
+	 * Will return a new Object[] {a, b, c}
+	 * @return
+	 */
 	public abstract Object[] getFields();
 	
 	

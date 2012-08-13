@@ -154,7 +154,6 @@ public abstract class Message extends PersistentModel{
 		return ret;
 	}
 
-	
 
 	/** 
 	 * Returns the correctly instantiated type as it's supertype - Message 
