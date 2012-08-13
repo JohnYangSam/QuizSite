@@ -1,5 +1,20 @@
 package quizsite.models;
 
-public class Friendship {
+import quizsite.util.PersistentModel;
+
+public class Friendship extends PersistentModel {
+
+	@Override
+	public Object[] getFields() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 
 }
+/*
+ * 	
+ * instance varialbes
+	Parse
+	
+*/

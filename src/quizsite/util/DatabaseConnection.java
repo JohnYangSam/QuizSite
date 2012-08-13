@@ -236,7 +236,7 @@ public class DatabaseConnection {
 				sb.append(whereClause);
 			}
 			String whereQuery = sb.toString();
-			return whereQuery.substring(0, whereQuery.length() - 4);
+			return whereQuery.substring(0, whereQuery.length() - 4); //remove the trailing "AND " (AND plus space)
 		} else {
 			return "";
 		}
