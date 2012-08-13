@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 
 /**
@@ -58,7 +59,9 @@ public class User extends PersistentModel{
 
 
 	public static User get(int id) throws SQLException {
-		// TODO Auto-generated method stub
+		List<String> entry = DatabaseConnection.get(TABLE_NAME, id);
+//		Message curr = Type.instantiate(entry);
+//		return curr;
 		return null;
 	}
 

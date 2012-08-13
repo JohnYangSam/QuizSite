@@ -105,7 +105,7 @@ public class NoteTest {
 		Note newM = new Note(sender, sender, sampleBody);
 		int mId = newM.save();
 		Message newN = Message.get(mId);
-		assertTrue(newN.getType().equals(Message.Type.NOTE));
+		assertTrue(newN.getType().equals(Message.Type.NOTE.toString()));
 		Note newO = (Note) newN;
 		System.out.println(newO.getBody());
 		assertEquals(newM.getBody(), newO.getBody());

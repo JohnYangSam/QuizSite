@@ -63,8 +63,6 @@ public abstract class Question extends PersistentModel {
 	@Override
 	public int save() throws SQLException {
 		return 0;
-		// TODO Auto-generated method stub
-		
 	}
 	
 	/**
