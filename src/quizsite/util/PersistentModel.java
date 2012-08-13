@@ -1,7 +1,8 @@
 package quizsite.util;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 
 /** 
@@ -22,10 +23,11 @@ public abstract class PersistentModel {
 	
 
 	
-	/** Saves object as a row in the table - returns the auto generated key 
+	/** 
+	 * Saves object as a row in the table - returns the auto generated key, and sets it
+	 * as the instance variable id 
 	 * @throws SQLException */
 	public int save() throws SQLException  {
-		
 		int newIdx = DatabaseConnection.create(this);
 		setId(newIdx);
 		return getId();
@@ -35,6 +37,10 @@ public abstract class PersistentModel {
 		DatabaseConnection.destroy(this);
 	}
 	
+	/** See {@link DatabaseConnection#update(PersistentModel)}*/
+	public int update() throws SQLException {
+		return DatabaseConnection.update(this);
+	}
 
 	/* NEEDS TO BE IMPLEMENTED BY SUBCLASS - before implementing call super.parse(dbEntry) */
 	/** Parses the row obtained from the entry in the database and fills in the instance variables
@@ -86,7 +92,7 @@ public abstract class PersistentModel {
 	}
 
 	/**
-	 * @return list of values for a particular model
+	 * @return list of values for a particular model, according to Model#SCHEMA
 	 */
 	public List<Object> getColumnValues() {
 		return Arrays.asList(getFields());

@@ -15,23 +15,24 @@ import quizsite.util.DatabaseConnection;
 public class UserTest {
 	private String[] userNames = {"Vighnesh","Bruce","Logan"};
 	private String[] emails = {"vig@com", "bru@way", "wol@x"};
+	private String[] updEmails = {"hacked", "booyagh", "mwahaha"};
+	
 	private String[] passwordSaltedHashes = {"asde","rgerhg5","fefsef"};
 	private String[] passwordSalts = {"3r23w","23rf24f","23r23"};
 	
 	private User[] users;
+	private int[] ids;
 
+	/** Saves some test users */
 	@Before
 	public void setUp() throws Exception {
 		DatabaseConnection.switchModeTo(DatabaseConnection.Mode.TEST);
 		DatabaseConnection.dropTablesIfExist( User.TABLE_NAME );
 		users = new User[3];
-		int i = 0;
-		int[] ids = new int[3];
-		for (User u : users) {
-			u = new User(userNames[i], emails[i], passwordSaltedHashes[i], passwordSalts[i]);
-			ids[i] = u.save();
-			users[i] = u;
-			i++;
+		ids = new int[3];
+		for (int i = 0; i < users.length; i++) {
+			users[i] = new User(userNames[i], emails[i], passwordSaltedHashes[i], passwordSalts[i]);
+			ids[i] = users[i].save();
 		}
 	}
 
@@ -71,6 +72,15 @@ public class UserTest {
 		}
 		List<User> all = User.index();
 		assertEquals(0, all.size());
+	}
+	
+	@Test
+	public void testUpdate() throws SQLException {
+		for (int i = 0; i < users.length; i++) {
+			users[i].setEmail(updEmails[i]);
+			users[i].update();
+			assertEquals(updEmails[i], User.get(users[i].getId()).getEmail());
+		}
 	}
 
 }

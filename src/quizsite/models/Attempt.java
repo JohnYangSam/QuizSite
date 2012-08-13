@@ -70,14 +70,7 @@ public class Attempt extends PersistentModel {
 	}
 
 	
-	/*** METHODS TO COMMUNICATE WITH THE DATABASE 
-	 * @return ***/
-	@Override
-	public int save() throws SQLException {
-		return 0;
-		
-		
-	}
+	/** METHODS TO COMMUNICATE WITH THE DATABASE */
 
 	public static List<Attempt> index() throws SQLException {
 		

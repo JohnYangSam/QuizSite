@@ -311,8 +311,7 @@ public class DatabaseConnection {
 	/**
 	 * Update a row corresponding to a specific id
 	 * @param pm
-	 * @param status of the update operation [eg. 1 row affected]
-	 * @return An updated row
+	 * @return status of the update operation [eg. 1 row affected]
 	 * @throws SQLException
 	 */
 	public static int update(PersistentModel pm) throws SQLException {

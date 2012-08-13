@@ -101,12 +101,6 @@ public abstract class Message extends PersistentModel{
 	}
 	
 	/* Generic SQL queries */
-	/** Saves and set the auto-generated id */
-	@Override
-	public int save() throws SQLException {
-		setId(DatabaseConnection.create(this));
-		return getId();
-	}
 
 	public static List<Message> indexTo(User recipient) throws SQLException {
 		String[][] conditions = { {"recipient_id", "=", "" + recipient.getId()} };

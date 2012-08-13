@@ -151,6 +151,16 @@ public class NoteTest {
 		assertEquals(1, Message.indexFromTo(recipient, recipient).size());
 	}
 	
+	@Test
+	public void testUpdate() throws SQLException {
+		User sender = new User(1);
+		Note newM = new Note(sender, sender, sampleBody);
+		int mId = newM.save();
+		String updatedBody = "Updated body";
+		newM.setBody(updatedBody );
+		newM.update();
+		assertTrue(updatedBody.equals(Message.get(mId).getBody()));
+	}
 	
 	
 	@After
