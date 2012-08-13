@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
+import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 
 public class Quiz extends PersistentModel{
@@ -16,17 +17,16 @@ public class Quiz extends PersistentModel{
 	private boolean randomized;
 
 	private int creatorID;
-	private int quizID;
 
-	private ArrayList<Question> questions;
 	private String url;	// url to access quiz
 
 	public static String TABLE_NAME = "Quiz";
-	public static String[][] SCHEMA = {{}};
-	public static String[][] FOREIGN_KEYS = 
-		{ {}, {} };
+	public static String[][] SCHEMA = {{"creator_id", "INTEGER"}, {"random", "BOOL"}, 
+		{"practice", "BOOL"}, {"immediate", "BOOL"}, {"one_page", "BOOL"}};
+	public final static int I_CREATORID = 1, I_RANDOM = 2, I_PRAC = 3, I_IMMED = 4, I_ONEPAGE = 5;
+	public static String[][] FOREIGN_KEYS = {{"creator_id", "User", "id"}};
 
-	public Quiz(boolean onePage, boolean practice, boolean immediateCheck, boolean random, int creatorID, int quizID, ArrayList<Question> questions) throws SQLException
+	public Quiz(boolean onePage, boolean practice, boolean immediateCheck, boolean random, int creatorID) throws SQLException
 	{
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
 		this.randomized		= random;
@@ -34,22 +34,68 @@ public class Quiz extends PersistentModel{
 		this.practice 	 	= practice;
 		this.immediateCheck = immediateCheck;
 		this.creatorID 		= creatorID;
-		this.quizID 		= quizID;
-		this.questions		= questions;
+	}
+	
+	private Quiz() throws SQLException
+	{
+		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
 	}
 	
 	/**
 	 * Depending on the randomized flag, either shuffles an ArrayList of Questions 
 	 * or returns them in the order they've been added to a DB. 
 	 * @return ArrayList of Questions
+	 * @throws SQLException 
 	 */
-	public ArrayList<Question> getQuestions()
+	public List<Question> getQuestions() throws SQLException
 	{
+		List<Question> questions = Question.indexByQuizID(getId());
 		if (isRandomized())
 			Collections.shuffle(questions);
 		return questions;
 	}
 	
+	
+	public static List<Quiz> index() throws SQLException {
+		List<List<String> > allRows = DatabaseConnection.index(TABLE_NAME);
+		List<Quiz> quizzes			= new ArrayList<Quiz>();
+		
+		for (List<String> row : allRows) {
+			Quiz currQuiz = new Quiz();
+			currQuiz.parse(row);
+			quizzes.add(currQuiz);
+		}
+		
+		return quizzes;
+	}
+
+	@Override
+	public Object[] getFields() {
+		Object[] objs = new Object[] {getCreatorID(), isRandomized(), isPracticeEnabled(), isImmediate(), isOnePage()};
+		return objs;
+	}
+
+	public static Quiz get(int id) throws SQLException {
+		List<String> entry = DatabaseConnection.get(TABLE_NAME, id);
+		Quiz obj = new Quiz();
+		obj.parse(entry);
+		return obj;
+	}
+
+	@Override
+	public void parse(List<String> dbEntry) throws IllegalArgumentException, SQLException {
+		super.parse(dbEntry);
+		
+		setImmediateCheckEnab(getBool(dbEntry.get(I_IMMED)));
+		setRandom(getBool(dbEntry.get(I_RANDOM)));
+		setOnePage(getBool(dbEntry.get(I_ONEPAGE)));
+		setPractiseEnab(getBool(dbEntry.get(I_PRAC)));
+	}
+	
+	private boolean getBool(String bstr)
+	{ return (bstr.equals("1"))?true:false; }
+
+	/*G&S*/
 	public boolean isOnePage()
 	{ return onePage; }
 	
@@ -65,44 +111,22 @@ public class Quiz extends PersistentModel{
 	public int getCreatorID()
 	{ return creatorID; }
 
-	public int getQuizID()
-	{ return quizID; }
-	
-	public ArrayList<Question> getQustions()
-	{ return questions; }
-
 	// URL to access quiz
 	public String getURL() 
 	{ return url; } 
 	
-	@Override
-	public int save() throws SQLException {
-		return 0;
-		// TODO Auto-generated method stub
-	}
-
+	public void setOnePage(boolean prop)
+	{ onePage = prop; }
 	
-	public static List<Quiz> index() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object[] getFields() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	public void setRandom(boolean prop)
+	{ randomized = prop; }
 	
-	public static Quiz get(int id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void parse(List<String> dbEntry) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void setPractiseEnab(boolean prop)
+	{ practice = prop; }
+	
+	public void setImmediateCheckEnab(boolean prop)
+	{ immediateCheck = prop; }
+	
+	public void setUrl(String newUrl)
+	{ url = newUrl; }
 }
