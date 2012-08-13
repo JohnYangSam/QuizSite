@@ -20,16 +20,12 @@ public class MetaData {
 
 	
 	public String getSchemaStringified() {
-//		if (schema.length > 0) {
-			StringBuilder sb = new StringBuilder();
-			for (String[] col : schema) {
-				sb.append("," + col[0] + " " + col[1]);
-			}
-			String res = sb.toString();
-			return res;//.substring(0, res.length() - 1);
-//		} else {
-//			return "";
-//		}
+		StringBuilder sb = new StringBuilder();
+		for (String[] col : schema) {
+			sb.append("," + col[0] + " " + col[1]);
+		}
+		String res = sb.toString();
+		return res;
 	}
 	
 	/** Returns the 2D string array of schema information */

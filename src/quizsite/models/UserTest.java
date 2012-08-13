@@ -37,6 +37,7 @@ public class UserTest {
 
 	@After
 	public void tearDown() throws Exception {
+		DatabaseConnection.dropTablesIfExist(User.TABLE_NAME);
 		DatabaseConnection.switchModeTo(DatabaseConnection.Mode.PRODUCTION);
 	}
 
