@@ -11,12 +11,21 @@ import java.util.*;
  * 2. public static List<Note> index() throws SQLException
  * */
 public abstract class PersistentModel {
+	/** Number of pre-defined columns for every persistent model */
+	public static final int N_PRE_COL = 2;
+	private static final int I_ID = 0, I_CREATED_AT = 1;
+	
 	private final MetaData metaData;
-	private int id; // TODO: Needs to be filled in after an instance is saved in the database
+	private int id;
+	private String createdAt;
+
+	
+
 	
 	/** Saves object as a row in the table - returns the auto generated key 
 	 * @throws SQLException */
 	public int save() throws SQLException  {
+		
 		int newIdx = DatabaseConnection.create(this);
 		setId(newIdx);
 		return getId();
@@ -36,7 +45,9 @@ public abstract class PersistentModel {
 			throw new IllegalArgumentException("Number of cols in the row don't match");
 		}
 		// First row is id, remaining depend upon the SCHEMA order
-		setId(Integer.parseInt(dbEntry.get(0)));
+		setId(Integer.parseInt(dbEntry.get(I_ID )));
+		setCreatedAt(dbEntry.get(I_CREATED_AT));
+		
 	}
 
 	/* NEEDS TO BE IMPLEMENTED BY SUBCLASS */
@@ -94,6 +105,21 @@ public abstract class PersistentModel {
 	public int getId() {
 		return id;
 	}
+
+	/**
+	 * @param createdAt the createdAt to set
+	 */
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	/**
+	 * @return the createdAt
+	 */
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
 
 	
 	

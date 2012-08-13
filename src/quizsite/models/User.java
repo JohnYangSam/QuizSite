@@ -23,8 +23,11 @@ public class User extends PersistentModel{
 	private String passwordSalt;
 
 	public static String TABLE_NAME = "User";
-	public static String[][] SCHEMA = {{"username", "TINYTEXT"}, {"email","TINYTEXT"}, {"passwordSaltedHash", "TINYTEXT"}, {"passwordSalt", "TINYTEXT"}, {"created_at", "DATETIME"}};
-	public final static int I_USERNAME = 1, I_EMAIL = 2, I_PASSWORDSALTEDHASH = 3, I_PASSWORDSALT = 4;
+	public static String[][] SCHEMA = {{"username", "TINYTEXT"}, {"email", "TINYTEXT"}, {"passwordSaltedHash", "TINYTEXT"}, {"passwordSalt", "TINYTEXT"}};
+	public final static int I_USERNAME = PersistentModel.N_PRE_COL,
+							I_EMAIL = PersistentModel.N_PRE_COL + 1, 
+							I_PASSWORDSALTEDHASH = PersistentModel.N_PRE_COL + 2, 
+							I_PASSWORDSALT = PersistentModel.N_PRE_COL + 3;
 	protected static String[][] FOREIGN_KEYS = {};
 
 	public User(String userName, String email, String passwordSaltedHash, String passwordSalt) throws SQLException

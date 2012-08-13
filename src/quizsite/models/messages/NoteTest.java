@@ -20,41 +20,41 @@ import quizsite.util.ForeignKey;
 
 public class NoteTest {
 
-	private int START = 1;// Starting pt of the auto genrated ids
-	private Map< String, HashSet<String> > referencedTables;
+	private int START_AUTO_GENERATED = 1;// Starting pt of the auto generated ids
+//	private Map< String, HashSet<String> > referencedTables;
 	private String sampleBody = "This body is for testing purposes";
 	
-	private String getCreateSqlStatement(Map.Entry<String, HashSet<String> > pairs) {
-		String result = "CREATE TABLE IF NOT EXISTS " + pairs.getKey() + "( " ;
-		for (String hs : pairs.getValue()) {
-			result += hs + " INTEGER,";
-		}
-		result = result.substring(0, result.length() - 1);
-		result += ")";
-		return result;
-	}
-
-	private void createReferencedTables() throws SQLException {
-		referencedTables = ForeignKey.getDependencies(Note.FOREIGN_KEYS);
-	    Iterator< Map.Entry<String, HashSet<String> > > it = referencedTables.entrySet().iterator();
-		DatabaseConnection db = new DatabaseConnection();
-	    while (it.hasNext()) {
-			Map.Entry<String, HashSet<String> > pairs = (Map.Entry<String, HashSet<String> >) it.next();
-			String sql = getCreateSqlStatement(pairs);
-			db.executeUpdate(sql);
-		}
-	    db.close();
-	}
-
-
-	private String[] getReferencedTableNames() {
-		return referencedTables.keySet().toArray(new String[0]);
-	}
+//	private String getCreateSqlStatement(Map.Entry<String, HashSet<String> > pairs) {
+//		String result = "CREATE TABLE IF NOT EXISTS " + pairs.getKey() + "( " ;
+//		for (String hs : pairs.getValue()) {
+//			result += hs + " INTEGER,";
+//		}
+//		result = result.substring(0, result.length() - 1);
+//		result += ")";
+//		return result;
+//	}
+//
+//	private void createReferencedTables() throws SQLException {
+//		referencedTables = ForeignKey.getDependencies(Note.FOREIGN_KEYS);
+//	    Iterator< Map.Entry<String, HashSet<String> > > it = referencedTables.entrySet().iterator();
+//		DatabaseConnection db = new DatabaseConnection();
+//	    while (it.hasNext()) {
+//			Map.Entry<String, HashSet<String> > pairs = (Map.Entry<String, HashSet<String> >) it.next();
+//			String sql = getCreateSqlStatement(pairs);
+//			db.executeUpdate(sql);
+//		}
+//	    db.close();
+//	}
+//
+//
+//	private String[] getReferencedTableNames() {
+//		return referencedTables.keySet().toArray(new String[0]);
+//	}
 	
 	@Before
 	public void setUp() throws Exception {
 		DatabaseConnection.switchModeTo(DatabaseConnection.Mode.TEST);
-		createReferencedTables();
+//		createReferencedTables();
 		DatabaseConnection.dropTablesIfExist( Note.TABLE_NAME );
 	}
 
@@ -72,7 +72,7 @@ public class NoteTest {
 		Note newM = new Note(sender, sender, sampleBody);
 		int mId = DatabaseConnection.create(newM);
 		System.out.println(mId);
-		assertEquals(START, mId);
+		assertEquals(START_AUTO_GENERATED, mId);
 	}
 	
 	/** Similar to testDBCreate, but tests wrapper method in Model */
@@ -82,7 +82,7 @@ public class NoteTest {
 		Note newM = new Note(sender, sender, sampleBody);
 		int mId = newM.save();
 		System.out.println(mId);
-		assertEquals(START, mId);
+		assertEquals(START_AUTO_GENERATED, mId);
 	}
 	
 	@Test
@@ -155,7 +155,7 @@ public class NoteTest {
 	
 	@After
 	public void tearDown() throws Exception {
-		DatabaseConnection.dropTablesIfExist( getReferencedTableNames());
+//		DatabaseConnection.dropTablesIfExist( getReferencedTableNames());
 		DatabaseConnection.dropTablesIfExist( Note.TABLE_NAME );
 		DatabaseConnection.switchModeTo(DatabaseConnection.Mode.PRODUCTION);
 	}

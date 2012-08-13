@@ -49,7 +49,11 @@ public class MetaData {
 		return columnNames;
 	}
 
+	/** 
+	 * Returns the number of pre-defined columns specified by {@link PersistentModel#N_PRE_COL}
+	 * plus the number of columns specified by the SCHEMA static field in the subclass of 
+	 * PersistentModel */
 	public int getNumberOfColumns() {
-		return getSchema().length + 1;
+		return getSchema().length + PersistentModel.N_PRE_COL;
 	}
 }

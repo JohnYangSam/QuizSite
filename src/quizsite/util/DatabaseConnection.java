@@ -176,10 +176,12 @@ public class DatabaseConnection {
 	public static int createTableIfNotExists(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getTableName() + 
-		"( id INTEGER AUTO_INCREMENT" + pm.getSchema() 
+		"( id INTEGER AUTO_INCREMENT, " 
+		+ "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP " // updated_at time stamp is annoying to set up 
+		+ pm.getSchema() 
 		+ ForeignKey.serialize(pm.getForeignKeys()) 
 		+ ", PRIMARY KEY (id) ) ";
-		System.out.println(createTableQuery);
+//		System.out.println(createTableQuery);
 		int result = db.executeUpdate(createTableQuery);
 		db.close();
 		return result;

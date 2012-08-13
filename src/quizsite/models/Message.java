@@ -40,7 +40,10 @@ public abstract class Message extends PersistentModel{
 	// to avoid copies of same information in every instantiation
 	public static String TABLE_NAME = "Message";
 	public static String[][] SCHEMA = {{"body", "TEXT"}, {"sender_id", "INTEGER"}, {"recipient_id", "INTEGER"}, {"type", "TINYTEXT"}};
-	public final static int I_BODY = 1, I_SENDER_ID = 2, I_RECIPIENT_ID = 3, I_TYPE = 4;
+	public final static int I_BODY = PersistentModel.N_PRE_COL, 
+							I_SENDER_ID = PersistentModel.N_PRE_COL + 1, 
+							I_RECIPIENT_ID = PersistentModel.N_PRE_COL + 2, 
+							I_TYPE = PersistentModel.N_PRE_COL + 3;
 	public static String[][] FOREIGN_KEYS = 
 	{ {"sender_id", "User", "id"}, {"recipient_id", "User", "id"} };
 

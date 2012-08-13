@@ -60,14 +60,14 @@ public class DatabaseConnectionTest {
 			dbInstance.executeUpdate("insert into test_table (data) VALUES('fasdf');");
 			rs = DatabaseConnection.parseResultData(dbInstance.executeQuery("select * from test_table;"));
 			assertEquals(1, rs.size());
-			assertEquals(3, rs.get(0).size());
+			assertEquals(4, rs.get(0).size());
 			
 			// two entries, two columns
 			dbInstance.executeUpdate("insert into test_table (data) VALUES('fasdf');");
 			rs = DatabaseConnection.parseResultData(dbInstance.executeQuery("select * from test_table;"));
 			assertEquals(2, rs.size());
 			for (int i=0; i<rs.size(); i++)
-			{ assertEquals(3, rs.get(i).size()); }
+			{ assertEquals(Something.TOTAL_COL, rs.get(i).size()); }
 			
 		} catch (SQLException e) {
 			fail(e.getMessage());
@@ -116,9 +116,9 @@ public class DatabaseConnectionTest {
 			dbInstance.executeUpdate("insert into test_table (data) VALUES('c');");
 			
 			assertTrue(Integer.parseInt(dbInstance.fetchRowById(TEST_TABLE, 1).get(0)) == 1);
-			assertTrue(dbInstance.fetchRowById(TEST_TABLE, 1).get(2).equals("a"));
-			assertTrue(dbInstance.fetchRowById(TEST_TABLE, 3).get(2).equals("c"));
-			assertTrue(dbInstance.fetchRowById(TEST_TABLE, 2).get(2).equals("b"));
+			assertTrue(dbInstance.fetchRowById(TEST_TABLE, 1).get(Something.I_DATA).equals("a"));
+			assertTrue(dbInstance.fetchRowById(TEST_TABLE, 3).get(Something.I_DATA).equals("c"));
+			assertTrue(dbInstance.fetchRowById(TEST_TABLE, 2).get(Something.I_DATA).equals("b"));
 			
 		} catch (SQLException e) {
 			fail(e.getMessage());
@@ -160,7 +160,7 @@ public class DatabaseConnectionTest {
 			//int lastIndx = DatabaseConnection.create(sm); also works
 			assertEquals(1, lastIndx);
 			List<String> newSmth = dbInstance.fetchRowById(TEST_TABLE, lastIndx);
-			assertEquals(5, Integer.parseInt(newSmth.get(1)));
+			assertEquals(5, Integer.parseInt(newSmth.get(Something.I_SOME_INT)));
 		} catch (SQLException e) {
 			fail(e.getMessage());
 		}
@@ -192,15 +192,15 @@ public class DatabaseConnectionTest {
 			sm = new Something(5, "something 1");
 			int id = sm.save();
 			List<String> newSmth = dbInstance.fetchRowById(TEST_TABLE, id);
-			assertTrue(newSmth.get(2).equals("something 1"));
+			assertTrue(newSmth.get(Something.I_DATA).equals("something 1"));
 			
 			sm.setData("new something");
 			sm.setInt(1);
 			DatabaseConnection.update(sm);
 			
 			newSmth = dbInstance.fetchRowById(TEST_TABLE, id);
-			assertTrue(newSmth.get(2).equals("new something"));
-			assertEquals(1, Integer.parseInt(newSmth.get(1)));
+			assertTrue(newSmth.get(Something.I_DATA).equals("new something"));
+			assertEquals(1, Integer.parseInt(newSmth.get(Something.I_SOME_INT)));
 		} catch (SQLException e) {
 			fail(e.getMessage());
 		}
@@ -214,6 +214,9 @@ class Something extends PersistentModel
 	private static final String TABLE_NAME = DatabaseConnectionTest.TEST_TABLE;
 	private static final String[][] SCHEMA = {{"some_int", "INTEGER"}, {"data", "TEXT"}};
 	private static final String[][] FOREIGN_KEYS = {};
+	public static final int I_SOME_INT = PersistentModel.N_PRE_COL,
+							I_DATA = PersistentModel.N_PRE_COL + 1,
+							TOTAL_COL = N_PRE_COL + SCHEMA.length;
 	
 	private int some_int;
 	private String data;
