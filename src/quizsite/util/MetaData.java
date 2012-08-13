@@ -3,6 +3,8 @@ package quizsite.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import quizsite.controllers.Util;
+
 public class MetaData {
 	private final String tableName ;
 	private final String[][] schema ;
@@ -20,12 +22,12 @@ public class MetaData {
 
 	
 	public String getSchemaStringified() {
-		StringBuilder sb = new StringBuilder();
-		for (String[] col : schema) {
-			sb.append("," + col[0] + " " + col[1]);
+		String[] schemaStr = new String[schema.length];
+		for (int i = 0; i < schema.length; i++) {
+			schemaStr[i] = schema[i][0] + " " + schema[i][1]; 
 		}
-		String res = sb.toString();
-		return res;
+		String ret = Util.join(schemaStr, " , ");
+		return ret;
 	}
 	
 	/** Returns the 2D string array of schema information */

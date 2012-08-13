@@ -2,6 +2,8 @@ package quizsite.util;
 
 import java.util.*;
 
+import quizsite.controllers.Util;
+
 public class ForeignKey {
 
 	private String columnName;
@@ -67,14 +69,7 @@ public class ForeignKey {
 	 * eg. ", FOREIGN KEY( column_name ) REFERENCES table_name (col_name)"*
 	 * */
 	public static String serialize(List<ForeignKey> foreignKeys) {
-		StringBuilder sb = new StringBuilder();
-		if (foreignKeys.size() > 0) {
-			for (ForeignKey foreignKey : foreignKeys) {
-				sb.append(" , ");
-				sb.append(foreignKey);
-			}
-		}
-		return sb.toString();
+		return Util.join(foreignKeys, " , ");
 	}
 	
 	public static HashMap< String, HashSet<String> > getDependencies(List<ForeignKey> fkeys) {

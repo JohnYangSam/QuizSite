@@ -2,6 +2,8 @@ package quizsite.controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -38,5 +40,47 @@ public class Util {
 		return null;
 	}
 	
+	
+
+	/**
+	 * Returns a csv formatted string, given an object array. Uses toString(). Ignores null / objects
+	 * which give only whitespace on toString()
+	 * eg. 	{"abc", "def"} 	=> " abc,def "
+	 * 	   	null			=> ""
+	 * 		{}				=> ""
+	 * 		{"abc", null, "def"} => " abc,def "
+	 * 		{"a", "  ", "a"} => " a,a "
+	 * @param separator TODO
+	 * */
+	public static String join(Object[] arr, String separator) {
+		if (arr == null || arr.length == 0) {
+			return " ";
+		} else {
+			List<Object> list = Arrays.asList(arr);
+			return join(list, separator);
+		}
+	}
+
+
+
+	/** See {@link Util#join(Object[], String)}
+	 * @param separator TODO*/
+	public static <T> String join(List<T> list, String separator) {
+		if (list == null || list.size() == 0) {
+			return " ";
+		} else {
+			StringBuilder sb = new StringBuilder(" ");
+			for (Object obj : list) {
+				if (obj != null && !obj.toString().trim().isEmpty()) {
+					sb.append(obj.toString());
+					sb.append(separator);
+				}
+			}
+			String ret = sb.toString();
+			ret = ret.substring(0, ret.length() - separator.length()); 	// Remove trailing comma
+			ret = ret + " ";	// Pad 
+			return ret;
+		}
+	}
 
 }

@@ -60,6 +60,18 @@ public class User extends PersistentModel{
 		List<List<String> > rows = DatabaseConnection.index(TABLE_NAME);
 		return parseRows(rows);
 	}
+	
+	/** 
+	 * List of all users to which the current user has sent friend requests 
+	 * TODO: Suggest improvements for this function
+	 * @throws SQLException 
+	 * */
+	public List<User> sentFriendRequestsTo() throws SQLException {
+		String whereQ = "WHERE id in ("+ Friendship.getAcceptorIdGivenInitiatorIdQuery(getId())+")";
+		return parseRows(DatabaseConnection.indexQueryRaw(TABLE_NAME, whereQ));
+	}
+	
+	
 
 	private static List<User> parseRows(List<List<String> > rows) throws SQLException {
 		List<User> ret = new ArrayList<User>();

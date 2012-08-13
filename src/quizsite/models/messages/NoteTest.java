@@ -21,9 +21,10 @@ import quizsite.util.ForeignKey;
 public class NoteTest {
 
 	private int START_AUTO_GENERATED = 1;// Starting pt of the auto generated ids
-//	private Map< String, HashSet<String> > referencedTables;
 	private String sampleBody = "This body is for testing purposes";
 	
+	/** Old code taking care of creating referenced tables - might be useful later on*/
+//	private Map< String, HashSet<String> > referencedTables;
 //	private String getCreateSqlStatement(Map.Entry<String, HashSet<String> > pairs) {
 //		String result = "CREATE TABLE IF NOT EXISTS " + pairs.getKey() + "( " ;
 //		for (String hs : pairs.getValue()) {

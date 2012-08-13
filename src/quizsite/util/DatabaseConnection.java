@@ -7,6 +7,8 @@ package quizsite.util;
 import java.sql.*;
 import java.util.*;
 
+import quizsite.controllers.Util;
+
 /**
  * File: DBConnection.java
  * Author: Rege
@@ -175,13 +177,15 @@ public class DatabaseConnection {
 	// Creates the backing table if it doesn't exist
 	public static int createTableIfNotExists(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
-		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getTableName() + 
-		"( id INTEGER AUTO_INCREMENT, " 
-		+ "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP " // updated_at time stamp is annoying to set up 
-		+ pm.getSchema() 
-		+ ForeignKey.serialize(pm.getForeignKeys()) 
-		+ ", PRIMARY KEY (id) ) ";
-//		System.out.println(createTableQuery);
+		String unifiedSchema =  Util.join( new String[] {
+				" id INTEGER PRIMARY KEY AUTO_INCREMENT ",
+				" created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ",
+				pm.getSchema(),
+				ForeignKey.serialize(pm.getForeignKeys()),
+		}, " , ");
+		
+		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getTableName() + "(" + unifiedSchema + ")"; 
+		System.out.println(createTableQuery);
 		int result = db.executeUpdate(createTableQuery);
 		db.close();
 		return result;
@@ -229,16 +233,26 @@ public class DatabaseConnection {
 		return sb.substring(0, sb.length() - 2)+" "; //Removes the trailing comma ', ' then add space
 	}
 
+	/**
+	 * Takes in a 2D conditions array as specified in {@link DatabaseConnection#indexWhere(String, String[][])}
+	 * and returns a 1D conditions array, combining the LHS, operator and RHS
+	 * eg.
+	 * $ conditions = {{"id", ">", "23"},{"data", "=", stuff}} => {" id > '23' ", " data = 'something' "}
+	 * */
+	public static String[] stringifyConditions(String[][] conditions) {
+		String[] conditionStrings = new String[conditions.length];
+		for (int i = 0 ; i < conditions.length; i++) {
+			String[] condition = conditions[i];
+			conditionStrings[i] = " " + condition[0] + " " + condition[1] + " '" + condition[2] + "' ";
+		}
+		return conditionStrings;
+	}
+	
 	private String whereQuery(String[][] conditions) {
 		if (conditions.length > 0) {
-			String whereClause;
-			StringBuilder sb = new StringBuilder(" WHERE ");
-			for (String[] condition : conditions) {
-				whereClause = condition[0] + " " + condition[1] + " '" + condition[2] + "' AND ";
-				sb.append(whereClause);
-			}
-			String whereQuery = sb.toString();
-			return whereQuery.substring(0, whereQuery.length() - 4); //remove the trailing "AND " (AND plus space)
+			String[] whereClauses = stringifyConditions(conditions); 
+			String whereQuery = " WHERE " + Util.join(whereClauses, " AND ");
+			return whereQuery;
 		} else {
 			return "";
 		}
@@ -264,7 +278,7 @@ public class DatabaseConnection {
 		return ret;
 	}
 	
-	/** Executes a raw SQL query on the given tableName
+	/** Executes a raw SQL query on the given tableName - USE SPARINGLY
 	 * $ condition = "WHERE id = '23'"; tableName = Message.TABLE_NAME;
 	 * => Query run = "SELECT * FROM Message WHERE id = '23'"
 	 * @throws SQLException 
@@ -319,16 +333,26 @@ public class DatabaseConnection {
 		List<Object> values  = pm.getColumnValues();
 
 		// construct an update string
-		StringBuilder updateStrBuilder = new StringBuilder();
+		String[][] conditions = new String[columns.size()][3];
 		for (int i = 0; i < columns.size(); i++) {
-			updateStrBuilder.append(columns.get(i)+"='"+values.get(i)+"',");
+			conditions[i] = new String[] {columns.get(i), "=" , values.get(i).toString()};
 		}
-		String updateStr = updateStrBuilder.toString();
+		String updateStr = Util.join(stringifyConditions(conditions), ", ");
 
-		String updQuery = "UPDATE " + pm.getTableName() + " SET " + updateStr.substring(0, updateStr.length() - 1) + " WHERE id = '" + pm.getId() + "'";
+		String updQuery = "UPDATE " + pm.getTableName() + " SET " + updateStr + " WHERE id = '" + pm.getId() + "'";
 		DatabaseConnection db = new DatabaseConnection();
 		int res = db.executeUpdate(updQuery);
 		db.close();
 		return res;
 	}
+	
+//	public static String selectFromWhereString(String[] selColumns, String tableName, String conditions) {
+//		
+//		
+//	}
+	
+
+	
+	
+	
 }
