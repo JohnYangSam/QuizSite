@@ -236,7 +236,7 @@ public class DatabaseConnection {
 				sb.append(whereClause);
 			}
 			String whereQuery = sb.toString();
-			return whereQuery.substring(0, whereQuery.length() - 4);
+			return whereQuery.substring(0, whereQuery.length() - 4); //remove the trailing "AND " (AND plus space)
 		} else {
 			return "";
 		}
@@ -274,7 +274,7 @@ public class DatabaseConnection {
 		return ret;
 	}
 
-	// Create and save a new row - returns the auto-generated id of the new row
+	/** Create and save a new row - returns the auto-generated id of the new row */
 	public static int create(PersistentModel pm) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 
@@ -289,7 +289,7 @@ public class DatabaseConnection {
 		return id;
 	}
 
-	// Delete a row - ensure that the id is populated
+	/** Delete a row - ensure that the id is populated */
 	public static int destroy(PersistentModel pm) throws SQLException {
 		String destroyQuery = "DELETE FROM " + pm.getTableName() + " WHERE id ='" + pm.getId() + "'";
 		DatabaseConnection db = new DatabaseConnection();
@@ -298,7 +298,7 @@ public class DatabaseConnection {
 		return res;
 	}
 
-	// Get a specific row by it's id
+	/** Get a specific row by it's id, returns null if row doesn't exist */
 	public static List<String> get(String tableName, int id) throws SQLException {
 		DatabaseConnection db = new DatabaseConnection();
 		List<String> res = db.fetchRowById(tableName, id);

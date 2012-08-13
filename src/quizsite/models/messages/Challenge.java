@@ -16,7 +16,7 @@ public class Challenge extends Message {
 
 	private Quiz quiz;
 	
-	public Challenge(User recipient, User sender, Quiz quiz) throws SQLException {
+	public Challenge( User sender, User recipient, Quiz quiz) throws SQLException {
 		super( sender, recipient );
 		setQuiz(quiz);
 		formatString = "%1$s has challenged %2$s to a quiz %3$s";
@@ -41,8 +41,9 @@ public class Challenge extends Message {
 
 
 	@Override
-	public void parse(List<String> dbEntry) {
-		// TODO Auto-generated method stub
+	public void parse(List<String> dbEntry) throws IllegalArgumentException, SQLException {
+		super.parse(dbEntry);
+		// Not parsing further
 		
 	}
 
