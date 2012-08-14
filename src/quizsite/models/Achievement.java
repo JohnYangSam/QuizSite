@@ -74,9 +74,6 @@ public class Achievement extends PersistentModel {
 		setType(dbEntry.get(I_TYPE));
 	}
 
-	private void setType(String type) {
-		setType(Type.get(type));
-	}
 
 	public static List<Achievement> parseRows(List< List<String> > rows) throws SQLException {
 		List<Achievement> ret = new ArrayList<Achievement>();
@@ -109,6 +106,11 @@ public class Achievement extends PersistentModel {
 		return parseRows(DatabaseConnection.indexWhere(TABLE_NAME, conditions));
 	}
 	
+	
+	private void setType(String type) {
+		setType(Type.get(type));
+	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
