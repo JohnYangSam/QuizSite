@@ -1,5 +1,6 @@
 package quizsite.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,9 +43,9 @@ public class InitDatabaseListener implements ServletContextListener {
 	    	Quiz quiz0				= new Quiz(false, false, false, false, 0);
 	    	System.out.println("Quiz Init");
 	    	Set<String> filler = new HashSet<String>();
-	    	Question question0		= new CheckboxQuestion(filler, null, 0);
+	    	Question question0		= new CheckboxQuestion(filler, null, 0, new ArrayList<String>());
 	    	System.out.println("Question Init");
-	    	Attempt attempt0		= new Attempt(null, 0 , null);
+	    	Attempt attempt0		= new Attempt(null, null , 0);
 	    	System.out.println("Attempt Init");
     	} catch (Exception e) {
     		System.err.println("Error initializing table");
