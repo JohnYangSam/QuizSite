@@ -150,7 +150,7 @@ public class RegisterNewUserController extends HttpServlet {
 			userId = newUser.save();
 		} catch (SQLException e) {
 			System.err.println("Error registering user");
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 			return -1;
 		}
 		return userId;

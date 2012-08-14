@@ -177,6 +177,25 @@ public class User extends PersistentModel{
 		return false;
 	}
 	
+	/**
+	 * Returns the user object for the name given.
+	 */
+	public static User getUserByName(String userName) throws SQLException {
+		String[][] whereConditions = {{"user_name", "=", userName}};
+		List<List<String> > entries = DatabaseConnection.indexWhere(TABLE_NAME, whereConditions);
+		//Confirm that the userName is unique
+		if(entries.size() > 1) throw new SQLException("more than one Use Name of the same type found: " + userName);
+		if(entries.size() < 1) return null;
+		List<String> entry = entries.get(0);
+		if(entry != null) {
+			User curr = new User("","","","");
+			curr.parse(entry);
+			return curr;
+		} else {
+			return null;
+		}
+	}
+	
 
 	/** 
 	 * Parses a list of strings representing the values in a dbEntry and 
