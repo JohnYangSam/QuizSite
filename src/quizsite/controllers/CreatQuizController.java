@@ -2,8 +2,10 @@ package quizsite.controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -49,6 +51,9 @@ public class CreatQuizController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO all blank strings and fields should be correctly set after I write an actual view 
 		try {
+			
+			System.out.println(request.getParameterMap());
+			
 			User currentUser = new User(1);//Util.signInOrRedirect(request, response);
 			
 			boolean onePage 		= false;
@@ -71,7 +76,8 @@ public class CreatQuizController extends HttpServlet {
 				Question q = null;
 				if (Question.Type.CHECKBOX.equals(type))
 				{
-					q = new CheckboxQuestion(answers, text, newQuizId);
+					List<String> opts = new ArrayList<String>();
+					q = new CheckboxQuestion(answers, text, newQuizId, opts);
 				} else if (Question.Type.FILL_BLANK.equals(type))
 				{
 					String first  = "";
@@ -83,7 +89,8 @@ public class CreatQuizController extends HttpServlet {
 					q = new PictureQuestion(answers, text, newQuizId, picURL);
 				} else if (Question.Type.RADIO.equals(type))
 				{
-					q = new RadioQuestion(answers, text, newQuizId);
+					List<String> opts = new ArrayList<String>();
+					q = new RadioQuestion(answers, text, newQuizId, opts);
 				} else if (Question.Type.RESPONSE.equals(type))
 				{
 					q = new ResponseQuestion(answers, text, newQuizId);
