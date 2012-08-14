@@ -118,6 +118,7 @@ public abstract class Message extends PersistentModel{
 		return parseRows(rows);
 	}
 
+	/*------------------ implement these -------------------*/
 	@Override
 	public Object[] getFields() {
 		Object[] objs = new Object[] {getBody(), getSender().getId(), getRecipient().getId(), getType()};
@@ -159,6 +160,7 @@ public abstract class Message extends PersistentModel{
 		Message curr = Type.instantiate(entry);
 		return curr;
 	}	
+	/*------------------------------------------------------*/
 
 	/* The usual getters and setters */
 	/**
