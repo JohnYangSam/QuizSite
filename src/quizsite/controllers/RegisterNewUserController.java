@@ -69,119 +69,52 @@ public class RegisterNewUserController extends HttpServlet {
 		} else {
 	
 		//Catch SQLExceptions
-		try {
+			try {
+				
+				//Existing account case
+				if (User.userExists(userName)) {
+					request.setAttribute("failureMessage", "User name is already taken. Please try another user name.");
+					RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
+					dispatch.forward(request, response);
+					return;
 			
-			//Existing account case
-			if (User.userExists(userName)) {
-				request.setAttribute("failureMessage", "User name is already taken. Please try another user name.");
-				RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
-				dispatch.forward(request, response);
-				return;
-		
-			//Password not the same
-			} else if (!password.equals(passwordConfirm)) {
-				request.setAttribute("failureMessage", "Password and password confirmation do not match. Please try registering again");
-				RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW));
-				dispatch.forward(request, response);
-				return;
-			
-			//Salt, has, and a new account to accounts
-			} else {
-				//Add user and then set the USER_SESSION_KEY to the userId
-				int userId = registerNewUser(userName, password);
-				HttpSession session = request.getSession();
-				session.setAttribute(Util.USER_SESSION_KEY, userId);
-				//Send to the main view
-				RequestDispatcher dispatch = request.getRequestDispatcher(Util.MAIN_VIEW);
-				dispatch.forward(request, response);
+				//Password not the same
+				} else if (!password.equals(passwordConfirm)) {
+					request.setAttribute("failureMessage", "Password and password confirmation do not match. Please try registering again");
+					RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
+					dispatch.forward(request, response);
+					return;
+				
+				//Salt, has, and a new account to accounts
+				} else {
+					//Add user and then set the USER_SESSION_KEY to the userId
+					int userId = registerNewUser(userName, password);
+					HttpSession session = request.getSession();
+					session.setAttribute(Util.USER_SESSION_KEY, userId);
+					//Send to the main view
+					RequestDispatcher dispatch = request.getRequestDispatcher(Util.MAIN_VIEW);
+					dispatch.forward(request, response);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.err.println("SQL Error while autheticating user registration: ");
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.err.println("SQL Error while autheticating user registration: ");
-			e.printStackTrace();
-		}	
+		}
 	}
-	
-	
 
-	
-/* ------------------------- Hashing and salting methods -------------------------*/	
-	
 	/**
-	 * Returns a secure random salt string to be added to the password before hashing.
+	 * Registers a new user in the database (taking care of salting and hashing passwords
+	 * and returns the ID of the user (that can be stored later to identify them in the session.
 	 */
-	
-	private static String generateSalt() {
-		String saltStr = "";
-		Random r = new SecureRandom();
-		byte[] salt = new byte[20];
-		r.nextBytes(salt);
-		saltStr = new String(salt);
-		
-		return saltStr;
-	}
-	
-	
-	/**
-	 * Takes in a string input and a salt string to be hashed and returns an equivalent salted hash based
-	 * on the SHA hash algorithm.
-	 */
-	private static String makeSaltedHash(String password, String salt) {
-		String result = "";
-		
-		//Convert password to bytes and concatenate with the salt
-		byte[] passwordAndSaltBytes = concatByteArrays(password.getBytes(), salt.getBytes());
+	private int registerNewUser(String userName, String password) {
+		String salt = Util.generateSalt();
+		String saltedHash = Util.makeSaltedHash(password, salt);
 		
 		
-		try {
-			//Compute password hash
-			MessageDigest messageDigest = MessageDigest.getInstance("SHA");
-			messageDigest.update(passwordAndSaltBytes);
-			byte[] passwordAndSaltDigestBytes = messageDigest.digest();
-			result = hexToString(passwordAndSaltDigestBytes);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
-	private static byte[] concatByteArrays(byte[] arr1, byte[] arr2) {
-		byte[] result = new byte[arr1.length + arr2.length];
-		System.arraycopy(arr1, 0, result, 0, arr1.length);
-		System.arraycopy(arr2, 0, result, arr1.length, arr2.length);
+		return;
 		
-		return result;
 	}
-	
-	
-	/**
-	 Given a byte[] array, produces a hex String,
-	 such as "234a6f". with 2 chars for each byte in the array.
-	 (provided code)
-	*/
-	public static String hexToString(byte[] bytes) {
-		StringBuffer buff = new StringBuffer();
-		for (int i=0; i<bytes.length; i++) {
-			int val = bytes[i];
-			val = val & 0xff;  // remove higher bits, sign
-			if (val<16) buff.append('0'); // leading 0
-			buff.append(Integer.toString(val, 16));
-		}
-		return buff.toString();
-	}
-	
-	/**
-	 Given a string of hex byte values such as "24a26f", creates
-	 a byte[] array of those values, one byte value -128..127
-	 for each 2 chars.
-	 (provided code)
-	*/
-	public static byte[] hexToArray(String hex) {
-		byte[] result = new byte[hex.length()/2];
-		for (int i=0; i<hex.length(); i+=2) {
-			result[i/2] = (byte) Integer.parseInt(hex.substring(i, i+2), 16);
-		}
-		return result;
-	}
+x
 
 }
