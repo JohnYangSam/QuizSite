@@ -23,7 +23,7 @@ public class User extends PersistentModel{
 	private String passwordSalt;
 
 	public static String TABLE_NAME = "User";
-	public static String[][] SCHEMA = {{"username", "TINYTEXT"}, {"email", "TINYTEXT"}, {"passwordSaltedHash", "TINYTEXT"}, {"passwordSalt", "TINYTEXT"}};
+	public static String[][] SCHEMA = {{"userName", "TINYTEXT"}, {"email", "TINYTEXT"}, {"passwordSaltedHash", "TINYTEXT"}, {"passwordSalt", "TINYTEXT"}};
 	public final static int I_USERNAME = PersistentModel.N_PRE_COL,
 							I_EMAIL = PersistentModel.N_PRE_COL + 1, 
 							I_PASSWORDSALTEDHASH = PersistentModel.N_PRE_COL + 2, 
