@@ -19,18 +19,19 @@ public class FriendRequest extends Message {
 	
 	public FriendRequest(User sender, User recipient, String url) throws SQLException {
 		super( sender, recipient );
-		setCallbackURL(url);
-		formatString = "This is a friend request from %1$s to %2$s containing the url %3$s";
-		setBody(formatBody(sender, recipient, callbackURL));
-		
+		updateCallbackURL(url);
 		setType(Type.FRIEND_REQUEST);
 	}
 
 	/**
 	 * @param callbackURL the callbackURL to set
 	 */
-	public void setCallbackURL(String callbackURL) {
+	public void updateCallbackURL(String callbackURL) {
 		this.callbackURL = callbackURL;
+		formatString = "This is a friend request from %1$s to %2$s containing the url %3$s";
+		if (sender != null && recipient != null) {
+			setBody(formatBody(sender.getId(), recipient.getId(), callbackURL));
+		}
 	}
 
 	/**
@@ -45,4 +46,6 @@ public class FriendRequest extends Message {
 		super.parse(dbEntry);
 		// Not parsing callbackURL
 	}
+	
+
 }

@@ -12,18 +12,17 @@ public class Note extends Message {
 	
 	public Note(User sender, User recipient, String content) throws SQLException {
 		super( sender, recipient );
-		setContent(content);
-		formatString = content;
-		setBody(formatBody());
-		
+		updateContent(content);
 		setType(Type.NOTE);
 	}
+
 
 	/**
 	 * @param content the content to set
 	 */
-	public void setContent(String content) {
+	public void updateContent(String content) {
 		this.content = content;
+		setBody(content);
 	}
 
 	/**
@@ -52,10 +51,8 @@ public class Note extends Message {
 	public void parse(List<String> dbEntry) throws IllegalArgumentException, SQLException{
 		super.parse(dbEntry);
 		// All columns parsed - no need to parse content. Just set it equal to body
-		setContent(getBody());
+		updateContent(getBody());
 	}
 
-
-	
 
 }

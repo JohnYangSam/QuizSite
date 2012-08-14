@@ -83,4 +83,21 @@ public class UserTest {
 		}
 	}
 
+	@Test
+	public void testLists() throws SQLException {
+		Friendship f = new Friendship(users[0], users[1]);
+		f.save();
+		f = new Friendship(users[0], users[2]);
+		f.save();
+		f = new Friendship(users[1], users[2]);
+		f.save();
+		List<User> list = users[0].sentFriendRequestsTo();
+		assertEquals(2, list.size());
+		assertEquals(1, users[1].sentFriendRequestsTo().size());
+		assertEquals(0, users[2].sentFriendRequestsTo().size());
+		
+		assertEquals(0, users[0].gotFriendRequestsFrom().size());
+		assertEquals(1, users[1].gotFriendRequestsFrom().size());
+		assertEquals(2, users[2].gotFriendRequestsFrom().size());
+	}
 }

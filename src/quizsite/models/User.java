@@ -45,8 +45,6 @@ public class User extends PersistentModel{
 		setId(id);
 	}
 	
-	User.addNewUser()
-
 	/* Returns the name of the user */
 	public String getName() {
 		return getUserName();
@@ -65,13 +63,41 @@ public class User extends PersistentModel{
 	
 	/** 
 	 * List of all users to which the current user has sent friend requests 
-	 * TODO: Suggest improvements for this function
+	 * SELECT * FROM User WHERE id in (SELECT responder_id FROM Friendship WHERE initiator_id = <id>)
 	 * @throws SQLException 
 	 * */
 	public List<User> sentFriendRequestsTo() throws SQLException {
-		String whereQ = "WHERE id in ("+ Friendship.getAcceptorIdGivenInitiatorIdQuery(getId())+")";
-		return parseRows(DatabaseConnection.indexQueryRaw(TABLE_NAME, whereQ));
+		String subQ = "(" 
+					+ DatabaseConnection.selectFromWhereString(
+											new String[] {"responder_id"}, 
+											Friendship.TABLE_NAME,
+											new String[][] {{"initiator_id", "=", "" + getId()}})
+					+ ")";
+		String condition = "id IN " + subQ;
+		return parseRows(DatabaseConnection.indexWhereRaw(TABLE_NAME, condition));
 	}
+	
+	
+	/** 
+	 * List of all users who sent friend requests to the current user  
+	 * SELECT * FROM User WHERE id in (SELECT initiator_id FROM Friendship WHERE responder_id = <id>)
+	 * @throws SQLException 
+	 * */
+	public List<User> gotFriendRequestsFrom() throws SQLException {
+		String subQ = "(" 
+					+ DatabaseConnection.selectFromWhereString(
+											new String[] {"initiator_id"}, 
+											Friendship.TABLE_NAME,
+											new String[][] {{"responder_id", "=", "" + getId()}})
+					+ ")";
+		String condition = "id IN " + subQ;
+		return parseRows(DatabaseConnection.indexWhereRaw(TABLE_NAME, condition));
+	}
+	
+	/**
+	 * 
+	 * */
+	
 
 	private static List<User> parseRows(List<List<String> > rows) throws SQLException {
 		List<User> ret = new ArrayList<User>();
@@ -178,4 +204,15 @@ public class User extends PersistentModel{
 	public String getPasswordSalt() {
 		return this.passwordSalt;
 	}
+
+	public static boolean userExists(String userName) throws SQLException {
+		String[][] conditions = {{"username", "=", userName}};
+		return (DatabaseConnection.indexWhere(TABLE_NAME, conditions).size() != 0);
+	}
+
+//	@Override
+//	public String toString() {
+//		return "" + getName() + " " + getEmail() + " -- " + getId() ;
+//	}
+
 }
