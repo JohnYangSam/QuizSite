@@ -95,6 +95,7 @@ public class DatabaseConnection {
 	 * Used to execute raw SQL queries
 	 */
 	public ResultSet executeQuery(String sqlQuery) throws SQLException {
+		System.out.println(sqlQuery);
 		return stmt.executeQuery(sqlQuery);
 	}
 
@@ -278,6 +279,11 @@ public class DatabaseConnection {
 		return ret;
 	}
 	
+	/** Wrapper for {@link DatabaseConnection#indexQueryRaw(String, String)}*/
+	public static List<List<String> > indexWhereRaw(String tableName, String rawConditions) throws SQLException {
+		return indexQueryRaw(tableName, " WHERE " + rawConditions);
+	}
+	
 	/** Executes a raw SQL query on the given tableName - USE SPARINGLY
 	 * $ condition = "WHERE id = '23'"; tableName = Message.TABLE_NAME;
 	 * => Query run = "SELECT * FROM Message WHERE id = '23'"
@@ -346,10 +352,19 @@ public class DatabaseConnection {
 		return res;
 	}
 	
-//	public static String selectFromWhereString(String[] selColumns, String tableName, String conditions) {
-//		
-//		
-//	}
+	/** Returns a SQL query string for the SELECT-FROM-WHERE-AND format.
+	 * eg. 
+		String[] selColumns = {"id", "name"};
+		String tableName = "Sample";
+		String[][] conditions = {{"id",">","4"}, {"name","<>","Vighnesh"}};
+		String exp = " SELECT  id , name  FROM Sample WHERE   id > '4'  AND  name <> 'Vighnesh'  ";
+	 * */
+	public static String selectFromWhereString(String[] selColumns, String tableName, String[][] conditions) {
+		String ret = " SELECT " + Util.join(selColumns, " , ")
+					+ " FROM " 	+ tableName
+					+ " WHERE " + Util.join(stringifyConditions(conditions), " AND ");
+		return ret;
+	}
 	
 
 	

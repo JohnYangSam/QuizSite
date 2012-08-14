@@ -14,13 +14,12 @@ import quizsite.models.*;
  */
 public class Challenge extends Message {
 
+
 	private Quiz quiz;
 	
 	public Challenge( User sender, User recipient, Quiz quiz) throws SQLException {
 		super( sender, recipient );
 		setQuiz(quiz);
-		formatString = "%1$s has challenged %2$s to a quiz %3$s";
-		setBody(formatBody(recipient, sender, quiz.getURL()));
 		setType(Type.CHALLENGE);
 	}
 
@@ -30,7 +29,12 @@ public class Challenge extends Message {
 	 */
 	public void setQuiz(Quiz quiz) {
 		this.quiz = quiz;
+		formatString = "%1$s has challenged %2$s to a quiz %3$s";
+		if (quiz != null && sender != null && recipient != null) {
+			setBody(formatBody( sender.getId(), recipient.getId(), quiz.getURL()));
+		}
 	}
+
 
 	/**
 	 * @return the quiz
@@ -46,5 +50,5 @@ public class Challenge extends Message {
 		// Not parsing further
 		
 	}
-
+	
 }

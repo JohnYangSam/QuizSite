@@ -30,10 +30,10 @@ public abstract class Message extends PersistentModel{
 	 * */
 	protected Formatter fmt;
 	protected String formatString;	// To be set in subclass constructor
-	private String type;
-	
-	private User sender;
-	private User recipient;
+	protected String type;
+
+	protected User sender;
+	protected User recipient;
 	protected String body;	// Message body - built in subclass constructors
 
 	// Meta data about the backing database table stored as static fields
@@ -41,37 +41,34 @@ public abstract class Message extends PersistentModel{
 	public static String TABLE_NAME = "Message";
 	public static String[][] SCHEMA = {{"body", "TEXT"}, {"sender_id", "INTEGER"}, {"recipient_id", "INTEGER"}, {"type", "TINYTEXT"}};
 	public final static int I_BODY = PersistentModel.N_PRE_COL, 
-							I_SENDER_ID = PersistentModel.N_PRE_COL + 1, 
-							I_RECIPIENT_ID = PersistentModel.N_PRE_COL + 2, 
-							I_TYPE = PersistentModel.N_PRE_COL + 3;
+			I_SENDER_ID = PersistentModel.N_PRE_COL + 1, 
+			I_RECIPIENT_ID = PersistentModel.N_PRE_COL + 2, 
+			I_TYPE = PersistentModel.N_PRE_COL + 3;
 	public static String[][] FOREIGN_KEYS = 
 	{ {"sender_id", "User", "id"}, {"recipient_id", "User", "id"} };
 
-	public enum Type{
-		CHALLENGE("challenge"), 
-		FRIEND_REQUEST("friend_request"), 
-		NOTE("note");
+	public enum Type {
+		CHALLENGE, 
+		FRIEND_REQUEST,
+		NOTE;
 		
-		private final String repr;
-		Type(String repr) {
-			this.repr = repr;
-		}
 		@Override
 		public String toString() {
-			return getRepr();
+			return this.name();
 		}
-		private String getRepr() {
-			return this.repr;
+		
+		public boolean equals(String type) {
+			return this.toString().equals(type);
 		}
 		public static Message instantiate(List<String> row) throws SQLException {
 			if (row != null) {
 				String type = row.get(I_TYPE);
-				Message curr;
-				if (type.equals("challenge")) {
+				Message curr = null;
+				if (CHALLENGE.equals(type)) {
 					curr = new Challenge(null, null, null);
-				} else if (type.equals("friend_request")) {
+				} else if (FRIEND_REQUEST.equals(type)) {
 					curr = new FriendRequest(null, null, "");
-				} else if (type.equals("note")) {
+				} else if (NOTE.equals(type)) {
 					curr = new Note(null, null, "");
 				} else {
 					throw new IllegalArgumentException("This type doesn't exist : " + type);
@@ -86,20 +83,21 @@ public abstract class Message extends PersistentModel{
 
 	public Message( User sender, User recipient) throws SQLException {
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
-		this.setRecipient(recipient);
-		this.setSender(sender);
-		this.fmt = new Formatter();
+		setRecipient(recipient);
+		setSender(sender);
 	}
 
+	
 	protected String formatBody(Object...objects) {
 		// Needs a defined formatString
+		fmt = new Formatter();
 		return fmt.format(formatString, objects).toString();
 	}
 
 	public void setBody(String body) {
 		this.body = body;
 	}
-	
+
 	/* Generic SQL queries */
 
 	public static List<Message> indexTo(User recipient) throws SQLException {
@@ -113,13 +111,13 @@ public abstract class Message extends PersistentModel{
 		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
 		return parseRows(rows);
 	}
-	
+
 	public static List<Message> indexFromTo(User sender, User recipient) throws SQLException {
 		String[][] conditions = { {"sender_id", "=", "" + sender.getId()}, {"recipient_id", "=", "" + recipient.getId()} };
 		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
 		return parseRows(rows);
 	}
-	
+
 	@Override
 	public Object[] getFields() {
 		Object[] objs = new Object[] {getBody(), getSender().getId(), getRecipient().getId(), getType()};
@@ -138,10 +136,10 @@ public abstract class Message extends PersistentModel{
 
 		setSender(sender);
 		setRecipient(recipient);
-		
+
 		setType(dbEntry.get(I_TYPE));
 	}
-	
+
 	public static List<Message> parseRows(List<List<String>> rows) throws SQLException {
 		List<Message> ret = new ArrayList<Message>();
 		for (List<String> row : rows) {
@@ -197,12 +195,12 @@ public abstract class Message extends PersistentModel{
 	public User getSender() {
 		return sender;
 	}
-	
+
 	@Override
 	public String toString() {
 		return 	"From: " + getSender().getId() + "\n" +
-			  	"To: " + getRecipient().getId() + "\n" +
-			  	"Body: " + getBody();
+		"To: " + getRecipient().getId() + "\n" +
+		"Body: " + getBody();
 	}
 
 	/**
@@ -212,7 +210,7 @@ public abstract class Message extends PersistentModel{
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	/** Use this one in constructors */
 	public void setType(Type type) {
 		String typ = type.toString();
@@ -225,4 +223,7 @@ public abstract class Message extends PersistentModel{
 	public String getType() {
 		return type;
 	}
+
+
+	
 }

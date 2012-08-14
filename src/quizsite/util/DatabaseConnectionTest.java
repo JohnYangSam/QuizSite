@@ -45,6 +45,16 @@ public class DatabaseConnectionTest {
 		DatabaseConnection.dropTablesIfExist(TEST_TABLE);
 		dbInstance.close();
 	}
+	
+
+	@Test
+	public void testSelectFromWhereString() {
+		String[] selColumns = {"id", "name"};
+		String tableName = "Sample";
+		String[][] conditions = {{"id",">","4"}, {"name","<>","Vighnesh"}};
+		String exp = " SELECT  id , name  FROM Sample WHERE   id > '4'  AND  name <> 'Vighnesh'  ";
+		assertEquals(exp, DatabaseConnection.selectFromWhereString(selColumns, tableName, conditions));
+	}
 
 	/**
 	 * Test method for {@link quizsite.util.DatabaseConnection#parseResultData(java.sql.ResultSet)}.
@@ -205,6 +215,7 @@ public class DatabaseConnectionTest {
 			fail(e.getMessage());
 		}
 	}
+	
 	
 	
 }

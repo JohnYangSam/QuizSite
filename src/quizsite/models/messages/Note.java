@@ -13,17 +13,16 @@ public class Note extends Message {
 	public Note(User sender, User recipient, String content) throws SQLException {
 		super( sender, recipient );
 		setContent(content);
-		formatString = content;
-		setBody(formatBody());
-		
 		setType(Type.NOTE);
 	}
+
 
 	/**
 	 * @param content the content to set
 	 */
 	public void setContent(String content) {
 		this.content = content;
+		setBody(content);
 	}
 
 	/**
@@ -55,7 +54,5 @@ public class Note extends Message {
 		setContent(getBody());
 	}
 
-
-	
 
 }
