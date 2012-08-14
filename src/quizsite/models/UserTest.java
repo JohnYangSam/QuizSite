@@ -100,4 +100,13 @@ public class UserTest {
 		assertEquals(1, users[1].gotFriendRequestsFrom().size());
 		assertEquals(2, users[2].gotFriendRequestsFrom().size());
 	}
+	
+	@Test
+	public void testExists() throws SQLException {
+		assertEquals(User.userExists("Vighnesh"), true);
+		assertEquals(User.userExists("MMAILK"), false);
+		assertEquals(User.userExists("Bruce"), true);
+		assertEquals(User.userExists("Logan"), true);
+		assertEquals(User.userExists(""), false);
+	}
 }

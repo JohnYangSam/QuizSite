@@ -23,7 +23,7 @@ public class User extends PersistentModel{
 	private String passwordSalt;
 
 	public static String TABLE_NAME = "User";
-	public static String[][] SCHEMA = {{"userName", "TINYTEXT"}, {"email", "TINYTEXT"}, {"passwordSaltedHash", "TINYTEXT"}, {"passwordSalt", "TINYTEXT"}};
+	public static String[][] SCHEMA = {{"user_name", "TINYTEXT"}, {"email", "TINYTEXT"}, {"password_salted_hash", "TINYTEXT"}, {"password_salt", "TINYTEXT"}};
 	public final static int I_USERNAME = PersistentModel.N_PRE_COL,
 							I_EMAIL = PersistentModel.N_PRE_COL + 1, 
 							I_PASSWORDSALTEDHASH = PersistentModel.N_PRE_COL + 2, 
@@ -141,7 +141,7 @@ public class User extends PersistentModel{
 	 * Throws an SQLException is the userName is not unique in the database (extra error checking)
 	 */
 	public static boolean userExists(String userName) throws SQLException {
-		String[][] whereConditions = {{"userName", "=", userName}};
+		String[][] whereConditions = {{"user_name", "=", userName}};
 		List<List<String> > entries = DatabaseConnection.indexWhere(TABLE_NAME, whereConditions);
 		//Confirm that the userName is unique
 		if(entries.size() > 1) throw new SQLException("more than one Use Name of the same type found: " + userName);

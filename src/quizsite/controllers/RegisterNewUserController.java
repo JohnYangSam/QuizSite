@@ -63,8 +63,14 @@ public class RegisterNewUserController extends HttpServlet {
 		//if (request.getAttribute("failuireMessage") == NULL don't print out anything, otherwise print out the message
 	
 		//Check for empty case
-		if(userName == "") {
+		if(userName.equals("")) {
 			request.setAttribute("failureMessage", "Can not leave user name blank. Please enter a valid user name");
+			RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
+			dispatch.forward(request, response);
+			return;
+		//Check for empty password	
+		} else if(password.equals("")) {
+			request.setAttribute("failureMessage", "Can not leave password blank");
 			RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
 			dispatch.forward(request, response);
 			return;
