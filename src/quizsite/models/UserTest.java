@@ -53,11 +53,16 @@ public class UserTest {
 	}
 
 	@Test
-	public void testGet() throws SQLException {
+	public void testGetAnGetdByUserName() throws SQLException {
 		assertTrue(User.get(1).getUserName().equals(userNames[0]));
 		assertTrue(User.get(3).getUserName().equals(userNames[1]));
 		assertTrue(User.get(5).getUserName().equals(userNames[2]));
 		assertNull(User.get(100));
+		
+		assertTrue(User.getUserByName("Vighnesh").equals(User.get(1)));
+		assertTrue(User.get(3).getUserName().equals(userNames[1]));
+		assertNull(User.getUserByName("granny"));
+		assertNull(User.getUserByName(""));
 	}
 
 	@Test
