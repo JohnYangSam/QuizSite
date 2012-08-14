@@ -53,11 +53,16 @@ public class UserTest {
 	}
 
 	@Test
-	public void testGet() throws SQLException {
+	public void testGetAnGetdByUserName() throws SQLException {
 		assertTrue(User.get(1).getUserName().equals(userNames[0]));
 		assertTrue(User.get(3).getUserName().equals(userNames[1]));
 		assertTrue(User.get(5).getUserName().equals(userNames[2]));
 		assertNull(User.get(100));
+		
+		assertTrue(User.getUserByName("Vighnesh").equals(User.get(1)));
+		assertTrue(User.get(3).getUserName().equals(userNames[1]));
+		assertNull(User.getUserByName("granny"));
+		assertNull(User.getUserByName(""));
 	}
 
 	@Test
@@ -99,5 +104,14 @@ public class UserTest {
 		assertEquals(0, users[0].gotFriendRequestsFrom().size());
 		assertEquals(1, users[1].gotFriendRequestsFrom().size());
 		assertEquals(2, users[2].gotFriendRequestsFrom().size());
+	}
+	
+	@Test
+	public void testExists() throws SQLException {
+		assertEquals(User.userExists("Vighnesh"), true);
+		assertEquals(User.userExists("MMAILK"), false);
+		assertEquals(User.userExists("Bruce"), true);
+		assertEquals(User.userExists("Logan"), true);
+		assertEquals(User.userExists(""), false);
 	}
 }

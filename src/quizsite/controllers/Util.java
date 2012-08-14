@@ -25,7 +25,7 @@ public class Util {
 	/** Views */
 	public static final String LOGIN_VIEW = "loginView.jsp";
 	public static final String INBOX_VIEW = "inboxView.jsp";
-	public static final String MAIN_VIEW = "mainView.jsp";
+	public static final String HOME_VIEW = "homeView.jsp";
 	public static final String REGISTER_NEW_USER_VIEW = "registerNewUserView.jsp";
 	
 	/** 
