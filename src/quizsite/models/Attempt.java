@@ -48,8 +48,10 @@ public class Attempt extends PersistentModel {
 		String[][] conditions = {{"quiz_id", "=", "" + quiz.getId()}};
 		return parseRows(DatabaseConnection.indexWhere(TABLE_NAME, conditions));
 	}
+
 	
-	/** Returns the top scoring attempt from the given list of attempts [need not belong to same quiz]*/
+	/** Returns the top scoring attempt from the given list of attempts [need not belong to same quiz]
+	 * Club this with the index methods above to achieve the desired effect */
 	public static Attempt getTopScoring(List<Attempt> attempts) {
 		if (attempts == null) return null;
 		Attempt best = attempts.get(0);
@@ -63,6 +65,7 @@ public class Attempt extends PersistentModel {
 		return best;
 	}
 
+	
 
 	@Override
 	public Object[] getFields() {
