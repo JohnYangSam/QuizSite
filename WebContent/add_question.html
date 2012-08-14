@@ -1,0 +1,66 @@
+<style type="text/css">
+    div.question {
+        border:2px solid red;
+    }
+</style>
+
+<div id="stash" style="display: none">
+    <div id="Checkbox">
+        <div class="question">
+        This is a checkbox question
+        </div>
+    </div>
+    <div id="Fill_Blank">
+        <div class="question">
+        This is a fill blank
+        </div>
+    </div>
+    <div id="Picture">
+        <div class="question">
+        This is a picture
+        </div>
+    </div>
+    <div id="Radio">
+        <div class="question">
+        This is a Radio
+        </div>
+    </div>
+    <div id="Response">
+        <div class="question">
+        This is a Response
+        </div>
+    </div>
+</div>
+
+
+<div id="choice">
+    <select id="selection">
+      <option>Checkbox</option>
+      <option>Fill_Blank</option>
+      <option>Picture</option>
+      <option>Radio</option>
+      <option>Response</option>
+    </select>
+    <button type="button" id="add_question"> Add !</button>
+</div>
+
+<div id="quiz">
+    
+    
+</div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    
+    $(document).ready(function() {
+        $("#add_question").click(function() {
+            //alert("Here!");
+            $("#quiz").append(($("#" + $("#selection").val()).html()))
+            });
+        
+        });
+    
+</script>
+
+
+

@@ -14,8 +14,11 @@ public class Attempt extends PersistentModel {
 	protected static String TABLE_NAME = "Attempt";
 	protected static String[][] SCHEMA = 
 		{{"id", "INTEGER"}, { "quiz_id", "INTEGER"}, {"attempter_id", "INTEGER"}, {"score", "INTEGER"}};
+
 	protected static String[][] FOREIGN_KEYS = 
 		{{ "quiz_id", "Quiz", "id"}, {"attempter_id", "User", "id"}};
+	
+	
  
 		
 	public Attempt(Quiz quiz, int score, User attempter) throws SQLException {
