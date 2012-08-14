@@ -58,24 +58,30 @@ public class RegisterNewUserController extends HttpServlet {
 		String passwordConfirm = request.getParameter("passwordConfirm");
 		
 		
-		//TODO: NOTE for RegisterUserView.jsp
+		//TODO: NOTE for registerNewUserView.jsp
 		
 		//if (request.getAttribute("failuireMessage") == NULL don't print out anything, otherwise print out the message
-		if(!isValidEmail(email)) {
-			request.setAttribute("failureMessage", "Invalid email address entered. Please enter a valid email address");
-			RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
-			dispatch.forward(request, response);
-			return;
-		}
-		
+	
 		//Check for empty case
-		if(userName == "") {
+		if(userName.equals("")) {
 			request.setAttribute("failureMessage", "Can not leave user name blank. Please enter a valid user name");
 			RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
 			dispatch.forward(request, response);
 			return;
+		//Check for empty password	
+		} else if(password.equals("")) {
+			request.setAttribute("failureMessage", "Can not leave password blank");
+			RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
+			dispatch.forward(request, response);
+			return;
+		//Check for valid email
+		} else if(!isValidEmail(email)) {
+			request.setAttribute("failureMessage", "Invalid email address entered. Please enter a valid email address");
+			RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
+			dispatch.forward(request, response);
+			return;
 		} else {
-	
+		
 		//Catch SQLExceptions
 			try {
 				
@@ -100,7 +106,7 @@ public class RegisterNewUserController extends HttpServlet {
 					HttpSession session = request.getSession();
 					session.setAttribute(Util.USER_SESSION_KEY, userId);
 					//Send to the main view
-					RequestDispatcher dispatch = request.getRequestDispatcher(Util.MAIN_VIEW);
+					RequestDispatcher dispatch = request.getRequestDispatcher(Util.HOME_VIEW);
 					dispatch.forward(request, response);
 				}
 			} catch (SQLException e) {
@@ -123,6 +129,8 @@ public class RegisterNewUserController extends HttpServlet {
 		if (atIndex == -1) return false;
 		int dotIndex = email.indexOf('.', atIndex);
 		if(dotIndex == -1) return false;
+		int spaceIndex = email.indexOf(' ');
+		if(spaceIndex != -1) return false;
 		return true;
 	}
 
