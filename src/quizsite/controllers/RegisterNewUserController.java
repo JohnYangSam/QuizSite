@@ -112,9 +112,7 @@ public class RegisterNewUserController extends HttpServlet {
 		String saltedHash = Util.makeSaltedHash(password, salt);
 		
 		
-		return;
-		
+		return 0;
 	}
-x
 
 }
