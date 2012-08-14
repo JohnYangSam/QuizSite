@@ -2,7 +2,11 @@ package quizsite.models;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+
 
 import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
@@ -17,7 +21,7 @@ public class Friendship extends PersistentModel {
 	private User initiator;
 	private User responder;
 	private Status status;
-	
+
 	public enum Status {
 		PENDING, ACCEPTED, REJECTED;
 		@Override
@@ -36,14 +40,14 @@ public class Friendship extends PersistentModel {
 			return null;
 		}
 	}
-	
+
 	public Friendship(User initiator, User responder) throws SQLException {
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
 		setInitiator(initiator);
 		setResponder(responder);
 		setStatus(Status.PENDING);
 	}
-	
+
 	/** Accepts and updates db*/
 	public void accept() throws SQLException {
 		setStatus(Status.ACCEPTED);
@@ -55,7 +59,7 @@ public class Friendship extends PersistentModel {
 		setStatus(Status.REJECTED);
 		update();
 	}
-	
+
 	/** Returns all friendship entries initiated by given user , irrespective of status */
 	public static List<Friendship> indexWhereInitiatorIs(User user) throws SQLException {
 		String[][] conditions = { {"initiator_id", "=", "" + user.getId()} };
@@ -82,6 +86,28 @@ public class Friendship extends PersistentModel {
 		String[][] conditions = { {"responder_id", "=", "" + user.getId()}, {"status", "=", status.toString()} };
 		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
 		return parseRows(rows);
+	}
+	
+	/** Return all friendships involving user, corresponding to given status 
+	 * @throws SQLException */
+	public static List<Friendship> indexFor(User user, Status status) throws SQLException {
+		List<Friendship> all = indexWhereInitiatorIs(user, status);
+		all.addAll(indexWhereResponderIs(user, status));
+		return all;
+	}
+	
+	/** Returns a list of all users involved in the list of friendships - each user added only once */
+	public static List<User> getUsersFrom(List<Friendship> lf) {
+		Set<User> su = new HashSet<User>();
+		for (Friendship f : lf) {
+			su.add(f.getInitiator());
+			su.add(f.getResponder());
+		}
+		List<User> lu = new ArrayList<User>();
+		for (User u : su) {
+			lu.add(u);
+		}
+		return lu;
 	}
 	
 	

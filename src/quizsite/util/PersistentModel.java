@@ -19,20 +19,18 @@ public abstract class PersistentModel {
 	private final MetaData metaData;
 	private int id;
 	private String createdAt;
-
-	
-
 	
 	/** 
 	 * Saves object as a row in the table - returns the auto generated key, and sets it
-	 * as the instance variable id 
+	 * as the instance variable id - also sets the time stamp field 
 	 * @throws SQLException */
-	public int save() throws SQLException  {
+	public int save() throws SQLException {
 		int newIdx = DatabaseConnection.create(this);
-		setId(newIdx);
+		setId( newIdx );
+		setCreatedAt( DatabaseConnection.get(getTableName(), newIdx).get(I_CREATED_AT) );
 		return getId();
 	}
-	
+
 	public void delete() throws SQLException {
 		DatabaseConnection.destroy(this);
 	}
@@ -53,19 +51,18 @@ public abstract class PersistentModel {
 		// First row is id, remaining depend upon the SCHEMA order
 		setId(Integer.parseInt(dbEntry.get(I_ID )));
 		setCreatedAt(dbEntry.get(I_CREATED_AT));
-		
 	}
 
 	/* NEEDS TO BE IMPLEMENTED BY SUBCLASS */
-	/** Returns an array of the fields that should be written to the database in the order
+	/** 
+	 * Returns an array of the fields that should be written to the database in the order
 	 * that they appear in the database. For instance: a model with the instance variables:
 	 * a b c d e and a relation with schema: A B C
 	 * Will return a new Object[] {a, b, c}
 	 * @return
 	 */
 	public abstract Object[] getFields();
-	
-	
+
 	/** Pass in the static fields containing the meta data, while */ 
 	public PersistentModel(String tableName, String[][] schema, String[][] foreignKeys) throws SQLException {
 		this.metaData = new MetaData(tableName, schema, foreignKeys);

@@ -106,11 +106,14 @@ public class DatabaseConnection {
 		return stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
 	}
 
-	public int getGeneratedKey() throws SQLException {
+	public int getGeneratedKey(PersistentModel pm) throws SQLException {
 		ResultSet rs = stmt.getGeneratedKeys();
 		int key = -1;
 		if (rs.next()) {
 			key = rs.getInt(1);
+			if (pm != null) {
+				pm.setId(key);
+			}
 		} else {
 			throw new SQLException("ResultSet should've contained one key, did you call getGeneratedKey after running executeUpdate");
 		}
@@ -127,17 +130,17 @@ public class DatabaseConnection {
 		return parseResultData(rs);
 	}
 
-	List<String> fetchRowById(String tableName, int id) throws SQLException{
+	List<String> fetchRowById(String tableName, int id) throws SQLException {
 		String findQuery = "SELECT * FROM " + tableName + " WHERE id = '" + id + "'";
 		ResultSet rs = executeQuery(findQuery);
 		List<List<String> > res = parseResultData(rs);
 		switch (res.size()) {
-		case 0:
-			return null;
-		case 1:
-			return res.get(0);
-		default:
-			throw new SQLException("Uniqueness of id violated");
+			case 0:
+				return null;
+			case 1:
+				return res.get(0);
+			default:
+				throw new SQLException("Uniqueness of id violated");
 		}
 	}
 
@@ -306,7 +309,7 @@ public class DatabaseConnection {
 		String createQuery  = "INSERT INTO " + pm.getTableName() + " ( " + columnNames + 
 		" ) VALUES (" + columnValues + ")";
 		db.executeUpdate(createQuery);
-		int id = db.getGeneratedKey();
+		int id = db.getGeneratedKey(pm);
 		db.close();
 		return id;
 	}

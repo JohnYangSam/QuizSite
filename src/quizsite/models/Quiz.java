@@ -71,7 +71,7 @@ public class Quiz extends PersistentModel{
 
 	@Override
 	public Object[] getFields() {
-		Object[] objs = new Object[] {getCreatorID(), isRandomized(), isPracticeEnabled(), isImmediate(), isOnePage()};
+		Object[] objs = new Object[] {getCreatorID(), setBool(isRandomized()), setBool(isPracticeEnabled()), setBool(isImmediate()), setBool(isOnePage())};
 		return objs;
 	}
 
@@ -94,6 +94,9 @@ public class Quiz extends PersistentModel{
 	
 	private boolean getBool(String bstr)
 	{ return (bstr.equals("1"))?true:false; }
+	
+	private int setBool(boolean b)
+	{ return (b)?1:0; }
 
 	/*G&S*/
 	public boolean isOnePage()

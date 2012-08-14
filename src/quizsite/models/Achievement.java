@@ -58,6 +58,11 @@ public class Achievement extends PersistentModel {
 	}
 
 	@Override
+	public String toString() {
+		return getType().getTitle();
+	}
+	
+	@Override
 	public Object[] getFields() {
 		return new Object[] {getUser().getId(), getType().getTitle()};
 	}
@@ -69,27 +74,43 @@ public class Achievement extends PersistentModel {
 		setType(dbEntry.get(I_TYPE));
 	}
 
-	private void setType(String type) {
-		setType(Type.get(type));
-	}
 
 	public static List<Achievement> parseRows(List< List<String> > rows) throws SQLException {
 		List<Achievement> ret = new ArrayList<Achievement>();
 		for (List<String> row : rows) {
-			Achievement curr = new Achievement(null, null);
-			curr.parse(row);
-			ret.add(curr);
+			if (row != null) {
+				Achievement curr = new Achievement(null, null);
+				curr.parse(row);
+				ret.add(curr);
+			} else {
+				ret.add(null);
+			}
 		}
 		return ret;
 	}
 
 	public static Achievement get(int id) throws SQLException {
 		List<String> entry = DatabaseConnection.get(TABLE_NAME, id);
-		Achievement curr = new Achievement(null, null);
-		curr.parse(entry);
-		return curr;
+		if (entry != null) {
+			Achievement curr = new Achievement(null, null);
+			curr.parse(entry);
+			return curr;
+		} else {
+			return null;
+		}
 	}
 	
+	/** Lists achievements of given user */
+	public static List<Achievement> ofUser(User user) throws SQLException {
+		String[][] conditions = {{"user_id", "=", "" + user.getId()}};
+		return parseRows(DatabaseConnection.indexWhere(TABLE_NAME, conditions));
+	}
+	
+	
+	private void setType(String type) {
+		setType(Type.get(type));
+	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
