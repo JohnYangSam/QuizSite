@@ -20,7 +20,7 @@ import quizsite.models.User;
 /**
  * Servlet implementation class RegisterUserController
  */
-@WebServlet("/RegisterUserController")
+@WebServlet("/RegisterNewUserController")
 public class RegisterNewUserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -53,12 +53,20 @@ public class RegisterNewUserController extends HttpServlet {
 			
 		//Get parameters from the request
 		String userName = request.getParameter("userName");
+		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String passwordConfirm = request.getParameter("passwordConfirm");
 		
 		
 		//TODO: NOTE for RegisterUserView.jsp
+		
 		//if (request.getAttribute("failuireMessage") == NULL don't print out anything, otherwise print out the message
+		if(!isValidEmail(email)) {
+			request.setAttribute("failureMessage", "Invalid email address entered. Please enter a valid email address");
+			RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
+			dispatch.forward(request, response);
+			return;
+		}
 		
 		//Check for empty case
 		if(userName == "") {
@@ -84,11 +92,11 @@ public class RegisterNewUserController extends HttpServlet {
 					RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
 					dispatch.forward(request, response);
 					return;
-				
-				//Salt, has, and a new account to accounts
+					
+				//Register user and set the userId to the session, then send to main view
 				} else {
 					//Add user and then set the USER_SESSION_KEY to the userId
-					int userId = registerNewUser(userName, password);
+					int userId = registerNewUser(userName, email, password);
 					HttpSession session = request.getSession();
 					session.setAttribute(Util.USER_SESSION_KEY, userId);
 					//Send to the main view
@@ -99,22 +107,45 @@ public class RegisterNewUserController extends HttpServlet {
 				// TODO Auto-generated catch block
 				System.err.println("SQL Error while autheticating user registration: ");
 				e.printStackTrace();
+				request.setAttribute("failureMessage", "There was an error making the registration. Please try registering again.");
+				RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
+				dispatch.forward(request, response);
+
 			}
 		}
+	}
+	
+	/**
+	 * Checks if the inputed email is valid
+	 */
+	private boolean isValidEmail(String email) {
+		int atIndex = email.indexOf('@');
+		if (atIndex == -1) return false;
+		int dotIndex = email.indexOf('.', atIndex);
+		if(dotIndex == -1) return false;
+		return true;
 	}
 
 	/**
 	 * Registers a new user in the database (taking care of salting and hashing passwords
 	 * and returns the ID of the user (that can be stored later to identify them in the session.
+	 * If there is an error it returns -1.
 	 */
-	private int registerNewUser(String userName, String password) {
+	private int registerNewUser(String userName, String email, String password) {
 		String salt = Util.generateSalt();
-		String saltedHash = Util.makeSaltedHash(password, salt);
-		
-		
-		return;
-		
+		String passwordSaltedHash = Util.makeSaltedHash(password, salt);
+		int userId = -1;
+		try {
+			//Create new user
+			User newUser =  new User(userName, email, passwordSaltedHash, salt);
+			//Save the user in the database
+			userId = newUser.save();
+		} catch (SQLException e) {
+			System.err.println("Error registering user");
+			System.out.println(e.getStackTrace());
+			return -1;
+		}
+		return userId;
 	}
-x
 
 }

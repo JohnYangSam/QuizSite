@@ -21,6 +21,10 @@
 						<input type="text" name="userName" />	
 					</li>
 					<li>
+						<label>Email</label>
+						<input typ="text" name="email" />	
+					</li>
+					<li>
 						<label>Password</label><br/>
 						<input type="password" name="password" />	
 					</li>

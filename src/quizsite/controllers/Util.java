@@ -34,13 +34,22 @@ public class Util {
 	 * @throws IOException
 	 * @throws ServletException 
 	 * */
-	public static User signInOrRedirect(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	public static User signInOrRedirect(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Integer userId = (Integer) session.getAttribute(USER_SESSION_KEY);
 		User curr;
-		if ( userId != null && (curr = User.get(userId)) != null) {
-			return curr;
-		} else {
+		
+		try {
+			//If it is a valid user, return the user
+			if ( userId != null && (curr = User.get(userId)) != null) {
+				return curr;
+			} else {
+			//Else send to login page	
+				RequestDispatcher dispatch = request.getRequestDispatcher(LOGIN_VIEW);
+				dispatch.forward(request, response);
+			}
+		} catch (SQLException e) {
+			//On SQL exception send to login page
 			RequestDispatcher dispatch = request.getRequestDispatcher(LOGIN_VIEW);
 			dispatch.forward(request, response);
 		}
