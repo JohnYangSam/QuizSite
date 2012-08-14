@@ -28,6 +28,7 @@ public class UserTest {
 	public void setUp() throws Exception {
 		DatabaseConnection.switchModeTo(DatabaseConnection.Mode.TEST);
 		DatabaseConnection.dropTablesIfExist( User.TABLE_NAME );
+		DatabaseConnection.dropTablesIfExist( Friendship.TABLE_NAME );
 		users = new User[3];
 		ids = new int[3];
 		for (int i = 0; i < users.length; i++) {
@@ -73,7 +74,7 @@ public class UserTest {
 		List<User> all = User.index();
 		assertEquals(0, all.size());
 	}
-	
+
 	@Test
 	public void testUpdate() throws SQLException {
 		for (int i = 0; i < users.length; i++) {
@@ -99,6 +100,15 @@ public class UserTest {
 		assertEquals(0, users[0].gotFriendRequestsFrom().size());
 		assertEquals(1, users[1].gotFriendRequestsFrom().size());
 		assertEquals(2, users[2].gotFriendRequestsFrom().size());
+		
+		assertEquals(0, users[0].getFriends().size());
+		assertEquals(0, users[2].getFriends().size());
+		assertEquals(0, users[1].getFriends().size());
+		
+		f.accept();
+		assertEquals(0, users[0].getFriends().size());
+		assertEquals(1, users[2].getFriends().size());
+		assertEquals(1, users[1].getFriends().size());
 	}
 	
 	@Test

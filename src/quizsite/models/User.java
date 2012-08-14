@@ -60,7 +60,12 @@ public class User extends PersistentModel{
 		List<List<String> > rows = DatabaseConnection.index(TABLE_NAME);
 		return parseRows(rows);
 	}
-	
+
+	/** Returns a list of achievements of current user */
+	public List<Achievement> getAchievements() throws SQLException {
+		return Achievement.ofUser(this);
+	}
+
 	/** 
 	 * List of all users to which the current user has sent friend requests 
 	 * SELECT * FROM User WHERE id in (SELECT responder_id FROM Friendship WHERE initiator_id = <id>)
@@ -79,7 +84,7 @@ public class User extends PersistentModel{
 	
 	
 	/** 
-	 * List of all users who sent friend requests to the current user  
+	 * List of all users who sent friend requests to the current user
 	 * SELECT * FROM User WHERE id in (SELECT initiator_id FROM Friendship WHERE responder_id = <id>)
 	 * @throws SQLException 
 	 * */
@@ -92,6 +97,29 @@ public class User extends PersistentModel{
 					+ ")";
 		String condition = "id IN " + subQ;
 		return parseRows(DatabaseConnection.indexWhereRaw(TABLE_NAME, condition));
+	}
+	
+	/** Returns a list of ACCEPTED friendships involving current user */
+	public List<User> getFriends() throws SQLException {
+		List<Friendship> accepted = Friendship.indexFor(this, Friendship.Status.ACCEPTED);
+		List<User> friends = Friendship.getUsersFrom(accepted);
+		friends.remove(this);
+		return friends;
+	}
+	
+	/** Fetch list of users who have sent friend requests to current user, filter by given status */
+	public List<User> getReceivedFriendRequests(Friendship.Status status) throws SQLException {
+		List<Friendship> lf = Friendship.indexWhereResponderIs(this, status);
+		List<User> freqs = Friendship.getUsersFrom(lf);
+		freqs.remove(this);
+		return freqs;
+	}
+	
+	/** Compares only id's - User objects need to be saved*/
+	@Override
+	public boolean equals(Object user) {
+		User other = (User) user;
+		return (getId() == other.getId()) && getCreatedAt().equals(other.getCreatedAt()) && getUserName().equals(other.getUserName()) && getEmail().equals(other.getEmail());
 	}
 	
 	/**

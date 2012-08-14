@@ -38,7 +38,6 @@ public class Util {
 		HttpSession session = request.getSession();
 		Integer userId = (Integer) session.getAttribute(USER_SESSION_KEY);
 		User curr;
-		
 		try {
 			//If it is a valid user, return the user
 			if ( userId != null && (curr = User.get(userId)) != null) {

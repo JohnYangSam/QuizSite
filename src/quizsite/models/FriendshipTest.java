@@ -78,6 +78,14 @@ public class FriendshipTest {
 		assertEquals(0, Friendship.indexWhereResponderIs(users[1], Status.REJECTED).size());
 		assertEquals(0, Friendship.indexWhereResponderIs(users[2], Status.REJECTED).size());
 		
+		assertEquals(2, Friendship.indexFor(users[0], Status.PENDING));
+		assertEquals(2, Friendship.indexFor(users[1], Status.PENDING));
+		assertEquals(2, Friendship.indexFor(users[1], Status.PENDING));
+		for (int i = 0; i < users.length; i++) {
+			assertEquals(0, Friendship.indexFor(users[i], Status.ACCEPTED));
+			assertEquals(0, Friendship.indexFor(users[i], Status.REJECTED));
+		}
+		
 		// Accept one friendship, reject another
 		Friendship.get(f[0].getId()).accept();	// 0 -> 1
 		Friendship.get(f[1].getId()).reject();	// 0 -> 2

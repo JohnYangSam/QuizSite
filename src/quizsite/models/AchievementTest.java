@@ -2,10 +2,13 @@ package quizsite.models;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import quizsite.models.Achievement.Type;
 import quizsite.util.DatabaseConnection;
 
 public class AchievementTest {
@@ -40,23 +43,32 @@ public class AchievementTest {
 	}
 
 	@Test
-	public void testGet() {
-		fail("Not yet implemented");
+	public void testGet() throws SQLException {
+		Achievement ach = new Achievement(users[0], Type.AMATEUR_AUTHOR);
+		int aId = ach.save();
+		assertEquals(Type.AMATEUR_AUTHOR, Achievement.get(aId).getType());
 	}
 
 	@Test
 	public void testSave() {
-		fail("Not yet implemented");
+		// Tested in get
 	}
 
 	@Test
-	public void testDelete() {
-		fail("Not yet implemented");
+	public void testDelete() throws SQLException {
+		Achievement ach = new Achievement(users[0], Type.AMATEUR_AUTHOR);
+		int aId = ach.save();
+		ach.delete();
+		assertNull(Achievement.get(aId));
 	}
 
 	@Test
-	public void testUpdate() {
-		fail("Not yet implemented");
+	public void testUpdate() throws SQLException {
+		Achievement ach = new Achievement(users[0], Type.AMATEUR_AUTHOR);
+		int aId = ach.save();
+		ach.setType(Type.GREATEST);
+		ach.update();
+		assertEquals(Type.GREATEST, Achievement.get(aId).getType());
 	}
 
 }

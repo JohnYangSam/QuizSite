@@ -17,12 +17,10 @@ public class Attempt extends PersistentModel {
 
 	protected static String[][] FOREIGN_KEYS = 
 		{{ "quiz_id", "Quiz", "id"}, {"attempter_id", "User", "id"}};
-	
-	
+
 	public Attempt(Quiz quiz, int score, User attempter) throws SQLException {
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
 	}
-
 
 	/** METHODS TO COMMUNICATE WITH THE DATABASE */
 	public static List<Attempt> index() throws SQLException {

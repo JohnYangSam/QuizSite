@@ -91,10 +91,10 @@ public class DatabaseConnectionTest {
 	public void testGetGeneratedKey() {
 		try {
 			dbInstance.executeUpdate("insert into test_table (data) VALUES('fasdf');");
-			assertEquals(1, dbInstance.getGeneratedKey());
+			assertEquals(1, dbInstance.getGeneratedKey(null));
 			dbInstance.executeUpdate("insert into test_table (data) VALUES('fasdf');");
 			dbInstance.executeUpdate("insert into test_table (data) VALUES('fasdf');");
-			assertEquals(3, dbInstance.getGeneratedKey());
+			assertEquals(3, dbInstance.getGeneratedKey(null));
 		} catch (SQLException e) {
 			fail(e.getMessage());
 		}
