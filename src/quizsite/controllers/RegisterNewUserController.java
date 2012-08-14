@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import quizsite.models.User;
 
@@ -20,13 +21,13 @@ import quizsite.models.User;
  * Servlet implementation class RegisterUserController
  */
 @WebServlet("/RegisterUserController")
-public class RegisterUserController extends HttpServlet {
+public class RegisterNewUserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RegisterUserController() {
+    public RegisterNewUserController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -62,7 +63,7 @@ public class RegisterUserController extends HttpServlet {
 		//Check for empty case
 		if(userName == "") {
 			request.setAttribute("failureMessage", "Can not leave user name blank. Please enter a valid user name");
-			RequestDispatcher dispatch = request.getRequestDispatcher("RegisterUserView.jsp");
+			RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
 			dispatch.forward(request, response);
 			return;
 		} else {
@@ -73,32 +74,33 @@ public class RegisterUserController extends HttpServlet {
 			//Existing account case
 			if (User.userExists(userName)) {
 				request.setAttribute("failureMessage", "User name is already taken. Please try another user name.");
-				RequestDispatcher dispatch = request.getRequestDispatcher("RegisterUserView.jsp");
+				RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
 				dispatch.forward(request, response);
 				return;
 		
 			//Password not the same
 			} else if (!password.equals(passwordConfirm)) {
 				request.setAttribute("failureMessage", "Password and password confirmation do not match. Please try registering again");
-				RequestDispatcher dispatch = request.getRequestDispatcher("RegisterUserView.jsp");
+				RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW));
 				dispatch.forward(request, response);
 				return;
 			
 			//Salt, has, and a new account to accounts
 			} else {
-				registerNewUser(userName, password, request);
-			//TODO add the welcome or homepage	
-				
-				//Send to welcome page
-				RequestDispatcher dispatch = request.getRequestDispatcher("MainView.jsp");
+				//Add user and then set the USER_SESSION_KEY to the userId
+				int userId = registerNewUser(userName, password);
+				HttpSession session = request.getSession();
+				session.setAttribute(Util.USER_SESSION_KEY, userId);
+				//Send to the main view
+				RequestDispatcher dispatch = request.getRequestDispatcher(Util.MAIN_VIEW);
 				dispatch.forward(request, response);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			System.err.println("SQL Error while autheticating user registration: ");
 			e.printStackTrace();
 		}	
 	}
-	public static User signInOrRedirect(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 	
 	
 

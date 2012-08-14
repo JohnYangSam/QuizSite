@@ -16,10 +16,14 @@ import quizsite.models.User;
 public class Util {
 	/** Defining all magic strings here, to avoid typos */
 	public static final String USER_SESSION_KEY = "CURRENT_USER_ID";
-	public static final String LOGIN_VIEW = "LoginView.jsp";
 	public static final String RECEIVED_MSG_LIST_KEY = "RECEIVED_MESSAGES";
 	public static final String SENT_MSG_LIST_KEY = "SENT_MESSAGES";
+
+	/** Views */
+	public static final String LOGIN_VIEW = "LoginView.jsp";
 	public static final String INBOX_VIEW = "InboxView.jsp";
+	public static final String MAIN_VIEW = "MainView.jsp";
+	public static final String REGISTER_NEW_USER_VIEW = "RegisterNewUserView.jsp";
 	
 	/** 
 	 * Return currently logged in user if user-session exists and if the user-session belongs to a valid user

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -8,22 +8,26 @@
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <link href="css/homePage.css" rel="stylesheet" type="text/css" />
 
-<title>Quizbook - Overview</title>
+<title>Quizbook - Register User</title>
 </head>
 <body>
 	<div class="main">
 		<div class="login">
 			<h2>Create an account</h2>
-			<form action="#" method="post">
+			<form action="RegisterNewUserController" method="post">
 				<ul>
 					<li>
-						<label>Login </label><br/>
-						<input type="text" />	
+						<label>User Name</label><br/>
+						<input type="text" name="userName" />	
 					</li>
 					<li>
 						<label>Password</label><br/>
-						<input type="password">	
+						<input type="password" name="password" />	
 					</li>
+					<li>
+						<label>Confirm Password</label><br />
+						<input type="password" name="passwordConfirm" />
+					</li>	
 					<li>
 						<input class="login_button" type="submit" name="Create" value="Create">					
 					</li>

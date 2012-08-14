@@ -202,6 +202,7 @@ public class User extends PersistentModel{
 	public String getPasswordSalt() {
 		return this.passwordSalt;
 	}
+	
 
 //	@Override
 //	public String toString() {
