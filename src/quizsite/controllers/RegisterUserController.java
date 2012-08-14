@@ -42,17 +42,26 @@ public class RegisterUserController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		//Get take in the userName and password
+		//Check if the user exists in the database yet
+			//Redirect them otherwise ----->>
+		//Salt the password and hash
+		//Create a user in the database
+		//Set the servlet context
+		// send the user to the homepage ----->>
+			
 		//Get parameters from the request
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
-	
+		String passwordConfirm = request.getParameter("passwordConfirm");
+		
+		
 		//TODO: create the retryCreate.jsp
 		
 		//Check for empty case
 		if(userName == "") {
 			request.setAttribute("emptyUserName", true);
-			RequestDispatcher dispatch = request.getRequestDispatcher("retrycreate.jsp");
+			RequestDispatcher dispatch = request.getRequestDispatcher("retryCreate.jsp");
 			dispatch.forward(request, response);
 			return;
 		} else {
@@ -63,12 +72,13 @@ public class RegisterUserController extends HttpServlet {
 		//Existing account case
 		try {
 			if (User.userExists(userName)) {
-				RequestDispatcher dispatch = request.getRequestDispatcher("retrycreate.jsp");
+			}
+				RequestDispatcher dispatch = request.getRequestDispatcher("retryCreate.jsp");
 				dispatch.forward(request, response);
 			//Valid input case
 			} else {
 				//Add a new account to accounts
-//			User.addNewUser(userName, password);
+			User.addNewUser(userName, password);
 
 			//TODO add the welcome or homepage	
 				
@@ -81,6 +91,7 @@ public class RegisterUserController extends HttpServlet {
 			e.printStackTrace();
 		}	
 	}
+	public static User signInOrRedirect(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 	
 	
 

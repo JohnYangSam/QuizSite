@@ -70,8 +70,6 @@ public class User extends PersistentModel{
 		String whereQ = "WHERE id in ("+ Friendship.getAcceptorIdGivenInitiatorIdQuery(getId())+")";
 		return parseRows(DatabaseConnection.indexQueryRaw(TABLE_NAME, whereQ));
 	}
-	
-	
 
 	private static List<User> parseRows(List<List<String> > rows) throws SQLException {
 		List<User> ret = new ArrayList<User>();
@@ -98,7 +96,9 @@ public class User extends PersistentModel{
 		return new Object[] {getName(), getEmail(), getPasswordSaltedHash(), getPasswordSalt()};
 	}
 
-
+	/**
+	 *  Returns a user based on the inputed id
+	 */
 	public static User get(int id) throws SQLException {
 		List<String> entry = DatabaseConnection.get(TABLE_NAME, id);
 		if (entry != null) {
@@ -110,7 +110,19 @@ public class User extends PersistentModel{
 		}
 	}
 	
-
+	/**
+	 * Returns true if the user by a given userName exists in the database.
+	 * Throws an SQLException is the userName is not unique in the database (extra error checking)
+	 */
+	public static boolean userExists(String userName) throws SQLException {
+		String[][] whereConditions = {{"userName", "=", userName}};
+		List<List<String> > entries = DatabaseConnection.indexWhere(TABLE_NAME, whereConditions);
+		//Confirm that the userName is unique
+		if(entries.size() > 1) throw new SQLException("more than one Use Name of the same type found: " + userName);
+		if(entries.size() == 1) return true;
+		return false;
+	}
+	
 
 	/** 
 	 * Parses a list of strings representing the values in a dbEntry and 
@@ -164,12 +176,4 @@ public class User extends PersistentModel{
 	public String getPasswordSalt() {
 		return this.passwordSalt;
 	}
-
-	public static boolean userExists(String userName) throws SQLException {
-		String[][] conditions = {{"username", "=", userName}};
-		return (DatabaseConnection.indexWhere(TABLE_NAME, conditions).size() != 0);
-	}
-
-
-
 }
