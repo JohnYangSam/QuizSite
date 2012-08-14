@@ -95,10 +95,8 @@ public class User extends PersistentModel{
 	}
 	
 	/**
-	 * 
+	 *  Takes in a List<List<String> > and returns a List<User> (correctly parsed)
 	 * */
-	
-
 	private static List<User> parseRows(List<List<String> > rows) throws SQLException {
 		List<User> ret = new ArrayList<User>();
 		for(List<String> entry : rows) {
@@ -203,11 +201,6 @@ public class User extends PersistentModel{
 
 	public String getPasswordSalt() {
 		return this.passwordSalt;
-	}
-
-	public static boolean userExists(String userName) throws SQLException {
-		String[][] conditions = {{"username", "=", userName}};
-		return (DatabaseConnection.indexWhere(TABLE_NAME, conditions).size() != 0);
 	}
 
 //	@Override

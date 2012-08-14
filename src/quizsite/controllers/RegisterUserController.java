@@ -86,10 +86,7 @@ public class RegisterUserController extends HttpServlet {
 			
 			//Salt, has, and a new account to accounts
 			} else {
-				registerNewUser(request);
-				
-				User.addNewUser(userName, password);
-
+				registerNewUser(userName, password, request);
 			//TODO add the welcome or homepage	
 				
 				//Send to welcome page
