@@ -44,6 +44,8 @@ public class User extends PersistentModel{
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
 		setId(id);
 	}
+	
+	User.addNewUser()
 
 	/* Returns the name of the user */
 	public String getName() {

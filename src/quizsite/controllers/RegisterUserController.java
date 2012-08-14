@@ -56,34 +56,44 @@ public class RegisterUserController extends HttpServlet {
 		String passwordConfirm = request.getParameter("passwordConfirm");
 		
 		
-		//TODO: create the retryCreate.jsp
+		//TODO: NOTE for RegisterUserView.jsp
+		//if (request.getAttribute("failuireMessage") == NULL don't print out anything, otherwise print out the message
 		
 		//Check for empty case
 		if(userName == "") {
-			request.setAttribute("emptyUserName", true);
-			RequestDispatcher dispatch = request.getRequestDispatcher("retryCreate.jsp");
+			request.setAttribute("failureMessage", "Can not leave user name blank. Please enter a valid user name");
+			RequestDispatcher dispatch = request.getRequestDispatcher("RegisterUserView.jsp");
 			dispatch.forward(request, response);
 			return;
 		} else {
-			request.setAttribute("emptyUserName", false);
-			//Fall through
-		}
-		
-		//Existing account case
+	
+		//Catch SQLExceptions
 		try {
+			
+			//Existing account case
 			if (User.userExists(userName)) {
-			}
-				RequestDispatcher dispatch = request.getRequestDispatcher("retryCreate.jsp");
+				request.setAttribute("failureMessage", "User name is already taken. Please try another user name.");
+				RequestDispatcher dispatch = request.getRequestDispatcher("RegisterUserView.jsp");
 				dispatch.forward(request, response);
-			//Valid input case
+				return;
+		
+			//Password not the same
+			} else if (!password.equals(passwordConfirm)) {
+				request.setAttribute("failureMessage", "Password and password confirmation do not match. Please try registering again");
+				RequestDispatcher dispatch = request.getRequestDispatcher("RegisterUserView.jsp");
+				dispatch.forward(request, response);
+				return;
+			
+			//Salt, has, and a new account to accounts
 			} else {
-				//Add a new account to accounts
-			User.addNewUser(userName, password);
+				registerNewUser(request);
+				
+				User.addNewUser(userName, password);
 
 			//TODO add the welcome or homepage	
 				
 				//Send to welcome page
-				RequestDispatcher dispatch = request.getRequestDispatcher("welcome.jsp");
+				RequestDispatcher dispatch = request.getRequestDispatcher("MainView.jsp");
 				dispatch.forward(request, response);
 			}
 		} catch (SQLException e) {
