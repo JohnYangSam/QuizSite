@@ -1,49 +1,58 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="quizsite.util.*,quizsite.controllers.*" %>
+
+<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
+		<link href="css/homePage.css" rel="stylesheet" type="text/css" />
+		<title>Quizbook - Overview</title>
+	</head>
 
-<link href="css/style.css" rel="stylesheet" type="text/css" />
-<link href="css/homePage.css" rel="stylesheet" type="text/css" />
 
-<title>Quizbook - Overview</title>
-</head>
-<body>
-	<div class="main">
-		<div class="login">
-			<h2>Have an account?</h2>
-			<form action="#" method="post">
-				<ul>
-					<li>
-						<label>Login </label><br/>
-						<input type="text" />	
-					</li>
-					<li>
-						<label>Password</label><br/>
-						<input type="password">	
-					</li>
-					<li>
-						<input class="login_button" type="submit" name="Go!" value="Go!">					
-					</li>
-				</ul>
-			</form>
-			
-			<div class="no_account">
-				<span>Don't have an account yet? No problems!</span><br/>
-				<a href="createNewUser.jsp">Create a new one</a>
+	<body>
+		<!--  INCLUDE HEADER -->
+		<jsp:include page="header.jsp" />
+		
+		<!-- MAIN CONTENT START -->	
+		<div class="main">
+			<div class="login">
+				<h2>Have an account?</h2>
+				<form action="#" method="post">
+					<ul>
+						<li>
+							<label>Login </label><br/>
+							<input type="text" name="userName" />	
+						</li>
+						<li>
+							<label>Password</label><br/>
+							<input type="password" name="password" />	
+						</li>
+						<li>
+							<input class="login_button" type="submit" value="Go!">					
+						</li>
+					</ul>
+				</form>
+				
+				<div class="no_account">
+					<span>Don't have an account yet? No problems!</span><br/>
+					<a href="<%=Util.REGISTER_NEW_USER_VIEW%>">Create a new one</a>
+				</div>
 			</div>
+			
+			<div class="description">
+				<h2>Welcome to COOL_NAME</h2>
+				<p>
+					Some text Some text Some text Some text Some text Some text
+					Some text Some textSome text Some text Some text Some text 
+					Some text 
+				</p>	
+			</div>	
 		</div>
 		
-		<div class="description">
-			<h2>Welcome to COOL_NAME</h2>
-			<p>
-				Some text Some text Some text Some text Some text Some text
-				Some text Some textSome text Some text Some text Some text 
-				Some text 
-			</p>	
-		</div>	
-	</div>
-</body>
+		<!-- INCLUDE FOOTER -->
+		<jsp:include page="footer.jsp" />	
+	</body>
 </html>
