@@ -57,9 +57,6 @@ public class RegisterNewUserController extends HttpServlet {
 		String password = request.getParameter("password");
 		String passwordConfirm = request.getParameter("passwordConfirm");
 		
-		
-		//TODO: NOTE for registerNewUserView.jsp
-		
 		//if (request.getAttribute("failuireMessage") == NULL don't print out anything, otherwise print out the message
 	
 		//Check for empty case
@@ -103,11 +100,14 @@ public class RegisterNewUserController extends HttpServlet {
 				} else {
 					//Add user and then set the USER_SESSION_KEY to the userId
 					int userId = registerNewUser(userName, email, password);
+					//If there is an error adding the user, throw an SQL exception
+					if(userId == -1) throw new SQLException();
 					HttpSession session = request.getSession();
 					session.setAttribute(Util.USER_SESSION_KEY, userId);
 					//Send to the main view
 					RequestDispatcher dispatch = request.getRequestDispatcher(Util.HOME_VIEW);
 					dispatch.forward(request, response);
+					return;
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -116,7 +116,7 @@ public class RegisterNewUserController extends HttpServlet {
 				request.setAttribute("failureMessage", "There was an error making the registration. Please try registering again.");
 				RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
 				dispatch.forward(request, response);
-
+				return;
 			}
 		}
 	}

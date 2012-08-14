@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%> 
+    pageEncoding="ISO-8859-1"%>
+<%@ page import="quizsite.util.*, quizsite.controllers.*" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,7 +52,7 @@
 			</form>
 			
 			<div class="no_account">
-				<a href="index.jsp">Back</a>
+				<a href="<%=Util.HOME_CONTROLLER%>">Home</a>
 			</div>
 		</div>
 		
