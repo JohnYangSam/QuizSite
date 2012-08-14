@@ -1,6 +1,7 @@
 package quizsite.models;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import quizsite.util.DatabaseConnection;
@@ -18,23 +19,17 @@ public class Friendship extends PersistentModel {
 	private Status status;
 	
 	public enum Status {
-		PENDING("PENDING"),
-		ACCEPTED("ACCEPTED"),
-		REJECTED("REJECTED");
-		private String repr;
-		Status(String repr) {
-			setRepr(repr);
-		}
-		public void setRepr(String repr) {
-			this.repr = repr;
-		}
+		PENDING, ACCEPTED, REJECTED;
 		@Override
 		public String toString() {
-			return repr;
+			return this.name();
 		}
-		public static Status get(String status) {
+		public boolean equals(String stat) {
+			return this.toString().equals(stat);
+		}
+		public static Status get(String stat) {
 			for (Status s : Status.values()) {
-				if (status.equals(s)) {
+				if (s.equals(stat)) {
 					return s;
 				}
 			}
@@ -49,10 +44,57 @@ public class Friendship extends PersistentModel {
 		setStatus(Status.PENDING);
 	}
 	
-	
-	public static List<Friendship> indexWhereInitiatorIs(User user) {
-		return null;
+	/** Accepts and updates db*/
+	public void accept() throws SQLException {
+		setStatus(Status.ACCEPTED);
+		update();
 	}
+	
+	/** Rejects and updates db */
+	public void reject() throws SQLException {
+		setStatus(Status.REJECTED);
+		update();
+	}
+	
+	/** Returns all friendship entries initiated by given user , irrespective of status */
+	public static List<Friendship> indexWhereInitiatorIs(User user) throws SQLException {
+		String[][] conditions = { {"initiator_id", "=", "" + user.getId()} };
+		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
+		return parseRows(rows);
+	}
+	
+	/** Returns all friendship entries initiated by given user , corresponding to given status */
+	public static List<Friendship> indexWhereInitiatorIs(User user, Status status) throws SQLException {
+		String[][] conditions = { {"initiator_id", "=", "" + user.getId()}, {"status", "=", status.toString()} };
+		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
+		return parseRows(rows);
+	}
+	
+	/** Returns all friendship entries where user plays the role of responder, irrespective of status */
+	public static List<Friendship> indexWhereResponderIs(User user) throws SQLException {
+		String[][] conditions = { {"responder_id", "=", "" + user.getId()} };
+		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
+		return parseRows(rows);
+	}
+	
+	/** Returns all friendship entries where user plays the role of responder, corresponding to given status */
+	public static List<Friendship> indexWhereResponderIs(User user, Status status) throws SQLException {
+		String[][] conditions = { {"responder_id", "=", "" + user.getId()}, {"status", "=", status.toString()} };
+		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
+		return parseRows(rows);
+	}
+	
+	
+	public static List<Friendship> parseRows(List<List<String>> rows) throws SQLException {
+		List<Friendship> ret = new ArrayList<Friendship>();
+		for (List<String> row : rows) {
+			Friendship curr = new Friendship(null, null); 
+			curr.parse(row);
+			ret.add(curr);
+		}
+		return ret;
+	}
+	
 	
 	public static Friendship get(int id) throws SQLException {
 		List<String> entry = DatabaseConnection.get(TABLE_NAME, id);
@@ -64,7 +106,6 @@ public class Friendship extends PersistentModel {
 			return null;
 		}
 	}
-	
 
 
 	/** 
@@ -88,7 +129,6 @@ public class Friendship extends PersistentModel {
 		return objs;
 	}
 	
-
 	public void setInitiator(User initiator) {
 		this.initiator = initiator;
 	}
