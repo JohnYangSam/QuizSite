@@ -7,20 +7,17 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<%
-			/* User current = (User) request.getAttribute(Util.CURRENT_USER_KEY); */
-		
-			
+		<%!
 		%>
+		<link href="css/homePage.css" rel="stylesheet" type="text/css" />
 		<jsp:include page="_general_head_info.jsp" />
-		<title>Welcome!</title>
+		<title>Welcome - <%=User.getUserName(request) %>!</title>
 	</head>
 	<body>
 		<!--  INCLUDE HEADER -->
 		<jsp:include page="_header.jsp"/>
 	
 		<div id="main">
-
 		<!-- LEFT PANEL -->
 		<div id="leftPanel">
 			<div id="achievements">
@@ -111,6 +108,7 @@
 
 		<!-- CENTER PANEL -->
 		<div id="centerPanel">
+			<h1>Welcome - <%=User.getUserName(request)%>!</h1>
 			<div id="announcements">
 				<h2>Announcements</h2>
 				<ul>	

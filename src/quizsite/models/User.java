@@ -10,6 +10,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import quizsite.models.Message.Type;
 import quizsite.util.Activity;
 import quizsite.util.DatabaseConnection;
@@ -366,6 +369,24 @@ public class User extends PersistentModel{
 	public Activity getActivity() {
 		return new Activity(this.getId(), userName, this.getCreatedAt(), "joined", "QuizSite!");
 	}
+	
+	
+	/* ------------------------ DEALING WITH VIEWS, REQUESTS, and CONTROLLERS --------------------------- */
+	
+	/** View helper function to get the userName for the page */
+	public static String getUserName(HttpServletRequest request) {
+		try {	
+			HttpSession session = request.getSession();
+			Integer userId = (Integer) session.getAttribute(Util.USER_SESSION_KEY);
+			System.out.println("userId " + userId);
+			return User.get(userId).getName();
+		} catch (SQLException e) {
+			System.err.println("home.jsp:16 Error getting userName: ");
+			e.printStackTrace();
+			return "";
+		}
+	}
+
 	
 
 //	@Override
