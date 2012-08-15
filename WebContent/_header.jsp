@@ -10,7 +10,8 @@
 			<li class="headerElem"><a href="inbox">Inbox</a></li>	
 			<li class="headerElem"><a href="logout_user.jsp">Logout</a></li>	
 			<li class="headerElem"><a href="create_quiz.jsp">Create a Quiz</a></li>	
-			<li class="headerElem"><a href="display_all-quizzes.jsp">Take a Quiz</a></li>	
+			<li class="headerElem"><a href="display_all_quizzes.jsp">Take a Quiz</a></li>	
+			<li class="headerElem"><a href="display_all_users.jsp">Find a Friend</a></li>
 			<li class="headerElem"><a href="#">Achievements</a></li>	
 		</ul>
 	</div>

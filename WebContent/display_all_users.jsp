@@ -21,9 +21,19 @@
 		
 		<!-- MAIN CONTENT START -->	
 		<div class="main">
-		
-		
-		
+		<h1>Users on Quizbook!</h1>
+		<ul>
+		<%
+			List<User> users = User.index();
+			for(User user : users) {
+				out.println("<li>");
+				out.print("<a href='display_user.jsp?userId="+user.getId()+"'>" + user.getName()+"</a> ");
+				out.print(" QuizBook user since " + user.getCreatedAt() + ".");	
+				//out. send_friend_request? initiator_Id responder_Id 	
+				out.println("</li>");	
+			}
+		%>
+		</ul>
 	
 		</div>
 
