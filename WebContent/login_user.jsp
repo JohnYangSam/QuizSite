@@ -38,7 +38,7 @@
 							<input type="password" name="password" />	
 						</li>
 						<li>
-							<input class="login_button" type="submit" name="Create" value="Create">					
+							<input class="login_button" type="submit" name="Login!" value="Login!">					
 						</li>
 					</ul>
 				</form>

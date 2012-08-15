@@ -32,7 +32,7 @@ public class HomeController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User current = Util.signInOrRedirect(request, response);
 		request.setAttribute(Util.CURRENT_USER_KEY, current);
-		RequestDispatcher dispatch = request.getRequestDispatcher("/user/home");
+		RequestDispatcher dispatch = request.getRequestDispatcher("home.jsp");
 		dispatch.forward(request, response);
 	}
 
