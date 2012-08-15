@@ -215,9 +215,6 @@ public class DatabaseConnectionTest {
 			fail(e.getMessage());
 		}
 	}
-	
-	
-	
 }
 
 class Something extends PersistentModel
