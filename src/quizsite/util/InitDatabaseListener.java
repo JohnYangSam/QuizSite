@@ -65,7 +65,7 @@ public class InitDatabaseListener implements ServletContextListener {
 		System.out.println("Friendship Init");
 		Message message0		= new Note(null, null, null);
 		System.out.println("Message Init");
-		Quiz quiz0				= new Quiz(false, false, false, false, 0);
+		Quiz quiz0				= new Quiz("","","",false, false, false, false, 0);
 		System.out.println("Quiz Init");
 		Set<String> filler = new HashSet<String>();
 		Question question0		= new CheckboxQuestion(filler, null, 0, new ArrayList<String>());
@@ -113,9 +113,9 @@ public class InitDatabaseListener implements ServletContextListener {
 
 		// create some quizzes
 		Quiz[] quizzes = new Quiz[3];
-		(quizzes[0] = new Quiz(false, true, false, true, users[0].getId())).save();
-		(quizzes[1] = new Quiz(true, true, false, true, users[1].getId())).save();
-		(quizzes[2] = new Quiz(false, false, false, true, users[2].getId())).save();
+		(quizzes[0] = new Quiz("","","",false, true, false, true, users[0].getId())).save();
+		(quizzes[1] = new Quiz("","","",true, true, false, true, users[1].getId())).save();
+		(quizzes[2] = new Quiz("","","",false, false, false, true, users[2].getId())).save();
 
 		// Send some challenges
 		Challenge[] challenges = new Challenge[3];
