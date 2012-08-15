@@ -99,9 +99,9 @@ public class RegisterUserController extends HttpServlet {
 				//Register user and set the userId to the session, then send to main view
 				} else {
 					//Add user and then set the USER_SESSION_KEY to the userId
-					Integer userId = registerNewUser(userName, email, password);
-					//If there is an error adding the user, throw an SQL exception
+					Integer userId = User.registerNewUser(userName, email, password);
 					if(userId == -1) throw new SQLException();
+					//If there is an error adding the user, throw an SQL exception
 					HttpSession session = request.getSession();
 					session.setAttribute(Util.USER_SESSION_KEY, userId);
 					//Send to the main view
@@ -132,28 +132,6 @@ public class RegisterUserController extends HttpServlet {
 		int spaceIndex = email.indexOf(' ');
 		if(spaceIndex != -1) return false;
 		return true;
-	}
-
-	/**
-	 * Registers a new user in the database (taking care of salting and hashing passwords
-	 * and returns the ID of the user (that can be stored later to identify them in the session.
-	 * If there is an error it returns -1.
-	 */
-	private int registerNewUser(String userName, String email, String password) {
-		String salt = Util.generateSalt();
-		String passwordSaltedHash = Util.makeSaltedHash(password, salt);
-		int userId = -1;
-		try {
-			//Create new user
-			User newUser =  new User(userName, email, passwordSaltedHash, salt);
-			//Save the user in the database
-			userId = newUser.save();
-		} catch (SQLException e) {
-			System.err.println("Error registering user");
-			e.printStackTrace();
-			return -1;
-		}
-		return userId;
 	}
 
 }
