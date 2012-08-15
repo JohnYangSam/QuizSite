@@ -55,7 +55,7 @@ public class Challenge extends Message {
 
 	@Override
 	public Activity getActivity() {
-		return new Activity(sender.getName(), getCreatedAt(), "challenged ", recipient.getName() + "to take a quiz!"); 
+		return new Activity(sender.getId(), sender.getName(), getCreatedAt(), "challenged ", recipient.getName() + "to take a quiz!"); 
 	}
 	
 }

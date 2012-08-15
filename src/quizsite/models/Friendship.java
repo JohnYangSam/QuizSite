@@ -185,7 +185,7 @@ public class Friendship extends PersistentModel {
 
 	@Override
 	public Activity getActivity() {
-		return new Activity(initiator.getName(), getCreatedAt(), status.toString(), responder.getName());
+		return new Activity(initiator.getId(), initiator.getName(), getCreatedAt(), status.toString(), responder.getName());
 	}
 
 

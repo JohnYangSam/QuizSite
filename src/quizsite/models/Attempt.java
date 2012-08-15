@@ -149,7 +149,7 @@ public class Attempt extends PersistentModel {
 
 	@Override
 	public Activity getActivity() {
-		return new Activity(attempter.getName(), getCreatedAt(), "scored " + score + " on", quiz.getTitle());
+		return new Activity(attempter.getId(), attempter.getName(), getCreatedAt(), "scored " + score + " on", quiz.getTitle());
 	}
 	
 }

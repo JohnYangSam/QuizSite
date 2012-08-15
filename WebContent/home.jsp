@@ -25,7 +25,7 @@
 				<h3>Recent Achievements</h3>
 				<%
 					session.getAttribute(Util.USER_SESSION_KEY);
-
+				%>
 			</div>
 			<div id="messages">
 				<h3><a href="inbox">Inbox</a></h3>

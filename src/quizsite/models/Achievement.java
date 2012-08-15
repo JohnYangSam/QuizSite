@@ -175,7 +175,7 @@ public class Achievement extends PersistentModel {
 
 	@Override
 	public Activity getActivity() {
-		return new Activity(user.getName(), getCreatedAt(), "achieved", type.getTitle());
+		return new Activity(user.getId(), user.getName(), getCreatedAt(), "achieved", type.getTitle());
 	}
 
 }

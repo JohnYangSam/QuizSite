@@ -242,11 +242,11 @@ public class Quiz extends PersistentModel{
 	@Override
 	public Activity getActivity() {
 		try {
-			return new Activity(User.get(creatorID).getName(), this.getCreatedAt(), "created a new Quiz", title);
+			return new Activity(creatorID, User.get(creatorID).getName(), this.getCreatedAt(), "created a new Quiz", title);
 		} catch (SQLException e) {
 			System.out.println("SQLException looking up user");
 			e.printStackTrace();
-			return new Activity("", "", "", "");
+			return new Activity(0, "", "", "", "");
 		}
 	}
 }

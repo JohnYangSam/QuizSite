@@ -6,6 +6,8 @@ package quizsite.models;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import quizsite.models.Message.Type;
@@ -285,9 +287,31 @@ public class User extends PersistentModel{
 		int nQuizzes = Quiz.indexCreatedBy(u).size();
 		Achievement.updateForCreator(u, nQuizzes);
 	}
-	
+
+	/**
+	 * Returns a List<Activity of the Activities of the friends of the user
+	 * sorted by date from most recently down.
+	 */
 	public List<Activity> getFriendActivitiesByDate() {
-		get
+		List<Activity> friendActivities = new ArrayList<Activity>();
+		try {
+			List<User> friends = this.getFriends();
+			for(User friend : friends) {
+				friendActivities.addAll(friend.getUserActivities());
+			}
+		} catch (SQLException e) {
+			System.out.println("Error querying to get friend activities.");
+			e.printStackTrace();
+		}
+		Collections.sort(friendActivities, 
+			new Comparator<Activity>() {
+				@Override
+				public int compare(Activity a1, Activity a2) {
+					return a1.getDate().compareTo(a2.getDate());
+				}
+			
+			});
+		return friendActivities;
 	}
 	
 
@@ -310,6 +334,7 @@ public class User extends PersistentModel{
 		for(Quiz quiz : quizListByUser) {
 			activities.add(quiz.getActivity());
 		}
+		
 		for(Achievement achievement : achievements) {
 			activities.add(achievement.getActivity());
 		}
@@ -319,7 +344,7 @@ public class User extends PersistentModel{
 
 	@Override
 	public Activity getActivity() {
-		return new Activity(userName, this.getCreatedAt(), "joined", "QuizSite!");
+		return new Activity(this.getId(), userName, this.getCreatedAt(), "joined", "QuizSite!");
 	}
 	
 

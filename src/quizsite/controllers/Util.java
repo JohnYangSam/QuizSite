@@ -46,7 +46,6 @@ public class Util {
 	 * 
 	 * If you get a HTTP 500 Error CHECK THIS!
 	 * 
-	 * 
 	 * @throws IOException
 	 * @throws ServletException 
 	 * */
