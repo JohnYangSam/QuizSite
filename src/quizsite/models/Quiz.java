@@ -85,9 +85,49 @@ public class Quiz extends PersistentModel{
 		return quizzes;
 	}
 	
+	/**
+	 * Leverages index() to return an index of the quizzes by creation time. Uses
+	 * an anonymous Comparator class.
+	 */
 	public static List<Quiz> indexByCreationTime() throws SQLException {
 		List<Quiz> quizList = Quiz.index();
-		Collections.sort(quizList, arg1)
+		Collections.sort(quizList, 
+			new Comparator<Quiz>() {
+				@Override
+				public int compare(Quiz q1, Quiz q2) {
+					return q1.getCreatedAt().compareTo(q2.getCreatedAt());
+				}
+			});
+
+//TESTING Code
+//	for(Quiz quiz : quizList) {
+//			System.err.println(quiz.getCreatedAt());
+//		}
+		
+		return quizList;
+	}
+	
+	public static List<Quiz> indexByNumberOfAttempts() throws SQLException {
+		List<Quiz> quizList = Quiz.index();
+		Collections.sort(quizList,
+			new Comparator<Quiz>() {
+				@Override
+				public int compare(Quiz q1, Quiz q2) {
+					try {
+						return q1.getNumberOfAttempts() - q2.getNumberOfAttempts();
+					} catch (Exception e) {
+						System.err.println("Error finding quiz num attempts in indexByNumberOfAttempts");
+						e.printStackTrace();
+						return 0;
+					}
+				}
+			});
+		
+//TESTING Code
+//		for(Quiz quiz : quizList) {
+//			System.err.println(quiz.getNumberOfAttempts());
+//		}
+		
 		return quizList;
 	}
 	
@@ -189,8 +229,7 @@ public class Quiz extends PersistentModel{
 	public String getCategory() { return category; }
 	
 	public void setCategory(String newCategory) { category = newCategory; }
-	
-	
+
 	public List<Attempt> getAttempts() throws SQLException {
 		return Attempt.atQuiz(this);
 	}
@@ -198,14 +237,4 @@ public class Quiz extends PersistentModel{
 	public int getNumberOfAttempts() throws SQLException {
 		return getAttempts().size();
 	}
-	
-	/* Comparator inner classes used to sort auizes by different fields */
-	private class QuizSortByDateCreated implements Comparator<Quiz> {
-		@Override
-		public int compare(Quiz q1, Quiz q2) {
-			return q1.getCreatedAt().compareTo(q2.getCreatedAt());
-		}
-	}
-	
-	
 }

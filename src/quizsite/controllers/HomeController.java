@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import quizsite.models.Quiz;
 import quizsite.models.User;
 
 /**
@@ -50,6 +51,8 @@ public class HomeController extends HttpServlet {
 
 		try {
 			//Get quizzes arrays
+			Quiz.indexByCreationTime();
+			Quiz.indexByNumberOfAttempts();
 	
 		} catch (SQLException e) {
 			System.err.println("There was an error drawing information about the current user");
