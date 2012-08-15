@@ -2,6 +2,7 @@ package quizsite.models;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Collections;
 
@@ -68,6 +69,13 @@ public class Quiz extends PersistentModel{
 		
 		return quizzes;
 	}
+	
+	public static List<Quiz> indexByCreationTime() throws SQLException {
+		List<Quiz> quizList = Quiz.index();
+		Collections.sort(quizList, arg1)
+		return quizList;
+	}
+	
 
 	@Override
 	public Object[] getFields() {
@@ -132,4 +140,15 @@ public class Quiz extends PersistentModel{
 	
 	public void setUrl(String newUrl)
 	{ url = newUrl; }
+	
+	
+	/* Comparator inner classes used to sort auizes by different fields */
+	private class QuizSortByDateCreated implements Comparator<Quiz> {
+		@Override
+		public int compare(Quiz q1, Quiz q2) {
+			return q1.getCreatedAt().compareTo(q2.getCreatedAt());
+		}
+	}
+	
+	
 }
