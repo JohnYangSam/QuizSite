@@ -7,6 +7,7 @@ package quizsite.models.messages;
 import java.sql.SQLException;
 import java.util.List;
 
+import quizsite.models.Friendship;
 import quizsite.models.Message;
 import quizsite.models.User;
 
@@ -21,6 +22,14 @@ public class FriendRequest extends Message {
 		super( sender, recipient );
 		updateCallbackURL(url);
 		setType(Type.FRIEND_REQUEST);
+	}
+
+	/** Creates a new entry in the Friendship row with status PENDING, and returns the id of the friendship entry 
+	 * @throws SQLException */
+	public int send() throws SQLException {
+		save();
+		Friendship nf = new Friendship(sender, recipient);
+		return nf.save();
 	}
 
 	/**
