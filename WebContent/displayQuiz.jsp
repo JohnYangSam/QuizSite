@@ -7,7 +7,7 @@
 	//System.out.println("Outside redirect in home controller hit: " + current);
 	//if(current == null) return;
 	
-	int quizid = Integer.parseInt(request.getParameter("quizid")); 
+	int quizid = Integer.parseInt(request.getParameter("quizId")); 
 	Quiz quiz  = Quiz.get(quizid);
 	
 %>
