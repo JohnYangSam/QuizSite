@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Collections;
 
+import quizsite.models.Message.Type;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 
@@ -35,11 +36,20 @@ public class Quiz extends PersistentModel{
 		this.practice 	 	= practice;
 		this.immediateCheck = immediateCheck;
 		this.creatorID 		= creatorID;
+
 	}
 	
 	private Quiz() throws SQLException
 	{
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
+	}
+
+	/** Overriding so that an update achievements trigger can be */
+	@Override
+	public int save() throws SQLException {
+		int id = super.save();
+		User.updateCreatorAchievements(creatorID);
+		return id;
 	}
 	
 	/**
@@ -66,7 +76,6 @@ public class Quiz extends PersistentModel{
 			currQuiz.parse(row);
 			quizzes.add(currQuiz);
 		}
-		
 		return quizzes;
 	}
 	
@@ -76,6 +85,25 @@ public class Quiz extends PersistentModel{
 		return quizList;
 	}
 	
+	public static List<Quiz> parseRows(List<List<String> > rows) throws SQLException {
+		List<Quiz> ret = new ArrayList<Quiz>();
+		for (List<String> row : rows) {
+			if (row != null) {
+				Quiz curr = new Quiz();
+				curr.parse(row);
+				ret.add(curr);
+			} else {
+				ret.add(null);
+			}
+		}
+		return ret;
+	}
+	
+	/** Returns a list of quizzes created by a user */
+	public static List<Quiz> indexCreatedBy(User user) throws SQLException {
+		String[][] conditions = {{"creator_id", "=", "" + user.getId()}};
+		return parseRows(DatabaseConnection.indexWhere(TABLE_NAME, conditions));
+	}
 
 	@Override
 	public Object[] getFields() {
@@ -124,7 +152,7 @@ public class Quiz extends PersistentModel{
 
 	// URL to access quiz
 	public String getURL() 
-	{ return url; } 
+	{ return "play/" + getId() ; } 
 	
 	public void setOnePage(boolean prop)
 	{ onePage = prop; }

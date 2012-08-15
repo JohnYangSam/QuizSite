@@ -273,6 +273,13 @@ public class User extends PersistentModel{
 		}
 		return userId;
 	}
+
+	/** Check for creator achievements*/
+	public static void updateCreatorAchievements(int userID) throws SQLException {
+		User u = User.get(userID);
+		int nQuizzes = Quiz.indexCreatedBy(u).size();
+		Achievement.updateForCreator(u, nQuizzes);
+	}
 	
 
 //	@Override

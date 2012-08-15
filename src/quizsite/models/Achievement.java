@@ -100,6 +100,20 @@ public class Achievement extends PersistentModel {
 		}
 	}
 	
+	public static Achievement getByUserAndType(User user, Type achieveType) throws SQLException  {
+		String conditions[][] = {{"user_id", "=", "" + user.getId()},{"type", "=", achieveType.getTitle()}};
+		List<Achievement> res = parseRows(DatabaseConnection.indexWhere(TABLE_NAME, conditions));
+		switch (res.size()) {
+		case 0:
+			return null;
+		case 1:
+			return res.get(0);
+		default:
+			System.out.println("ALERT: User"+ user.getId() +" has 2 entries for same achievement!");
+			return res.get(0);
+		}
+	}
+	
 	/** Lists achievements of given user */
 	public static List<Achievement> ofUser(User user) throws SQLException {
 		String[][] conditions = {{"user_id", "=", "" + user.getId()}};
@@ -125,6 +139,37 @@ public class Achievement extends PersistentModel {
 
 	public Type getType() {
 		return type;
+	}
+
+	/** Updates creator achievement for given user 
+	 * @throws SQLException */
+	public static void updateForCreator(User u, int nQuizzes) throws SQLException {
+		switch (nQuizzes) {
+		case 1:
+			addIfNotExists(u, Type.AMATEUR_AUTHOR);
+			break;
+		case 5:
+			addIfNotExists(u, Type.PROLIFIC_AUTHOR);
+			break;
+		case 10:
+			addIfNotExists(u, Type.PRODIGIOUS_AUTHOR);
+			break;
+		default:
+			break;
+		}
+	}
+
+	/** Exceptions :SQL, same achievement ahs been stored twice 
+	 * @throws SQLException */
+	public boolean doesExist() throws SQLException {
+		return (Achievement.getByUserAndType(getUser(), getType()) != null);
+	}
+	
+	private static void addIfNotExists(User u, Type achieveType) throws SQLException {
+		Achievement ach = new Achievement(u, achieveType);
+		if (!ach.doesExist()) {
+			ach.save();
+		}
 	}
 
 }
