@@ -5,13 +5,10 @@
 *.war
 *.ear
 
+mode.txt
 bin
 build
 .DS_Store
 .classpath
-<<<<<<< HEAD
-=======
-bin
-build
->>>>>>> 7bf06deaba33b29b98f2edcea9f2c4a4f9595353
 tags
+

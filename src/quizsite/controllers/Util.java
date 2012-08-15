@@ -1,6 +1,11 @@
 package quizsite.controllers;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.sql.SQLException;
@@ -30,7 +35,7 @@ public class Util {
 	public static final String REGISTER_USER_VIEW = "register_user.jsp";
 	public static final String LOGOUT_VIEW 	= "logout_user.jsp";
 	public static final String CREATE_QUIZ_VIEW = "create_quiz.jsp";
-	
+
 	/** 
 	 * Return currently logged in user if user-session exists and if the user-session belongs to a valid user
 	 * Else redirect to login page
@@ -54,7 +59,7 @@ public class Util {
 			if ( userId != null && (curr = User.get(userId)) != null) {
 				return curr;
 			} else {
-			//Else send to login page	
+				//Else send to login page	
 				RequestDispatcher dispatch = request.getRequestDispatcher(LOGIN_VIEW);
 				request.setAttribute("failureMessage", "You are not logged in. Please login to use the site.");
 				dispatch.forward(request, response);
@@ -68,8 +73,26 @@ public class Util {
 			return null;
 		}
 	}
-	
-	
+
+	/** Reads the "mode.txt" file to decide 
+	 * @throws FileNotFoundException */
+	public static String readMode() {
+		System.out.println(System.getProperty("user.home"));
+		final String file_name = System.getProperty("user.home") + "/Desktop/mode.txt";
+		try {
+			FileInputStream in_file = new FileInputStream(file_name);
+			InputStreamReader reader = new InputStreamReader(in_file);
+			BufferedReader bufReader = new BufferedReader(reader);
+			return bufReader.readLine().trim();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+
 
 	/**
 	 * Returns a csv formatted string, given an object array. Uses toString(). Ignores null / objects
@@ -111,38 +134,38 @@ public class Util {
 			return ret;
 		}
 	}
-	
-	
-/* ------------------------- Hashing and salting methods -------------------------*/	
+
+
+	/* ------------------------- Hashing and salting methods -------------------------*/	
 
 	/* These are used for user login and user registration */
-	
+
 	/**
 	 * Returns a secure random salt string to be added to the password before hashing.
 	 */
-	
+
 	public static String generateSalt() {
 		String saltStr = "";
 		Random r = new SecureRandom();
 		byte[] salt = new byte[20];
 		r.nextBytes(salt);
 		saltStr = new String(salt);
-		
+
 		return saltStr;
 	}
-	
-	
+
+
 	/**
 	 * Takes in a string input and a salt string to be hashed and returns an equivalent salted hash based
 	 * on the SHA hash algorithm.
 	 */
 	public static String makeSaltedHash(String password, String salt) {
 		String result = "";
-		
+
 		//Convert password to bytes and concatenate with the salt
 		byte[] passwordAndSaltBytes = concatByteArrays(password.getBytes(), salt.getBytes());
-		
-		
+
+
 		try {
 			//Compute password hash
 			MessageDigest messageDigest = MessageDigest.getInstance("SHA");
@@ -154,21 +177,21 @@ public class Util {
 		}
 		return result;
 	}
-	
+
 	private static byte[] concatByteArrays(byte[] arr1, byte[] arr2) {
 		byte[] result = new byte[arr1.length + arr2.length];
 		System.arraycopy(arr1, 0, result, 0, arr1.length);
 		System.arraycopy(arr2, 0, result, arr1.length, arr2.length);
-		
+
 		return result;
 	}
-	
-	
+
+
 	/**
 	 Given a byte[] array, produces a hex String,
 	 such as "234a6f". with 2 chars for each byte in the array.
 	 (provided code)
-	*/
+	 */
 	public static String hexToString(byte[] bytes) {
 		StringBuffer buff = new StringBuffer();
 		for (int i=0; i<bytes.length; i++) {
@@ -179,13 +202,13 @@ public class Util {
 		}
 		return buff.toString();
 	}
-	
+
 	/**
 	 Given a string of hex byte values such as "24a26f", creates
 	 a byte[] array of those values, one byte value -128..127
 	 for each 2 chars.
 	 (provided code)
-	*/
+	 */
 	public static byte[] hexToArray(String hex) {
 		byte[] result = new byte[hex.length()/2];
 		for (int i=0; i<hex.length(); i+=2) {
