@@ -101,6 +101,30 @@ public class Quiz extends PersistentModel{
 		return quizList;
 	}
 	
+	public static List<Quiz> indexByNumberOfAttempts() throws SQLException {
+		List<Quiz> quizList = Quiz.index();
+		Collections.sort(quizList,
+			new Comparator<Quiz>() {
+				@Override
+				public int compare(Quiz q1, Quiz q2) {
+					try {
+						return q1.getNumberOfAttempts() - q2.getNumberOfAttempts();
+					} catch (Exception e) {
+						System.err.println("Error finding quiz num attempts in indexByNumberOfAttempts");
+						e.printStackTrace();
+						return 0;
+					}
+				}
+			});
+		
+//TESTING Code
+		for(Quiz quiz : quizList) {
+			System.err.println(quiz.getNumberOfAttempts());
+		}
+		
+		return quizList;
+	}
+	
 	public static List<Quiz> parseRows(List<List<String> > rows) throws SQLException {
 		List<Quiz> ret = new ArrayList<Quiz>();
 		for (List<String> row : rows) {
