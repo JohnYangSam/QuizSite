@@ -80,7 +80,8 @@ public class Quiz extends PersistentModel{
 	}
 	
 	/**
-	 * Leverages index() to return an index of the quizes by creation time
+	 * Leverages index() to return an index of the quizzes by creation time. Uses
+	 * an anonymous Comparator class.
 	 */
 	public static List<Quiz> indexByCreationTime() throws SQLException {
 		List<Quiz> quizList = Quiz.index();
