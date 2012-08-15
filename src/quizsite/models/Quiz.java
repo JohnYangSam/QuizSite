@@ -152,6 +152,19 @@ public class Quiz extends PersistentModel{
 		return parseRows(DatabaseConnection.indexWhere(TABLE_NAME, conditions));
 	}
 
+	/** Returns a list of quizzes created by a user and in order of date */
+	public static List<Quiz> indexCreatedByUserAndByDate(User user) throws SQLException {
+		List<Quiz> quizzes = Quiz.indexCreatedBy(user);
+		Collections.sort(quizzes,
+			new Comparator<Quiz>() {
+				@Override
+				public int compare(Quiz q1, Quiz q2) {
+					return q1.getCreatedAt().compareTo(q2.getCreatedAt());
+				}
+			});
+		return quizzes;
+	}
+
 	@Override
 	public Object[] getFields() {
 		Object[] objs = new Object[] {getCreatorID(), setBool(isRandomized()), setBool(isPracticeEnabled()), setBool(isImmediate()), setBool(isOnePage()), getTitle(), getDescr(), getCategory()};

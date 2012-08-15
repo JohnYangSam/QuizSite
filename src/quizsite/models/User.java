@@ -70,6 +70,21 @@ public class User extends PersistentModel{
 	public List<Achievement> getAchievements() throws SQLException {
 		return Achievement.ofUser(this);
 	}
+	
+	/**
+	 * Returns a list of achievements of the current user ordered by date
+	 */
+	public List<Achievement> getAchievementsByDate() throws SQLException {
+		List<Achievement> achievements = getAchievements();
+		Collections.sort(achievements, 
+			new Comparator<Achievement>() {
+				@Override
+				public int compare(Achievement a1, Achievement a2) {
+					return a1.getCreatedAt().compareTo(a2.getCreatedAt());
+				}
+			});
+		return achievements;
+	}
 
 	/** 
 	 * List of all users to which the current user has sent friend requests 
