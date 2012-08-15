@@ -34,6 +34,14 @@ public class Util {
 	/** 
 	 * Return currently logged in user if user-session exists and if the user-session belongs to a valid user
 	 * Else redirect to login page
+	 * 
+	 * IMPORTANT: This method MUST be used EXACTLY as below followed by the bottom if statement followed by the below code when used in a servlet controller
+	 * User current = signInOrRedirect(request, response_);
+	 * if(current == null) return;
+	 * 
+	 * If you get a HTTP 500 Error CHECK THIS!
+	 * 
+	 * 
 	 * @throws IOException
 	 * @throws ServletException 
 	 * */
@@ -48,14 +56,17 @@ public class Util {
 			} else {
 			//Else send to login page	
 				RequestDispatcher dispatch = request.getRequestDispatcher(LOGIN_VIEW);
+				request.setAttribute("failureMessage", "You are not logged in. Please login to use the site.");
 				dispatch.forward(request, response);
+				return null;
 			}
 		} catch (SQLException e) {
 			//On SQL exception send to login page
 			RequestDispatcher dispatch = request.getRequestDispatcher(LOGIN_VIEW);
+			request.setAttribute("failureMessage", "Error with user session. You are not logged in. Please login to use the site.");
 			dispatch.forward(request, response);
+			return null;
 		}
-		return null;
 	}
 	
 	

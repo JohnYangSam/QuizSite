@@ -38,6 +38,7 @@ public class InitDatabaseListener implements ServletContextListener {
     	try {
     		dropTables();
     		createTables();
+    		
     	} catch (Exception e) {
     		System.err.println("QuizSite : Error : While dropping and creating tables");
     		e.printStackTrace();

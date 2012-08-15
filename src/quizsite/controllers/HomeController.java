@@ -1,6 +1,7 @@
 package quizsite.controllers;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,7 +15,7 @@ import quizsite.models.User;
 /**
  * Servlet implementation class homeController
  */
-@WebServlet({"/homeController", "/home"})
+@WebServlet({"/HomeController", "/home"})
 public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -30,10 +31,36 @@ public class HomeController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Check user login
 		User current = Util.signInOrRedirect(request, response);
-		request.setAttribute(Util.CURRENT_USER_KEY, current);
+		if(current == null) return;
+		
+		/*
+		 * We want to output:
+		 * 		(optional) Annoucements
+		 * 		2)Popular quizzes
+		 * 		3) Recently created quizzes
+		 * 		4)Recent quiz taking activity (user)
+		 * 		8) Recent quiz creating activity
+		 *
+		 * 		5)Achievements (user)
+		 * 		6) Messages
+		 * 		7) Recent Friend activity
+		 */
+
+		try {
+			//Get quizzes arrays
+	
+		} catch (SQLException e) {
+			System.err.println("There was an error drawing information about the current user");
+			e.printStackTrace();
+		}
+		
+		
+		
 		RequestDispatcher dispatch = request.getRequestDispatcher("home.jsp");
 		dispatch.forward(request, response);
+		return;
 	}
 
 	/**
