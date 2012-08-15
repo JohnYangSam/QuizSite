@@ -24,7 +24,7 @@ public class QuestionTest {
 	{
 		Set<String> a = new HashSet<String>(Arrays.asList("ab","nh"));
 		String serialize = Question.serializeAnswers(a);
-		assertTrue("nh<>!<>ab".equals(serialize));
+		assertTrue("nh{!~!}ab".equals(serialize));
 	}
 	
 	@Test

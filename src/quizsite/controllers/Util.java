@@ -227,4 +227,9 @@ public class Util {
 		System.out.println("Current User ID; " + session.getAttribute(Util.USER_SESSION_KEY));
 	}
 
+	/** Wrap url in <a> tag*/
+	public static String wrapURL(String acceptURL, String text) {
+		return "<a href='" + acceptURL + "'>" + text + "</a>";
+	}
+
 }

@@ -116,6 +116,7 @@ public class DatabaseConnection {
 	 * Execute updates on the table - INSERT, UPDATE, DELETE
 	 * */
 	public int executeUpdate(String sqlQuery) throws SQLException {
+		System.out.println(sqlQuery);
 		return stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
 	}
 
@@ -144,7 +145,7 @@ public class DatabaseConnection {
 	}
 
 	List<String> fetchRowById(String tableName, int id) throws SQLException {
-		String findQuery = "SELECT * FROM " + tableName + " WHERE id = '" + id + "'";
+		String findQuery = "SELECT * FROM " + tableName + " WHERE id = \"" + id + "\"";
 		ResultSet rs = executeQuery(findQuery);
 		List<List<String> > res = parseResultData(rs);
 		switch (res.size()) {
@@ -264,9 +265,9 @@ public class DatabaseConnection {
 		StringBuilder sb = new StringBuilder();
 		for (Iterator<Object> itr = list.iterator(); itr.hasNext();) {
 			Object crrObj = itr.next();
-			if (isEscaped) sb.append("'");
+			if (isEscaped) sb.append("\"");
 			sb.append(escapeString((crrObj == null)?null:crrObj.toString()));	
-			if (isEscaped) sb.append("'");
+			if (isEscaped) sb.append("\"");
 			sb.append(", "); // extra appending at the end of the loop needs to be removed when returning
 		}
 		return sb.substring(0, sb.length() - 2)+" "; //Removes the trailing comma ', ' then add space
@@ -282,7 +283,7 @@ public class DatabaseConnection {
 		String[] conditionStrings = new String[conditions.length];
 		for (int i = 0 ; i < conditions.length; i++) {
 			String[] condition = conditions[i];
-			conditionStrings[i] = " " + condition[0] + " " + condition[1] + " '" + condition[2] + "' ";
+			conditionStrings[i] = " " + condition[0] + " " + condition[1] + " \"" + condition[2] + "\" ";
 		}
 		return conditionStrings;
 	}
@@ -351,7 +352,7 @@ public class DatabaseConnection {
 
 	/** Delete a row - ensure that the id is populated */
 	public static int destroy(PersistentModel pm) throws SQLException {
-		String destroyQuery = "DELETE FROM " + pm.getTableName() + " WHERE id ='" + pm.getId() + "'";
+		String destroyQuery = "DELETE FROM " + pm.getTableName() + " WHERE id =\"" + pm.getId() + "\"";
 		DatabaseConnection db = new DatabaseConnection();
 		int res = db.executeUpdate(destroyQuery);
 		db.close();
@@ -383,7 +384,7 @@ public class DatabaseConnection {
 		}
 		String updateStr = Util.join(stringifyConditions(conditions), ", ");
 
-		String updQuery = "UPDATE " + pm.getTableName() + " SET " + updateStr + " WHERE id = '" + pm.getId() + "'";
+		String updQuery = "UPDATE " + pm.getTableName() + " SET " + updateStr + " WHERE id = \"" + pm.getId() + "\"";
 		DatabaseConnection db = new DatabaseConnection();
 		int res = db.executeUpdate(updQuery);
 		db.close();

@@ -37,15 +37,17 @@ public abstract class Message extends PersistentModel{
 	protected User sender;
 	protected User recipient;
 	protected String body;	// Message body - built in subclass constructors
+	protected String subject;
 
 	// Meta data about the backing database table stored as static fields
 	// to avoid copies of same information in every instantiation
 	public static String TABLE_NAME = "Message";
-	public static String[][] SCHEMA = {{"body", "TEXT"}, {"sender_id", "INTEGER"}, {"recipient_id", "INTEGER"}, {"type", "TINYTEXT"}};
+	public static String[][] SCHEMA = {{"body", "TEXT"}, {"sender_id", "INTEGER"}, {"recipient_id", "INTEGER"}, {"type", "TINYTEXT"}, {"subject", "TINYTEXT"}};
 	public final static int I_BODY = PersistentModel.N_PRE_COL, 
 			I_SENDER_ID = PersistentModel.N_PRE_COL + 1, 
 			I_RECIPIENT_ID = PersistentModel.N_PRE_COL + 2, 
-			I_TYPE = PersistentModel.N_PRE_COL + 3;
+			I_TYPE = PersistentModel.N_PRE_COL + 3,
+			I_SUBJECT = PersistentModel.N_PRE_COL + 4;
 	public static String[][] FOREIGN_KEYS = 
 	{ {"sender_id", "User", "id"}, {"recipient_id", "User", "id"} };
 
@@ -139,7 +141,7 @@ public abstract class Message extends PersistentModel{
 	/*------------------ implement these -------------------*/
 	@Override
 	public Object[] getFields() {
-		Object[] objs = new Object[] {getBody(), getSender().getId(), getRecipient().getId(), getType()};
+		Object[] objs = new Object[] {getBody(), getSender().getId(), getRecipient().getId(), getType(), getSubject()};
 		return objs;
 	}
 
@@ -157,6 +159,7 @@ public abstract class Message extends PersistentModel{
 		setRecipient(recipient);
 
 		setType(dbEntry.get(I_TYPE));
+		setSubject(dbEntry.get(I_SUBJECT));
 	}
 
 	public static List<Message> parseRows(List<List<String>> rows) throws SQLException {
@@ -242,6 +245,16 @@ public abstract class Message extends PersistentModel{
 	 */
 	public String getType() {
 		return type;
+	}
+
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+
+	public String getSubject() {
+		return subject;
 	}
 
 
