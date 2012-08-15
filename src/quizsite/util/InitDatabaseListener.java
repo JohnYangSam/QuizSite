@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebListener;
 import quizsite.models.*;
 import quizsite.models.messages.*;
 import quizsite.models.questions.CheckboxQuestion;
+import quizsite.models.questions.ResponseQuestion;
 
 /**
  * Application Lifecycle Listener implementation class InitDatabaseListener
@@ -123,16 +124,53 @@ public class InitDatabaseListener implements ServletContextListener {
     	(notes[2] = new Note(users[0], users[2], "0-2")).save();
     	(notes[3] = new Note(users[4], users[3], "4-3")).save();
     	
+    	// Set of answers
+    	Set<String> ans = new HashSet<String>();
+    	ans.add("oye");
+    	ans.add("answer");
+    	ans.add("booyah");
     	
+    	// Create some questions
+    	Question[] questions = new Question[15];
+    	(questions[0] = new ResponseQuestion(ans, "1:What is the answer? One of: oye, answer, booyah", quizzes[0].getId())).save();
+    	(questions[1] = new ResponseQuestion(ans, "2:What is the answer? One of: oye, answer, booyah", quizzes[0].getId())).save();
+    	(questions[2] = new ResponseQuestion(ans, "3:What is the answer? One of: oye, answer, booyah", quizzes[0].getId())).save();
+    	(questions[3] = new ResponseQuestion(ans, "4:What is the answer? One of: oye, answer, booyah", quizzes[0].getId())).save();
+    	(questions[4] = new ResponseQuestion(ans, "5:What is the answer? One of: oye, answer, booyah", quizzes[0].getId())).save();
     	
+    	(questions[5] = new ResponseQuestion(ans, "1:What is ze answer? One of: oye, answer, booyah", quizzes[1].getId())).save();
+    	(questions[6] = new ResponseQuestion(ans, "2:What is ze answer? One of: oye, answer, booyah", quizzes[1].getId())).save();
+    	(questions[7] = new ResponseQuestion(ans, "3:What is ze answer? One of: oye, answer, booyah", quizzes[1].getId())).save();
+    	(questions[8] = new ResponseQuestion(ans, "4:What is ze answer? One of: oye, answer, booyah", quizzes[1].getId())).save();
+    	(questions[9] = new ResponseQuestion(ans, "5:What is ze answer? One of: oye, answer, booyah", quizzes[1].getId())).save();
     	
+    	(questions[10] = new ResponseQuestion(ans, "1:Where is the answer? One of: oye, answer, booyah", quizzes[2].getId())).save();
+    	(questions[11] = new ResponseQuestion(ans, "2:Where is the answer? One of: oye, answer, booyah", quizzes[2].getId())).save();
+    	(questions[12] = new ResponseQuestion(ans, "3:Where is the answer? One of: oye, answer, booyah", quizzes[2].getId())).save();
+    	(questions[13] = new ResponseQuestion(ans, "4:Where is the answer? One of: oye, answer, booyah", quizzes[2].getId())).save();
+    	(questions[14] = new ResponseQuestion(ans, "5:Where is the answer? One of: oye, answer, booyah", quizzes[2].getId())).save();
     	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
+    	// Save some attempts
+    	Attempt[] attempts = new Attempt[20];
+    	(attempts[0] = new Attempt(quizzes[0], users[0], 21)).save();
+    	(attempts[1] = new Attempt(quizzes[0], users[0], 22)).save();
+    	(attempts[2] = new Attempt(quizzes[0], users[2], 23)).save();
+    	(attempts[3] = new Attempt(quizzes[0], users[3], 24)).save();
+    	(attempts[4] = new Attempt(quizzes[1], users[0], 20)).save();
+    	(attempts[5] = new Attempt(quizzes[1], users[1], 30)).save();
+    	(attempts[6] = new Attempt(quizzes[1], users[2], 40)).save();
+    	(attempts[7] = new Attempt(quizzes[1], users[3], 50)).save();
+    	(attempts[8] = new Attempt(quizzes[1], users[4], 60)).save();
+    	(attempts[9] = new Attempt(quizzes[1], users[4], 70)).save();
+    	(attempts[10] = new Attempt(quizzes[2], users[4], 10)).save();
+    	(attempts[11] = new Attempt(quizzes[2], users[4], 22)).save();
+    	(attempts[12] = new Attempt(quizzes[2], users[3], 30)).save();
+    	(attempts[13] = new Attempt(quizzes[2], users[3], 40)).save();
+    	(attempts[14] = new Attempt(quizzes[2], users[2], 23)).save();
+    	(attempts[15] = new Attempt(quizzes[2], users[2], 23)).save();
+    	(attempts[16] = new Attempt(quizzes[2], users[1], 40)).save();
+    	(attempts[17] = new Attempt(quizzes[2], users[1], 50)).save();
+    	(attempts[18] = new Attempt(quizzes[2], users[0], 24)).save();
+    	(attempts[19] = new Attempt(quizzes[2], users[0], 24)).save();
     }
 }
