@@ -29,6 +29,13 @@
 	Right now every type of the question gets build in a for loop, each question has only 
 	one input field, answer, which should be look like this ...name="answer3"...where 3 is question.getId()
  -->
+ 
+<form action="EvalQuestionController">
+	<input type="hidden" value="1" name="questid"/>
+	<input type="text" name="answer1"/>
+	<input type="submit"/>
+</form>
+<!-- 
 <form action="EvalQuizController" method="post">
 	<%
 	for(int i=0; i < questions.size(); i++)
@@ -93,7 +100,7 @@
 	<input type="submit" value="Check me!" />
 	<input type="hidden" name="quizid" value="<%= quiz.getId() %>"/>
 </form>
-  
+   -->
 </div>
 </body>
 </html>
