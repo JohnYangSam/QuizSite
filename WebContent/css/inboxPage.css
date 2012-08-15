@@ -1,0 +1,28 @@
+th {
+	border-bottom : 2px solid blue;
+}
+
+td {
+	border-bottom : 1px dashed gray;
+	padding: 4px;
+}
+div.inbox {
+ 	width: 50%;
+    margin: 0px auto; 
+ 	text-align : center;
+}
+br {
+	line-height:300%;
+}
+
+th.to, th.from, td.to, td.from {
+	width:15%;
+}
+
+th.body, td.body {
+	width:75%;
+}
+
+table {
+	width:100%;
+}

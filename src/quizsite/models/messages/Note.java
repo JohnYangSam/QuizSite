@@ -12,9 +12,13 @@ public class Note extends Message {
 	private String content;
 	
 	public Note(User sender, User recipient, String content) throws SQLException {
+		this(sender, recipient, content, "Private note");
+	}
+	public Note(User sender, User recipient, String content, String subject) throws SQLException {
 		super( sender, recipient );
 		updateContent(content);
 		setType(Type.NOTE);
+		setSubject(subject);
 	}
 
 
