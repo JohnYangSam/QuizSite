@@ -42,7 +42,7 @@ public class InitDatabaseListener implements ServletContextListener {
 	    	Quiz quiz0				= new Quiz(false, false, false, false, 0);
 	    	System.out.println("Quiz Init");
 	    	Set<String> filler = new HashSet<String>();
-	    	Question question0		= new CheckboxQuestion(filler, null, 0);
+	    	Question question0		= new CheckboxQuestion(filler, null, 0, null);
 	    	System.out.println("Question Init");
 	    	Attempt attempt0		= new Attempt(null, 0 , null);
 	    	System.out.println("Attempt Init");
