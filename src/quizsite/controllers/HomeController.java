@@ -2,6 +2,7 @@ package quizsite.controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -56,9 +57,9 @@ public class HomeController extends HttpServlet {
 
 		try {
 			//Get quizzes arrays
-			Quiz.indexByNumberOfAttempts();
-			Quiz.indexByCreationTime();
-			Attempt.ofUser(current);
+			List<Quiz> quizListByPopularity = Quiz.indexByNumberOfAttempts();
+			List<Quiz> quizListByCreationTime = Quiz.indexByCreationTime();
+			List<Attempt> attemptsByTime = Attempt.ofUserByDate(current);
 			Quiz.indexCreatedBy(current);
 			Achievement.ofUser(current);
 			Message.indexToUserByDate(current);

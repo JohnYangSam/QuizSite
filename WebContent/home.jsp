@@ -26,8 +26,14 @@
 
 			</div>
 			<div id="messages">
-				<a href="inbox"><h3>Inbox</h3></a>
+				<h3><a href="inbox">Inbox</a></h3>
 				<p>Recent Messages</p>
+				<div id="messageBox">
+				<%
+					request.getAttribute(arg0)	
+				%>	
+				
+				</div>
 			</div>
 
 			<div id="recentQuizTakeActivity">
