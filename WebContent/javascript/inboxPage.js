@@ -11,7 +11,7 @@ $(document).ready(function() {
             data: { to: $("#compose_to").val(), subject: $("#compose_subject").val(), body: $("#compose_body").val() }
         }).done(function( msg ) {
             $("#send_result").html(msg);
-            $("#send_result").show("slow").delay(500).hide("slow");
+            $("#send_result").show("slow").delay(1000).hide("slow");
         });
         return false;
     });

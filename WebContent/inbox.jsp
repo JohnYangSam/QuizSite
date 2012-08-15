@@ -18,6 +18,8 @@
 		User currentUser = Util.signInOrRedirect(request, response);
 		List<Message> received = Message.indexTo(currentUser);
 		List<Message> sent = Message.indexFrom(currentUser);
+		Collections.reverse(received);
+		Collections.reverse(sent);
 	%>
 	<div class="parent">
 		<div id="inbox" class="container">

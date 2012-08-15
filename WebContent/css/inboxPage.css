@@ -15,7 +15,7 @@ div.container {
 }
 div#send_result {
 	text-align: center;
-	padding: 10 px
+	padding: 10px;
 	display: none;
 	width: 60%;
 	margin: 0px auto;
