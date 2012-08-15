@@ -12,18 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import quizsite.models.User;
+import quizsite.controllers.*;
 
 /**
  * Servlet implementation class LoginController
  */
-@WebServlet("/LoginController")
-public class LoginController extends HttpServlet {
+@WebServlet({"/LoginUserController", "/login"})
+public class LoginUserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginController() {
+    public LoginUserController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,6 +40,16 @@ public class LoginController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Integer sessionUserId = (Integer) session.getAttribute(Util.USER_SESSION_KEY);
+		if(sessionUserId != null) {
+			request.setAttribute("failureMessage", "You are logged in. Would you like to log out?");
+			RequestDispatcher dispatch = request.getRequestDispatcher(Util.LOGOUT_VIEW);
+			dispatch.forward(request, response);
+			return;	
+		}
+		
+		
 		//Get take in the userName and password
 		//Check if the user exists with salt and password hash with in the database yet
 			//Redirect them otherwise ----->>
@@ -50,35 +61,56 @@ public class LoginController extends HttpServlet {
 		String password = request.getParameter("password");
 		
 		//if (request.getAttribute("failuireMessage") == NULL don't print out anything, otherwise print out the message
-	
+		//Check empty password
+		if(password.equals("")) {
+			request.setAttribute("failureMessage", "Invalid user name or password. Please retry logging in.");
+			RequestDispatcher dispatch = request.getRequestDispatcher(Util.LOGIN_VIEW);
+			dispatch.forward(request, response);
+			return;
+		}	
 		//Catch SQLExceptions
 		try {
-			if() {
-				//Add user and then set the USER_SESSION_KEY to the userId
-				int userId = User.;
-				HttpSession session = request.getSession();
+		
+			//If the user is authenticated
+			if(userNameAndPasswordMatch(userName, password)) {
+				//then set the USER_SESSION_KEY to the userId
+				Integer userId = User.getUserByName(userName).getId();
 				session.setAttribute(Util.USER_SESSION_KEY, userId);
 				//Send to the main view
-				RequestDispatcher dispatch = request.getRequestDispatcher(Util.HOME_VIEW);
+				RequestDispatcher dispatch = request.getRequestDispatcher("home");
 				dispatch.forward(request, response);
+				return;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			System.err.println("SQL Error while autheticating user registration: ");
 			e.printStackTrace();
-			request.setAttribute("failureMessage", "There was an error making the registration. Please try registering again.");
-			RequestDispatcher dispatch = request.getRequestDispatcher(Util.REGISTER_NEW_USER_VIEW);
+			request.setAttribute("failureMessage", "There was an error Logging in. Please try logging in again.");
+			RequestDispatcher dispatch = request.getRequestDispatcher(Util.LOGIN_VIEW);
 			dispatch.forward(request, response);
-
+			return;
 		}
+		//If the credentials are not met
+		request.setAttribute("failureMessage", "Invalid user name or password. Please retry logging in.");
+		RequestDispatcher dispatch = request.getRequestDispatcher(Util.LOGIN_VIEW);
+		dispatch.forward(request, response);
+		return;
 	}
 	
 	/**
 	 * Takes in userName and password Strings checks to see if they match through a salted
 	 * hash. If 
 	 */
-	public static int userNameAndPasswordMatch(String userName, String password) {
-		
+	public static boolean userNameAndPasswordMatch(String userName, String password) {
+		try {
+			User user = User.getUserByName(userName);
+			String salt = user.getPasswordSalt();
+			String saltedHash = Util.makeSaltedHash(password, salt);
+			return user.getPasswordSaltedHash().equals(saltedHash);
+		} catch (Exception e) {
+			System.err.println("SQL Error checking userName and password match");
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

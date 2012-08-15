@@ -1,8 +1,6 @@
 package quizsite.controllers;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,20 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import quizsite.models.Message;
-import quizsite.models.User;
-
 /**
- * Servlet implementation class InboxController
+ * Servlet implementation class logoutUserController
  */
-@WebServlet({"/InboxController", "/inbox"})
-public class InboxController extends HttpServlet {
+@WebServlet({"/logoutUserController", "/logout"})
+public class LogoutUserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InboxController() {
+    public LogoutUserController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,24 +29,28 @@ public class InboxController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Fetch all messages and forward to InboxView.jsp
-		try {
-			User currentUser = Util.signInOrRedirect(request, response);
-			List<Message> received = Message.indexTo(currentUser);
-			List<Message> sent = Message.indexFrom(currentUser);
-			request.setAttribute(Util.RECEIVED_MSG_LIST_KEY, received);
-			request.setAttribute(Util.SENT_MSG_LIST_KEY, sent);
-			RequestDispatcher dispatcher = request.getRequestDispatcher(Util.INBOX_VIEW);
-			dispatcher.forward(request, response);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Integer userId = (Integer)session.getAttribute(Util.USER_SESSION_KEY);
+		if(userId == null) {
+			request.setAttribute("failureMessage","You are already logged out");
+			RequestDispatcher dispatch = request.getRequestDispatcher("/index.jsp");
+			dispatch.forward(request, response);
+			return;
+		} else {
+			request.setAttribute("failureMessage","You are logged out");
+			RequestDispatcher dispatch = request.getRequestDispatcher("/index.jsp");
+			//Remove the userId attribute from the session to successfully logout
+			session.removeAttribute(Util.USER_SESSION_KEY);
+			dispatch.forward(request, response);
+			return;
+		}
 		// TODO Auto-generated method stub
 	}
 
