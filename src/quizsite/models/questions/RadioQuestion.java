@@ -15,7 +15,7 @@ public class RadioQuestion extends Question {
 	
 	public RadioQuestion(Set<String> answers, String text, int quiz_id, List<String> opts) throws SQLException {
 		super(text, answers, quiz_id);
-		setType(Type.CHECKBOX);
+		setType(Type.RADIO);
 		setOptions(opts);
 	}
 	
