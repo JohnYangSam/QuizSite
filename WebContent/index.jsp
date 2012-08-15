@@ -10,7 +10,7 @@
 		<link href="css/homePage.css" rel="stylesheet" type="text/css" />
 	
 		<!-- ADD GENERAL HEAD FILE -->
-		<jsp:include page="generalHeadFile.jsp" />
+		<jsp:include page="_general_head_info.jsp" />
 			
 		<title>Quizbook - Overview</title>
 	</head>
@@ -18,13 +18,13 @@
 
 	<body>
 		<!--  INCLUDE HEADER -->
-		<jsp:include page="header.jsp" />
+		<jsp:include page="_header.jsp"/>
 		
 		<!-- MAIN CONTENT START -->	
 		<div class="main">
 			<div class="login">
 				<h2>Have an account?</h2>
-				<form action="#" method="post">
+				<form action="login" method="post">
 					<ul>
 						<li>
 							<label>Login </label><br/>
@@ -42,7 +42,7 @@
 				
 				<div class="no_account">
 					<span>Don't have an account yet? No problems!</span><br/>
-					<a href="<%=Util.REGISTER_NEW_USER_VIEW%>">Create a new one</a>
+					<a href="<%= Util.REGISTER_USER_VIEW %>">Create a new one</a>
 				</div>
 			</div>
 			
@@ -57,6 +57,10 @@
 		</div>
 		
 		<!-- INCLUDE FOOTER -->
-		<jsp:include page="footer.jsp" />	
+		<jsp:include page="_footer.jsp" />	
+		
+		<br />
+		<p> DEBUG: index.jsp </p>
+		
 	</body>
 </html>

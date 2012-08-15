@@ -36,7 +36,7 @@ public class InboxController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Fetch all messages and forward to InboxView.jsp
 		try {
-			User currentUser = new User(1);//Util.signInOrRedirect(request, response);
+			User currentUser = Util.signInOrRedirect(request, response);
 			List<Message> received = Message.indexTo(currentUser);
 			List<Message> sent = Message.indexFrom(currentUser);
 			request.setAttribute(Util.RECEIVED_MSG_LIST_KEY, received);

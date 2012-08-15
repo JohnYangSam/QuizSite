@@ -10,8 +10,8 @@
 </head>
 <body>
 <% 
-	List<Message> received = (List<Message>) request.getAttribute(Util.RECEIVED_MSG_LIST_KEY);
-	List<Message> sent = (List<Message>) request.getAttribute(Util.SENT_MSG_LIST_KEY);
+	/* List<Message> received = (List<Message>) request.getAttribute(Util.RECEIVED_MSG_LIST_KEY);
+	List<Message> sent = (List<Message>) request.getAttribute(Util.SENT_MSG_LIST_KEY); */
 %>
 
 <!-- Received messages -->
@@ -23,12 +23,12 @@
 		</tr>
 	</thead>
 	<tbody>
-	<% for (Message message : received) { %>
+<%-- 	<% for (Message message : received) { %>
 		<tr>
 			<td><%= message.getSender().getName() %></td>
 			<td><%= message.getBody() %></td>
 		</tr>
-	<% } %>
+	<% } %> --%>
 	</tbody>
 </table>
 
@@ -42,14 +42,16 @@
 		</tr>
 	</thead>
 	<tbody>
-	<% for (Message message : sent) { %>
+<%-- 	<% for (Message message : sent) { %>
 		<tr>
 			<td><%= message.getRecipient().getName() %></td>
 			<td><%= message.getBody() %></td>
 		</tr>
-	<% } %>
+	<% } %> --%>
 	</tbody>
 </table>
 
+<br />
+<p> DEBUG: inbox.jsp </p>
 </body>
 </html>

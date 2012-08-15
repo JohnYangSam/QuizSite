@@ -47,6 +47,7 @@ public class InitDatabaseListener implements ServletContextListener {
 	    	System.out.println("Question Init");
 	    	Attempt attempt0		= new Attempt(null, null , 0);
 	    	System.out.println("Attempt Init");
+	    	Achievement ach0 = new Achievement(null, null);
     	} catch (Exception e) {
     		System.err.println("Error initializing table");
     		e.printStackTrace();

@@ -22,26 +22,44 @@
 					out.println("<h2> Sign up to start quizzing! </h2>");
 				} else {
 					out.println("<h2>" + failureMessage + "</h2>");	
-				}	
+				}
 				%>
 			</div>
 			<div class="login">
 				<h2>Login</h2>
-				<form action="logoutUserController" method="post">
-					<input class="" type="submit" name="Logout" value="Logout?" />
-					<a href="<%=Util.HOME_CONTROLLER%>"><button class="" type="button" name="Home" value="home">Home</button></a>			
+				<form action="login" method="post">
+					<ul>
+						<li>
+							<label>User Name</label><br/>
+							<input type="text" name="userName" />	
+						</li>
+						<li>
+							<label>Password</label><br/>
+							<input type="password" name="password" />	
+						</li>
+						<li>
+							<input class="login_button" type="submit" name="Create" value="Create">					
+						</li>
+					</ul>
 				</form>
 				
+				<div class="no_account">
+					<a href="home">Home</a>
+					<a href="register_user.jsp">Register an Account</a>
+				</div>
 			</div>
 			
 			<div class="description">
-				<h2>This is the logout text!</h2>
+				<h2>Welcome to COOL_NAME</h2>
 				<p>
-					This is the logout page. It is different than the index page.
+					This is the login page. It is different than the index page.
 					Some text Some textSome text Some text Some text Some text 
 					Some text 
 				</p>	
 			</div>	
 		</div>
+		
+		<br />
+		<p>DEBUG: login_user.jsp</p>
 	</body>
 </html>

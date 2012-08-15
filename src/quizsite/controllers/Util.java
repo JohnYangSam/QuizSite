@@ -21,22 +21,15 @@ public class Util {
 	public static final String USER_SESSION_KEY = "CURRENT_USER_ID";
 	public static final String RECEIVED_MSG_LIST_KEY = "RECEIVED_MESSAGES";
 	public static final String SENT_MSG_LIST_KEY = "SENT_MESSAGES";
+	public static final String CURRENT_USER_KEY = "CURRENT_USER";
 
 	/** Views */
-	public static final String LOGIN_VIEW = "loginUserView.jsp";
-	public static final String LOGIN_CONTROLLER = "loginUserController.java";
-			
-	public static final String INBOX_VIEW = "inboxView.jsp";
-	public static final String INBOX_CONTROLLER = "inboxController.jsp";
-	
-	public static final String HOME_VIEW = "homeView.jsp";
-	public static final String HOME_CONTROLLER = "homeController.java";
-	
-	public static final String REGISTER_NEW_USER_VIEW = "registerNewUserView.jsp";
-	public static final String REGISTER_NEW_USER_CONTROLLER = "registerNewUserController.java";
-	
-	public static final String LOGOUT_VIEW 	= "logoutUserView.jsp";
-	public static final String LOGOUT_CONTROLLER = "logoutController.java";
+	public static final String LOGIN_VIEW = "login_user.jsp";
+	public static final String INBOX_VIEW = "inbox.jsp";
+	public static final String HOME_VIEW = "home.jsp";
+	public static final String REGISTER_USER_VIEW = "register_user.jsp";
+	public static final String LOGOUT_VIEW 	= "logout_user.jsp";
+	public static final String CREATE_QUIZ_VIEW = "create_quiz.jsp";
 	
 	/** 
 	 * Return currently logged in user if user-session exists and if the user-session belongs to a valid user
