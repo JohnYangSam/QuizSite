@@ -1,21 +1,76 @@
 <%@ page import="quizsite.util.*, quizsite.controllers.*, quizsite.models.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="quizsite.util.*, quizsite.controllers.*" %>
+
+<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<%
-	/* User current = (User) request.getAttribute(Util.CURRENT_USER_KEY); */
-%>
-<title>Welcome!</title>
-</head>
-<body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<%
+			/* User current = (User) request.getAttribute(Util.CURRENT_USER_KEY); */
+		%>
+		<jsp:include page="_general_head_info.jsp" />
+		<title>Welcome!</title>
+	</head>
+	<body>
+		<!--  INCLUDE HEADER -->
+		<jsp:include page="_header.jsp"/>
+	
+		<div id="main">
 
-<a href="inbox"> Inbox </a>
+		<!-- LEFT PANEL -->
+		<div id="leftPanel">
+			<div id="achievements">
+				<h3>Recent Achievements</h3>
 
+			</div>
+			<div id="messages">
+				<a href="inbox"><h3>Inbox</h3></a>
+				<p>Recent Messages</p>
+			</div>
 
-<br />
-<p> DEBUG: home_view.jsp </p>
-</body>
+			<div id="recentQuizTakeActivity">
+				<h3>Recent Quizes You Took</h3>
+
+			</div>
+			<div id="recentQuizCreateActivity">
+				<h3>Recent Quizes You Created</h3>
+
+			</div>	
+		</div>	
+
+		<!-- CENTER PANEL -->
+		<div id="centerPanel">
+			<div id="announcements">
+				<h2>Announcements</h2>
+
+			</div>
+
+			<div id="recentFriendActivity">
+				<h3>Recent Friend Activity</h3>
+
+			</div>
+		</div>
+
+		<!-- RIGHT PANEL -->
+		<div id="rightPanel">
+			<div id="popularQuizes">
+				<h3>Top Five Most Popular Quizzes</h3>
+
+			</div>
+			<div id="recentlyCreatedQuizes">
+				<h3>Top Five Recently Created Quizzes</h3>
+
+			</div>
+		</div>
+				
+
+			<br />
+			<p> DEBUG: home_view.jsp </p>
+		</div>
+
+		<!-- INCLUDE FOOTER -->
+		<jsp:include page="_footer.jsp" />	
+	</body>
 </html>

@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import quizsite.models.Achievement;
+import quizsite.models.Attempt;
+import quizsite.models.Message;
 import quizsite.models.Quiz;
 import quizsite.models.User;
 
@@ -34,26 +37,35 @@ public class HomeController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Check user login
 		User current = Util.signInOrRedirect(request, response);
+		
+		System.out.println("Outside redirect in home controller hit: " + current);
 		if(current == null) return;
 		
 		/*
 		 * We want to output:
-		 * 		(optional) Annoucements
-		 * 		2)Popular quizzes
+		 * 		(optional) Announcements
+		 * 		2) Popular quizzes
 		 * 		3) Recently created quizzes
-		 * 		4)Recent quiz taking activity (user)
+		 * 		4) Recent quiz taking activity (user)
 		 * 		8) Recent quiz creating activity
 		 *
-		 * 		5)Achievements (user)
+		 * 		5) Achievements (user)
 		 * 		6) Messages
 		 * 		7) Recent Friend activity
 		 */
 
 		try {
 			//Get quizzes arrays
-			Quiz.indexByCreationTime();
 			Quiz.indexByNumberOfAttempts();
-	
+			Quiz.indexByCreationTime();
+			Attempt.ofUser(current);
+			Quiz.indexCreatedBy(current);
+			Achievement.ofUser(current);
+			Message.indexToUserByDate(current);
+		
+			
+			
+			
 		} catch (SQLException e) {
 			System.err.println("There was an error drawing information about the current user");
 			e.printStackTrace();

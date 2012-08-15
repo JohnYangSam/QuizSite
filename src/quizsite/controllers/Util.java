@@ -48,6 +48,7 @@ public class Util {
 	public static User signInOrRedirect(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Integer userId = (Integer) session.getAttribute(USER_SESSION_KEY);
+		System.out.println("signInorRedirect userId is : " + userId);
 		User curr;
 		try {
 			//If it is a valid user, return the user

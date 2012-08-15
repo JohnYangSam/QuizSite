@@ -76,6 +76,10 @@ public class LoginUserController extends HttpServlet {
 				//then set the USER_SESSION_KEY to the userId
 				Integer userId = User.getUserByName(userName).getId();
 				session.setAttribute(Util.USER_SESSION_KEY, userId);
+			
+				//TEST CODE
+				System.out.println("userId being sent to session at login: " + userId);
+				
 				//Send to the main view
 				RequestDispatcher dispatch = request.getRequestDispatcher("home");
 				dispatch.forward(request, response);
@@ -91,6 +95,10 @@ public class LoginUserController extends HttpServlet {
 		}
 		//If the credentials are not met
 		request.setAttribute("failureMessage", "Invalid user name or password. Please retry logging in.");
+		
+		//TESTING CODE
+		System.out.println("Mis match password? ");
+		
 		RequestDispatcher dispatch = request.getRequestDispatcher(Util.LOGIN_VIEW);
 		dispatch.forward(request, response);
 		return;
@@ -105,6 +113,10 @@ public class LoginUserController extends HttpServlet {
 			User user = User.getUserByName(userName);
 			String salt = user.getPasswordSalt();
 			String saltedHash = Util.makeSaltedHash(password, salt);
+		
+			//TEST CODE
+			System.err.println(saltedHash);
+			
 			return user.getPasswordSaltedHash().equals(saltedHash);
 		} catch (Exception e) {
 			System.err.println("SQL Error checking userName and password match");

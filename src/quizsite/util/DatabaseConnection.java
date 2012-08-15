@@ -26,7 +26,7 @@ public class DatabaseConnection {
 	public enum Mode {
 		PRODUCTION ("ccs108rege", "ahdeetha", "c_cs108_rege", "mysql-user.stanford.edu"),
 		TEST ("ccs108makarst", "yexubohn", "c_cs108_makarst", "mysql-user.stanford.edu");
-
+		
 		private final String account;
 		private final String password;
 		private final String database;
