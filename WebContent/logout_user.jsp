@@ -27,36 +27,23 @@
 			</div>
 			<div class="login">
 				<h2>Login</h2>
-				<form action="LoginUserController" method="post">
-					<ul>
-						<li>
-							<label>User Name</label><br/>
-							<input type="text" name="userName" />	
-						</li>
-						<li>
-							<label>Password</label><br/>
-							<input type="password" name="password" />	
-						</li>
-						<li>
-							<input class="login_button" type="submit" name="Create" value="Create">					
-						</li>
-					</ul>
+				<form action="logout" method="post">
+					<input class="" type="submit" name="Logout" value="Logout?" />
+					<a href="home"><button class="" type="button" name="Home" value="home">Home</button></a>			
 				</form>
 				
-				<div class="no_account">
-					<a href="<%=Util.HOME_CONTROLLER%>">Home</a>
-					<a href="registerNewUserController">Register an Account</a>
-				</div>
 			</div>
 			
 			<div class="description">
-				<h2>Welcome to COOL_NAME</h2>
+				<h2>This is the logout text!</h2>
 				<p>
-					This is the login page. It is different than the index page.
+					This is the logout page. It is different than the index page.
 					Some text Some textSome text Some text Some text Some text 
 					Some text 
 				</p>	
 			</div>	
 		</div>
+		<br />
+		<p>DEBUG: logout_user.jsp</p>
 	</body>
 </html>

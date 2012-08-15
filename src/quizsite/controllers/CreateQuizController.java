@@ -26,14 +26,14 @@ import quizsite.models.questions.ResponseQuestion;
 /**
  * Servlet implementation class CreatQuizController
  */
-@WebServlet({"/CreatQuizController", "/createQuiz"})
-public class CreatQuizController extends HttpServlet {
+@WebServlet({"/CreateQuizController", "/createQuiz"})
+public class CreateQuizController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreatQuizController() {
+    public CreateQuizController() {
         super();
         // TODO Auto-generated constructor stub
     }

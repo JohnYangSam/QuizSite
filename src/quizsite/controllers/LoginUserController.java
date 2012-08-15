@@ -17,7 +17,7 @@ import quizsite.controllers.*;
 /**
  * Servlet implementation class LoginController
  */
-@WebServlet("/LoginUserController")
+@WebServlet({"/LoginUserController", "/login"})
 public class LoginUserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -41,8 +41,8 @@ public class LoginUserController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String sessionUserId = (String) session.getAttribute(Util.USER_SESSION_KEY);
-		if(sessionUserId == null) {
+		Integer sessionUserId = (Integer) session.getAttribute(Util.USER_SESSION_KEY);
+		if(sessionUserId != null) {
 			request.setAttribute("failureMessage", "You are logged in. Would you like to log out?");
 			RequestDispatcher dispatch = request.getRequestDispatcher(Util.LOGOUT_VIEW);
 			dispatch.forward(request, response);
@@ -74,10 +74,10 @@ public class LoginUserController extends HttpServlet {
 			//If the user is authenticated
 			if(userNameAndPasswordMatch(userName, password)) {
 				//then set the USER_SESSION_KEY to the userId
-				String userId = User.getUserByName(userName).getName();
+				Integer userId = User.getUserByName(userName).getId();
 				session.setAttribute(Util.USER_SESSION_KEY, userId);
 				//Send to the main view
-				RequestDispatcher dispatch = request.getRequestDispatcher(Util.HOME_CONTROLLER);
+				RequestDispatcher dispatch = request.getRequestDispatcher("home");
 				dispatch.forward(request, response);
 				return;
 			}

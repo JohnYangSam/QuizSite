@@ -21,13 +21,13 @@
 			if(failureMessage == null) {
 				out.println("<h2> Sign up to start quizzing! </h2>");
 			} else {
-				out.println("<h2>" + failureMessage + "</h2>");	
-			}	
+				out.println("<h2>" + failureMessage + "</h2>");
+			}
 			%>
 		</div>
 		<div class="login">
 			<h2>Create an account</h2>
-			<form action="RegisterNewUserController" method="post">
+			<form action="register" method="post">
 				<ul>
 					<li>
 						<label>User Name</label><br/>
@@ -50,20 +50,21 @@
 					</li>
 				</ul>
 			</form>
-			
 			<div class="no_account">
-				<a href="<%=Util.HOME_CONTROLLER%>">Home</a>
+				<a href="/home">Home</a>
 			</div>
 		</div>
-		
+	
 		<div class="description">
 			<h2>Welcome to COOL_NAME</h2>
 			<p>
 				Some text Some text Some text Some text Some text Some text
 				Some text Some textSome text Some text Some text Some text 
 				Some text 
-			</p>	
-		</div>	
+			</p>
+		</div>
 	</div>
+	<br />
+		<p>DEBUG: register_user.jsp</p>
 </body>
 </html>

@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <style type="text/css">
     div.question {
         border:2px solid red;
@@ -96,5 +97,8 @@
     });
     
 </script>
+
+<br />
+<p> DEBUG: create_quiz.jsp </p>
 </body>
 </html>
