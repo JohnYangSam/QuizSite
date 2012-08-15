@@ -86,7 +86,9 @@
 						out.println("<div class='data'>");
 						out.println("<p>");
 						out.print("<span class='number'>"+i+") </span>");
-						out.print("<a href="/displaquiz.getTitle());
+						out.print("<a href='/displayQuiz.jsp?quizId="quiz.getId()+"'>"
+								quiz.getTitle());
+						
 						out.print(" " + quiz.getAttempts());
 						out.println("</p>");
 						out.println("</div>");
