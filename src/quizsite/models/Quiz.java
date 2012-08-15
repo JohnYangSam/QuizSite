@@ -249,4 +249,15 @@ public class Quiz extends PersistentModel{
 			return new Activity(0, "", "", "", "");
 		}
 	}
+
+	/**
+	 * Gets an action print string for the quiz. Similar to the getActivity followed
+	 * by getActivityPrintString but with subtle differences that are object centric (like
+	 * the link) versus the more user centric activity.
+	 */
+	public String getQuizTitleLink() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<a href='/displayQuiz.jsp?quizId="+this.getId()+"'>"+this.getTitle()+"</a>");
+		return sb.toString();
+	}
 }

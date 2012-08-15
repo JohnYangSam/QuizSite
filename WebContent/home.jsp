@@ -1,7 +1,7 @@
 <%@ page import="quizsite.util.*, quizsite.controllers.*, quizsite.models.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="quizsite.util.*, quizsite.controllers.*" %>
+<%@ page import="quizsite.util.*, quizsite.models.*, quizsite.controllers.*, java.util.*, java.lang.Exception.*, java.sql.*" %>
 
 <!DOCTYPE html>
 <html>
@@ -9,9 +9,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<%
 			/* User current = (User) request.getAttribute(Util.CURRENT_USER_KEY); */
-		//3
-			List<Attempt> attemptsByTime = Attempt.ofUserByDate(user);
-			request.setAttribute("attemptsByTime", attemptsByTime);
+		
 			//4
 			List<Quiz> quizListByUser = Quiz.indexCreatedBy(user);
 			request.setAttribute("quizListByUser", quizListByUser);
@@ -21,10 +19,6 @@
 			//6
 			List<Message> messages = Message.indexToUserByDate(user);
 			request.setAttribute("messages", messages);
-			//7
-			List<Activity> friendActivities = user.getFriendActivitiesByDate();
-			reque
-		
 		
 		%>
 		<jsp:include page="_general_head_info.jsp" />
@@ -54,10 +48,23 @@
 
 			<div id="recentQuizTakeActivity">
 				<h3>Recent Quizzes You Took</h3>
-
+				<%
+				//3
+					List<Attempt> attemptsByTime = (List<Attempt>)request.getAttribute("attemptsByTime");
+					for(int i = 0; i < 5; ++i) {
+						Attempt attempt = attemptsByTime.get(i);
+						Quiz quiz = attempt.getQuiz();
+						out.println("<div class='data'>");
+						out.println("<p>");
+						out.print("You attempted "+quiz.getTitle()+" on "+attempt.getCreatedAt()+" and recieved a score of "+attempt.getScore());	
+						out.println("</p>");
+						out.println("</div>");	
+					}	
+				%>
 			</div>
 			<div id="recentQuizCreateActivity">
 				<h3>Recent Quizzes You Created</h3>
+				<
 
 			</div>	
 		</div>	
@@ -66,11 +73,23 @@
 		<div id="centerPanel">
 			<div id="announcements">
 				<h2>Announcements</h2>
+				<%
+				
+				//NEED TO CREATE THE ABILITY TO GET ANNOUNCEMENTS!
+				request.getAttribute("announcements");
+				%>
 
 			</div>
 
 			<div id="recentFriendActivity">
 				<h3>Recent Friend Activity</h3>
+				<%
+				//7
+				List<Activity> friendActivities = (List<Activity>)request.getAttribute("friendActivities");
+				for(Activity activity : friendActivities) {
+					out.println(activity.getActivityPrintString());
+				}
+				%>
 
 			</div>
 		</div>
@@ -80,18 +99,21 @@
 			<div id="popularQuizes">
 				<h3>Top Five Most Popular Quizzes</h3>
 				<%
-					List<Quiz> quizListByPopularity = new request.getAttribute("quizListByPopularity");
+					List<Quiz> quizListByPopularity = (List<Quiz>)request.getAttribute("quizListByPopularity");
 					for(int i = 0; i < 5; ++i) {
-						Quiz quiz = quizListByPopularity[i];
-						out.println("<div class='data'>");
-						out.println("<p>");
-						out.print("<span class='number'>"+i+") </span>");
-						out.print("<a href='/displayQuiz.jsp?quizId="quiz.getId()+"'>"
-								quiz.getTitle());
-						
-						out.print(" " + quiz.getAttempts());
-						out.println("</p>");
-						out.println("</div>");
+						try {	
+							Quiz quiz = quizListByPopularity.get(i);
+							out.println("<div class='data'>");
+							out.println("<p>");
+							out.print("<span class='number'>"+i+") </span>");
+							out.print(quiz.getQuizTitleLink());	
+							out.print(" created on " + quiz.getCreatedAt());
+							out.println("</p>");
+							out.println("</div>");
+						} catch (SQLException e) {
+							System.err.println("SQL error while getting quiz print string");
+							e.printStackTrace();
+						}
 					}
 				%>	
 			</div>
@@ -99,18 +121,23 @@
 				<h3>Top Five Recently Created Quizzes</h3>
 				<% 
 					//2
-					List<Quiz> quizListByCreationTime = request.getAttribute("quizListByCreationTime");
+					List<Quiz> quizListByCreationTime = (List<Quiz>)request.getAttribute("quizListByCreationTime");
 					for(int i = 0; i < 5; ++i) {
-						Quiz quiz = quizListByCreationTime[i];
-						out.println("<div class='data'>");
-						out.println("<p>");
-						out.print("<span class='number'>"+i+") </span>");
-						out.print(quiz.getTitle());
-						out.println("</p>");
-						out.println("</div>");
+						try { 
+							Quiz quiz = quizListByCreationTime.get(i);
+							out.println("<div class='data'>");
+							out.println("<p>");
+							out.print("<span class='number'>"+i+") </span>");
+							out.print(quiz.getQuizTitleLink());	
+							out.print(" attempted " + quiz.getAttempts() + " times");
+							out.println("</p>");
+							out.println("</div>");
+						} catch (SQLException e) {
+							System.err.println("Error getting number of attempts for quiz print string");
+							e.printStackTrace();
+						}
 					}
 				%>	
-
 			</div>
 		</div>
 				
