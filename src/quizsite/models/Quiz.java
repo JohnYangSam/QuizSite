@@ -79,9 +79,18 @@ public class Quiz extends PersistentModel{
 		return quizzes;
 	}
 	
+	/**
+	 * Leverages index() to return an index of the quizes by creation time
+	 */
 	public static List<Quiz> indexByCreationTime() throws SQLException {
 		List<Quiz> quizList = Quiz.index();
-		Collections.sort(quizList, arg1)
+		Collections.sort(quizList, 
+			new Comparator<Quiz>() {
+				@Override
+				public int compare(Quiz q1, Quiz q2) {
+					return q1.getCreatedAt().compareTo(q2.getCreatedAt());
+				}
+			});
 		return quizList;
 	}
 	
@@ -168,15 +177,5 @@ public class Quiz extends PersistentModel{
 	
 	public void setUrl(String newUrl)
 	{ url = newUrl; }
-	
-	
-	/* Comparator inner classes used to sort auizes by different fields */
-	private class QuizSortByDateCreated implements Comparator<Quiz> {
-		@Override
-		public int compare(Quiz q1, Quiz q2) {
-			return q1.getCreatedAt().compareTo(q2.getCreatedAt());
-		}
-	}
-	
 	
 }
