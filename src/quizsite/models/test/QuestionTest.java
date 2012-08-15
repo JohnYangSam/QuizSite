@@ -19,7 +19,7 @@ public class QuestionTest {
 	private Set<String> answers;
 	private Question questObj;
 	
-	@Test
+/*	@Test
 	public void testSerialize()
 	{
 		Set<String> a = new HashSet<String>(Arrays.asList("ab","nh"));
@@ -33,5 +33,5 @@ public class QuestionTest {
 		String a = "nh<>!<>ab";
 		Set<String> b = Question.unserializeAnswers(a);
 		int n = 4;
-	}
+	}*/
 }
