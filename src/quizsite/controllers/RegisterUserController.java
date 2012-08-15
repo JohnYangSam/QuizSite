@@ -99,7 +99,7 @@ public class RegisterUserController extends HttpServlet {
 				//Register user and set the userId to the session, then send to main view
 				} else {
 					//Add user and then set the USER_SESSION_KEY to the userId
-					Integer userId = registerNewUser(userName, email, password);
+					Integer userId = User.registerNewUser(userName, email, password);
 					if(userId == -1) throw new SQLException();
 					//If there is an error adding the user, throw an SQL exception
 					HttpSession session = request.getSession();
