@@ -15,8 +15,11 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.xml.sax.helpers.DefaultHandler;
 
+import quizsite.models.Quiz;
+
 public class XMLParser extends DefaultHandler{
-/*	private HashMap<String, ArrayList<Card>> data = new HashMap<String, ArrayList<Card>>();
+	//private HashMap<String, ArrayList<Card>> data = new HashMap<String, ArrayList<Card>>();
+	private List<Quiz> quizzes = new ArrayList<Quiz>();
 	
 	public HashMap<String, ArrayList<Card>> parseXML(String src) throws JDOMException, IOException
 	{
@@ -57,5 +60,5 @@ public class XMLParser extends DefaultHandler{
 			    .getPrettyFormat());
 			      outputter1.output(doc, new FileWriter(src));
 	}
-	*/
+	
 }

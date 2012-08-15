@@ -1,0 +1,35 @@
+<!ELEMENT quiz (title, category?, description, question+)>
+<!ATTLIST quiz
+	random		(true | false)		"true"
+	one-page	(true | false)		"true"
+	immediate-correction	(true | false)	"false"
+	practice-mode			(true | false)	"true"
+	>
+
+<!ELEMENT title (#PCDATA)>
+
+<!ELEMENT category (#PCDATA)>
+
+<!ELEMENT description (#PCDATA)>	
+
+<!ELEMENT question (((query | image-location | blank-query), (answer | answer-list))
+						| (query, option+))>
+<!ATTLIST question 
+	type (question-response | fill-in-blank | multiple-choice | picture-response)  #REQUIRED
+	>
+
+<!ELEMENT query (#PCDATA)>
+<!ELEMENT blank-query (pre, blank, post)>
+<!ELEMENT pre (#PCDATA)>
+<!ELEMENT post (#PCDATA)>
+<!ELEMENT blank EMPTY>
+
+<!ELEMENT image-location (#PCDATA)>
+
+<!ELEMENT option (#PCDATA)>
+<!ATTLIST option answer (answer) #IMPLIED>
+
+<!ELEMENT answer (#PCDATA)>
+<!ATTLIST answer preferred (preferred) #IMPLIED>
+
+<!ELEMENT answer-list (answer)+>
