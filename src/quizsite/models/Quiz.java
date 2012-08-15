@@ -179,4 +179,11 @@ public class Quiz extends PersistentModel{
 	public void setUrl(String newUrl)
 	{ url = newUrl; }
 	
+	public List<Attempt> getAttempts() throws SQLException {
+		return Attempt.atQuiz(this);
+	}
+	
+	public int getNumberOfAttempts() throws SQLException {
+		return getAttempts().size();
+	}
 }
