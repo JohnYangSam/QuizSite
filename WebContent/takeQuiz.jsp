@@ -25,7 +25,18 @@
 </head>
 <body>
 <div data-name="" class="question">
-<form action="#" method="post">
+<!-- 
+	Right now every type of the question gets build in a for loop, each question has only 
+	one input field, answer, which should be look like this ...name="answer3"...where 3 is question.getId()
+ -->
+ 
+<form action="EvalQuestionController">
+	<input type="hidden" value="1" name="questid"/>
+	<input type="text" name="answer1"/>
+	<input type="submit"/>
+</form>
+<!-- 
+<form action="EvalQuizController" method="post">
 	<%
 	for(int i=0; i < questions.size(); i++)
 	{
@@ -87,44 +98,9 @@
 	%>
 	
 	<input type="submit" value="Check me!" />
+	<input type="hidden" name="quizid" value="<%= quiz.getId() %>"/>
 </form>
-    <!--  <div id="Checkbox">
-        <div class="question">
-            <label>This is a fill blank</label>
-            <textarea data-name="text"> </textarea>
-            <select data-name="selector"></select>
-        </div>
-    </div>
-    <div id="Fill_Blank">
-        <div class="question">
-            <label>This is a fill blank</label>
-            <textarea data-name="text"> </textarea>
-            <select data-name="selector"></select>
-        </div>
-    </div>
-    <div id="Picture">
-        <div class="question">
-            <label>This is a picture</label>
-            <textarea data-name="text"> </textarea>
-            <select data-name="selector"></select>
-        </div>
-    </div>
-    <div id="Radio">
-        <div class="question">
-            <label> This is a radio </label>
-            <textarea data-name="text"> </textarea>
-            <select data-name="selector"></select>
-        </div>
-    </div>
-    <div id="Response">
-        <div class="question">
-            <label> This is a response </label>
-            <textarea data-name="text"> </textarea>
-            <textarea data-name="text"> </textarea>
-            <select data-name="selector"></select>
-            <select data-name="selector"></select>
-        </div>
-    </div>-->
+   -->
 </div>
 </body>
 </html>
