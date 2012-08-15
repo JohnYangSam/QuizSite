@@ -6,23 +6,50 @@ td {
 	border-bottom : 1px dashed gray;
 	padding: 4px;
 }
-div.inbox {
- 	width: 50%;
-    margin: 0px auto; 
- 	text-align : center;
+div.container {
+	width: 80%;
+	margin: 1px auto;
+	padding : 20px;
+	border: 2px solid lightgray;
+	
 }
+div#send_result {
+	text-align: center;
+	padding: 10 px
+	display: none;
+	width: 60%;
+	margin: 0px auto;
+	border: 1px dashed blue;
+}
+
 br {
 	line-height:300%;
 }
 
 th.to, th.from, td.to, td.from {
-	width:15%;
+	width:10%;
+}
+
+th.date,td.date {
+	width: 10%;
 }
 
 th.body, td.body {
-	width:75%;
+	width:55%;
+}
+
+th.subject, td.subject {
+	width:15%;
 }
 
 table {
 	width:100%;
+}
+
+ul {
+	list-style: none;
+}
+
+li {
+	margin: 20px;
 }

@@ -38,13 +38,13 @@ public class AcceptFriendship extends HttpServlet {
 			if (current == null) return;
 			if (current.getId() == f.getResponder().getId()) {
 				f.accept();
-				request.setAttribute("successMessage", f.getInitiator().getName() + " accepted your friend request, " +  f.getResponder().getName() + ". Hallelujah! Hallelujah!");
+				request.setAttribute("successMessage", "You accepted " + f.getInitiator().getName() + "'s friend request, " +  f.getResponder().getName() + ". Hallelujah! Hallelujah!");
 			} else {
 				request.setAttribute("failureMessage", "You cannot accept a friend request not sent to you.");
 			}
 			RequestDispatcher dispatch = request.getRequestDispatcher("accept_friendship.jsp");
 			dispatch.forward(request, response);
-		} catch (SQLException e) {}
+		} catch (SQLException e) {}	
 	}
 
 	/**
