@@ -219,6 +219,23 @@ public class DatabaseConnection {
 		}
 	}
 
+	private String escapeString(String str)
+	{
+		if (str == null || str.indexOf("'") == -1)
+			return str;
+		
+		StringBuilder newStr = new StringBuilder();
+		for (int i = 0; i < str.length(); i++) {
+			char ch = str.charAt(i);
+			if (Character.toString(ch).equals("'")) {
+				newStr.append ("\\'");
+			} else {
+				newStr.append(ch);
+			}
+		}
+		return newStr.toString();
+	}
+	
 	/*
 	 * Returns a string properly formatted for using inside an sql query
 	 * If the second param true, each word is surrounded with single quotes  
@@ -229,8 +246,9 @@ public class DatabaseConnection {
 	private String getFormattedStringFromList(List list, boolean isEscaped) {
 		StringBuilder sb = new StringBuilder();
 		for (Iterator<Object> itr = list.iterator(); itr.hasNext();) {
+			Object crrObj = itr.next();
 			if (isEscaped) sb.append("'");
-			sb.append(itr.next());	
+			sb.append(escapeString((crrObj == null)?null:crrObj.toString()));	
 			if (isEscaped) sb.append("'");
 			sb.append(", "); // extra appending at the end of the loop needs to be removed when returning
 		}

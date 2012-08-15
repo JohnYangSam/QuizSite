@@ -1,0 +1,57 @@
+package quizsite.util.test;
+
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
+import org.jdom.JDOMException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import quizsite.models.Question;
+import quizsite.models.Quiz;
+import quizsite.models.User;
+import quizsite.util.DatabaseConnection;
+import quizsite.util.XMLParser;
+
+public class XMLParserTest {
+	
+	private XMLParser parser; 
+
+	@Before
+	public void setUp() throws Exception {
+		DatabaseConnection.switchModeTo(DatabaseConnection.Mode.TEST);
+		User newUser = new User(1);
+		
+		DatabaseConnection.dropTablesIfExist(Question.TABLE_NAME);
+		DatabaseConnection.dropTablesIfExist(Quiz.TABLE_NAME);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void test() {
+		try {
+			parser = new XMLParser(1);
+			parser.getQuizzesFromXML("src/quizsite/util/quiz-xml/bunny.xml");
+			parser.getQuizzesFromXML("src/quizsite/util/quiz-xml/cities.xml");
+		} catch (JDOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+}

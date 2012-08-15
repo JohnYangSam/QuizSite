@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
+<!DOCTYPE note SYSTEM "quiz.dtd">
 <quiz random="true" one-page="false" practice-mode="true">
 <title>Bunny Quiz</title>
 <category>Animals</category>
-<description>An homage to the departed, legendary Bunny World project.</description>
+<description>An homag'e to the departed, legendary Bunny World project.</description>
 
 <question type="question-response">
   <query>What is the Biological Family for Bunnies?</query>
