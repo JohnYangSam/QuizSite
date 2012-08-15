@@ -82,7 +82,10 @@
 			<label for="immediate">Immediate check</label><input type="checkbox" name="immediateCheck" value="immediateCheck" id="immediate"> <br/>
 			<label for="random">Random order</label><input type="checkbox" name="isRandom" value="randomOrder" id="random"/> <br />
 			<label for="onePage">One page</label><input type="radio" name="onePage" value="onePageEnabled" id="onePage"/>
-			<label for="flash">Flash style</label><input type="radio" name="onePage" value="flashStyle" id="flash"/> 
+			<label for="flash">Flash style</label><input type="radio" name="onePage" value="flashStyle" id="flash"/><br/>
+			<label for="quiz_title">Quiz title</label><input type="text" name="quiz_title" id="quiz_title"/>
+			<label for="quiz_descr">Quiz description</label><input type="text" name="quiz_descr" id="quiz_descr"/>
+			<label for="quiz_title">Quiz category</label><input type="text" name="quiz_category" id="quiz_category"/>
 		</div>
 		
 		<input type="hidden" name="numOfQuest" value="0" id="numOfQuest"/>
