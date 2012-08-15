@@ -92,6 +92,12 @@ public class Quiz extends PersistentModel{
 					return q1.getCreatedAt().compareTo(q2.getCreatedAt());
 				}
 			});
+
+//TESTING Code
+//	for(Quiz quiz : quizList) {
+//			System.err.println(quiz.getCreatedAt());
+//		}
+		
 		return quizList;
 	}
 	
