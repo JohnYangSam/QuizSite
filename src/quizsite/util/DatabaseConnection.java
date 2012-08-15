@@ -75,7 +75,9 @@ public class DatabaseConnection {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection ( "jdbc:mysql://" + mode.getServer(), mode.getAccount(), mode.getPassword());
 			stmt = conn.createStatement();
-			stmt.executeQuery("USE " + mode.getDatabase());
+			String useDB = "USE " + mode.getDatabase();
+			stmt.executeQuery(useDB);
+			System.out.println(useDB);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

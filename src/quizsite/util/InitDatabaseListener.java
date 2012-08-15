@@ -40,7 +40,7 @@ public class InitDatabaseListener implements ServletContextListener {
 		//if the tables do not exist already. We do not save any of the models so
 		//the tables will remain empty
 		try {
-			DatabaseConnection.switchModeTo(Util.readMode());
+			DatabaseConnection.switchModeTo(TestingMode.MODE);
 			dropTables();
 			createTables();
 			initTestData();

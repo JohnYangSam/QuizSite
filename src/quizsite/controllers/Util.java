@@ -74,7 +74,7 @@ public class Util {
 		}
 	}
 
-	/** Reads the "mode.txt" file to decide 
+	/** Reads the "mode.txt" file to decide -- NOT USING
 	 * @throws FileNotFoundException */
 	public static String readMode() {
 		System.out.println(System.getProperty("user.home"));
