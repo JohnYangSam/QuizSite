@@ -5,6 +5,7 @@ import java.util.List;
 
 import quizsite.models.Message;
 import quizsite.models.User;
+import quizsite.util.Activity;
 import quizsite.util.DatabaseConnection;
 
 public class Note extends Message {
@@ -52,6 +53,13 @@ public class Note extends Message {
 		super.parse(dbEntry);
 		// All columns parsed - no need to parse content. Just set it equal to body
 		updateContent(getBody());
+	}
+
+
+	@Override
+	public Activity getActivity() {
+		//THIS DOES NOT NEED TO BE IMPLEMENTED
+		return null;
 	}
 
 

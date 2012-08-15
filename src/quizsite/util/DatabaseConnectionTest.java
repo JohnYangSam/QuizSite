@@ -251,5 +251,11 @@ class Something extends PersistentModel
 		return objs;
 	}
 
+	@Override
+	public Activity getActivity() {
+		// Leave this empty. Nothing important to implement for testing
+		return new Activity("someUser", "someDate","someVerb", "someThing");
+	}
+
 	
 }

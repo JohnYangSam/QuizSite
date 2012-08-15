@@ -2,6 +2,7 @@ package quizsite.controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -57,6 +58,7 @@ public class HomeController extends HttpServlet {
 
 		try {
 			//Get lists
+			
 			List<Quiz> quizListByPopularity = Quiz.indexByNumberOfAttempts();
 			List<Quiz> quizListByCreationTime = Quiz.indexByCreationTime();
 			List<Attempt> attemptsByTime = Attempt.ofUserByDate(current);
@@ -64,7 +66,14 @@ public class HomeController extends HttpServlet {
 			List<Achievement> achievements = Achievement.ofUser(current);
 			List<Message> messages = Message.indexToUserByDate(current);
 			
+			List<Object> activities = new ArrayList<Object>();
+			activities.addAll(quizListByUser);
+			activities.addAll(achievements);
+			activities.addAll(attemptsByTime);
+			
 			List<User> friends = current.getFriends();
+			
+			
 			for(User friend : friends) {
 				
 			}
@@ -82,6 +91,23 @@ public class HomeController extends HttpServlet {
 		dispatch.forward(request, response);
 		return;
 	}
+	
+
+	
+		List<Quiz> quizListByPopularity = Quiz.indexByNumberOfAttempts();
+			List<Quiz> quizListByCreationTime = Quiz.indexByCreationTime();
+			List<Attempt> attemptsByTime = Attempt.ofUserByDate(current);
+			List<Quiz> quizListByUser = Quiz.indexCreatedBy(current);
+			List<Achievement> achievements = Achievement.ofUser(current);
+			List<Message> messages = Message.indexToUserByDate(current);
+			
+			List<Object> activities = new ArrayList<Object>();
+			activities.addAll(quizListByUser);
+			activities.addAll(achievements);
+			activities.addAll(attemptsByTime);
+			
+			List<User> friends = current.getFriends();
+			
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Collections;
 
 import quizsite.models.Message.Type;
+import quizsite.util.Activity;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 
@@ -236,5 +237,16 @@ public class Quiz extends PersistentModel{
 	
 	public int getNumberOfAttempts() throws SQLException {
 		return getAttempts().size();
+	}
+
+	@Override
+	public Activity getActivity() {
+		try {
+			return new Activity(User.get(creatorID).getName(), this.getCreatedAt(), "created a new Quiz", title);
+		} catch (SQLException e) {
+			System.out.println("SQLException looking up user");
+			e.printStackTrace();
+			return new Activity("", "", "", "");
+		}
 	}
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import quizsite.models.Message.Type;
+import quizsite.util.Activity;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 import quizsite.controllers.Util;
@@ -283,6 +284,42 @@ public class User extends PersistentModel{
 		User u = User.get(userID);
 		int nQuizzes = Quiz.indexCreatedBy(u).size();
 		Achievement.updateForCreator(u, nQuizzes);
+	}
+	
+	public List<Activity> getFriendActivitiesByDate() {
+		get
+	}
+	
+
+	/**
+	 * Returns a List<Activity> of the activities of the user
+	 */
+	public List<Activity> getUserActivities() throws SQLException {
+		//Get the recent activities of the user
+		List<Attempt> attemptsByUser = Attempt.ofUser(this);
+		List<Quiz> quizListByUser = Quiz.indexCreatedBy(this);
+		List<Achievement> achievements = Achievement.ofUser(this);
+	
+		//Aggregate them in a list of Activity objects and sort by creation date
+		List<Activity> activities = new ArrayList<Activity>();
+		
+		for(Attempt attempt : attemptsByUser) {
+			activities.add(attempt.getActivity());
+		}
+		
+		for(Quiz quiz : quizListByUser) {
+			activities.add(quiz.getActivity());
+		}
+		for(Achievement achievement : achievements) {
+			activities.add(achievement.getActivity());
+		}
+		
+		return activities;
+	}
+
+	@Override
+	public Activity getActivity() {
+		return new Activity(userName, this.getCreatedAt(), "joined", "QuizSite!");
 	}
 	
 

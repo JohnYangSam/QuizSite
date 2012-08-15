@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import quizsite.models.*;
+import quizsite.util.Activity;
 
 /**
  * 
@@ -49,6 +50,12 @@ public class Challenge extends Message {
 		super.parse(dbEntry);
 		// Not parsing further
 		
+	}
+
+
+	@Override
+	public Activity getActivity() {
+		return new Activity(sender.getName(), getCreatedAt(), "challenged ", recipient.getName() + "to take a quiz!"); 
 	}
 	
 }
