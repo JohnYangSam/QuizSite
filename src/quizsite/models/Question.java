@@ -183,7 +183,7 @@ public abstract class Question extends PersistentModel {
 	public void setAnswers(Set<String> newAnsw)
 	{ answers = newAnsw; }
 	
-	public static String serializeAnswers(Set<String> answers) {
+	public String serializeAnswers() {
 		String serialized = "";
 		for (Iterator<String> iterator = answers.iterator(); iterator.hasNext();) {
 			String answer = (String) iterator.next();
@@ -192,7 +192,7 @@ public abstract class Question extends PersistentModel {
 		return serialized.substring(0, serialized.length() - 5);
 	}
 	
-	public static Set<String> unserializeAnswers(String answ)
+	public Set<String> unserializeAnswers(String answ)
 	{
 		String[] unsArr = answ.trim().split("{!~!}");
 		Set<String> answersSet = new HashSet<String>(Arrays.asList(unsArr));
