@@ -19,38 +19,46 @@
     <div id="Checkbox">
         <div class="question">
             <label>Checkbox</label>
-            <textarea data-name="text" name="text"></textarea>
-            <select data-name="selector"></select>
+            Question text<input type="text" data-name="text" />
+            Options <textarea data-name="options"> </textarea>
+            Answers <textarea data-name="answers"> </textarea>
+            <input type="hidden" data-name="type" value="checkbox"/>
         </div>
     </div>
     <div id="Fill_Blank">
         <div class="question">
             <label>Fill</label>
-            <textarea data-name="text"> </textarea>
-            <select data-name="selector"></select>
+            Text <input type="text" data-name="text" />
+			First part <input type="text" data-name="firstPart" />
+			Second part <input type="text" data-name="secondPart" />
+            Answers <textarea data-name="answers"> </textarea>
+            <input type="hidden" data-name="type" value="fill_blank"/>
         </div>
     </div>
     <div id="Picture">
         <div class="question">
             <label>Picture</label>
-            <textarea data-name="text"> </textarea>
-            <select data-name="selector"></select>
+            Question text<input type="text" data-name="text" />
+            Image url<input type="text" data-name="picUrl" />
+            Answers <textarea data-name="answers"> </textarea>
+            <input type="hidden" data-name="type" value="picture"/>
         </div>
     </div>
     <div id="Radio">
         <div class="question">
             <label>Radio</label>
-            <textarea data-name="text"> </textarea>
-            <select data-name="selector"></select>
+            Questio text <input type="text" data-name="text" />
+            Options <textarea data-name="options"> </textarea>
+            Answers <textarea data-name="answers"> </textarea>
+            <input type="hidden" data-name="type" value="radio"/>
         </div>
     </div>
     <div id="Response">
         <div class="question">
+            <input type="hidden" data-name="type" value="response"/>
             <label>Response</label>
-            <textarea data-name="text"> </textarea>
-            <textarea data-name="text"> </textarea>
-            <select data-name="selector"></select>
-            <select data-name="selector"></select>
+            Questio text <input type="text" data-name="text" />
+            Answers <textarea data-name="answers"> </textarea>
         </div>
     </div>
 </div>
@@ -69,30 +77,38 @@
 
 <div id="quiz">
 	<form method="post" action="createQuiz" id="newQuizForm">
-		<input type="hidden" name="numOfQuest" value="5"/>
+		<div class="options">
+			<label for="practice">Enable practice</label><input type="checkbox" name="practiceEnabled" value="practiceEnabled" id="practice"/> <br/>
+			<label for="immediate">Immediate check</label><input type="checkbox" name="immediateCheck" value="immediateCheck" id="immediate"> <br/>
+			<label for="random">Random order</label><input type="checkbox" name="isRandom" value="randomOrder" id="random"/> <br />
+			<label for="onePage">One page</label><input type="radio" name="onePage" value="onePageEnabled" id="onePage"/>
+			<label for="flash">Flash style</label><input type="radio" name="onePage" value="flashStyle" id="flash"/> 
+		</div>
+		
+		<input type="hidden" name="numOfQuest" value="0" id="numOfQuest"/>
 		<input type="submit" value="Create">
-	</form>
     <div id="count">0</div>
+	</form>
 </div>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $("#add_question").click(function() {
-            var count = parseInt($("#count").html());
-            $("#quiz").append(($("#" + $("#selection").val()).html()));
+            var count = parseInt($("#numOfQuest").val());
+            $("#newQuizForm").append(($("#" + $("#selection").val()).html()));
             
             // Update attributes
             $.each(
                 
-                $("#quiz > div.question").last().children(),    // update this if you change the class name from 'question' to something else
+                $("#newQuizForm > div.question").last().children(),    // update this if you change the class name from 'question' to something else
                 function() {
                     $(this).attr('name', $(this).attr('data-name') + ":" + count);
                 }
             );
             
             // Update count
-            $("#count").html( count + 1);
+            $("#numOfQuest").val(parseInt($("#numOfQuest").val()) + 1);
         });
     });
     
