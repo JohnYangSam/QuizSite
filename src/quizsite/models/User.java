@@ -11,6 +11,8 @@ import java.util.List;
 import quizsite.models.Message.Type;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
+import quizsite.controllers.Util;
+import quizsite.controllers.Util.*;
 
 /**
  * 
@@ -248,6 +250,28 @@ public class User extends PersistentModel{
 
 	public String getPasswordSalt() {
 		return this.passwordSalt;
+	}
+	
+	/**
+	 * Registers a new user in the database (taking care of salting and hashing passwords
+	 * and returns the ID of the user (that can be stored later to identify them in the session.
+	 * If there is an error it returns -1.
+	 */
+	public static int registerNewUser(String userName, String email, String password) {
+		String salt = Util.generateSalt();
+		String passwordSaltedHash = Util.makeSaltedHash(password, salt);
+		int userId = -1;
+		try {
+			//Create new user
+			User newUser =  new User(userName, email, passwordSaltedHash, salt);
+			//Save the user in the database
+			userId = newUser.save();
+		} catch (SQLException e) {
+			System.err.println("Error registering user");
+			e.printStackTrace();
+			return -1;
+		}
+		return userId;
 	}
 	
 
