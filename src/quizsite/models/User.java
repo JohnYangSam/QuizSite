@@ -264,6 +264,10 @@ public class User extends PersistentModel{
 		try {
 			//Create new user
 			User newUser =  new User(userName, email, passwordSaltedHash, salt);
+			System.err.println("User: " + userName);
+			System.err.println("password: " + password);
+			System.err.println("SaltedHash from input: " + passwordSaltedHash + " and salt: " + salt);
+			
 			//Save the user in the database
 			userId = newUser.save();
 		} catch (SQLException e) {

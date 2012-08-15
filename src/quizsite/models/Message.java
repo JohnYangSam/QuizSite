@@ -6,6 +6,8 @@ package quizsite.models;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Formatter;
 import java.util.List;
 
@@ -104,6 +106,22 @@ public abstract class Message extends PersistentModel{
 		String[][] conditions = { {"recipient_id", "=", "" + recipient.getId()} };
 		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
 		return parseRows(rows);
+	}
+	
+	public static List<Message> indexToUserByDate(User recipient) throws SQLException {
+		List<Message> toUserMsgs = indexTo(recipient);
+		Collections.sort(toUserMsgs, 
+			new Comparator<Message>() {
+				@Override
+				public int compare(Message m1, Message m2) {
+					return m1.getCreatedAt().compareTo(m2.getCreatedAt());
+				}
+			});
+//TESTING Code
+		for(Message msg : toUserMsgs) {
+				System.err.println(msg.getCreatedAt());
+			}	
+		return toUserMsgs;
 	}
 
 	public static List<Message> indexFrom(User sender) throws SQLException {

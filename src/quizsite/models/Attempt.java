@@ -2,6 +2,8 @@ package quizsite.models;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import quizsite.util.DatabaseConnection;
@@ -37,6 +39,18 @@ public class Attempt extends PersistentModel {
 	public static List<Attempt> ofUser(User user) throws SQLException {
 		String[][] conditions = {{"attempter_id", "=", "" + user.getId()}};
 		return parseRows(DatabaseConnection.indexWhere(TABLE_NAME, conditions));
+	}
+	
+	public static List<Attempt> ofUserByDate(User user) throws SQLException {
+		List<Attempt> attemptsList = ofUser(user);
+		Collections.sort(attemptsList,
+			new Comparator<Attempt>() {
+				@Override
+				public int compare(Attempt o1, Attempt o2) {
+					return o1.getCreatedAt().compareTo(o2.getCreatedAt());
+				}
+		});
+		return attemptsList;
 	}
 	
 	public static List<Attempt> ofUserAtQuiz(User user, Quiz quiz) throws SQLException {

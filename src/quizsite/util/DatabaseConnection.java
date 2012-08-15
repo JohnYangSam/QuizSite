@@ -25,8 +25,9 @@ public class DatabaseConnection {
 
 	public enum Mode {
 		PRODUCTION ("ccs108rege", "ahdeetha", "c_cs108_rege", "mysql-user.stanford.edu"),
+		DEVELOPMENT ("ccs108johnys", "oomeewei", "c_cs108_johnys", "mysql-user.stanford.edu"),
 		TEST ("ccs108makarst", "yexubohn", "c_cs108_makarst", "mysql-user.stanford.edu");
-
+		
 		private final String account;
 		private final String password;
 		private final String database;
@@ -49,6 +50,16 @@ public class DatabaseConnection {
 		public String getServer() {
 			return server;
 		}
+		public static Mode get(String newMode) {
+			for (Mode m : Mode.values()) {
+				if (newMode.equals(m.name())) {
+					return m;
+				} else {
+					throw new IllegalArgumentException("Mode can be either of 'PRODUCTION', 'DEVELOPMENT', 'TEST'. You submitted: " + newMode);
+				}	
+			}
+			return null;
+		}
 	}
 
 
@@ -64,7 +75,9 @@ public class DatabaseConnection {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection ( "jdbc:mysql://" + mode.getServer(), mode.getAccount(), mode.getPassword());
 			stmt = conn.createStatement();
-			stmt.executeQuery("USE " + mode.getDatabase());
+			String useDB = "USE " + mode.getDatabase();
+			stmt.executeQuery(useDB);
+			System.out.println(useDB);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -169,6 +182,10 @@ public class DatabaseConnection {
 	// for JUnit tests and switchModeTo(Data..ion.PRODUCTION) in the tearDown()
 	public static void switchModeTo(Mode newMode) {
 		mode = newMode;
+	}
+	
+	public static void switchModeTo(String newMode) {
+		mode = Mode.get(newMode);
 	}
 
 	// Closes the JDBC connection - call it once you're done with your db object
