@@ -11,4 +11,5 @@ build
 .DS_Store
 .classpath
 tags
+src/quizsite/util/TestingMode.java
 

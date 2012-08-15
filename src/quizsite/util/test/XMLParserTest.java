@@ -37,8 +37,8 @@ public class XMLParserTest {
 	public void test() {
 		try {
 			parser = new XMLParser(1);
-			parser.getQuizzesFromXML("src/quizsite/util/quiz-xml/bunny.xml");
-			parser.getQuizzesFromXML("src/quizsite/util/quiz-xml/cities.xml");
+			parser.getQuizzesFromXML("WebContent/quiz-xml/bunny.xml");
+			parser.getQuizzesFromXML("WebContent/quiz-xml/cities.xml");
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
