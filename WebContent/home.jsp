@@ -35,11 +35,11 @@
 			</div>
 
 			<div id="recentQuizTakeActivity">
-				<h3>Recent Quizes You Took</h3>
+				<h3>Recent Quizzes You Took</h3>
 
 			</div>
 			<div id="recentQuizCreateActivity">
-				<h3>Recent Quizes You Created</h3>
+				<h3>Recent Quizzes You Created</h3>
 
 			</div>	
 		</div>	
