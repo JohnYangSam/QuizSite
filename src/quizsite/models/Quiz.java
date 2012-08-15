@@ -29,7 +29,7 @@ public class Quiz extends PersistentModel{
 	public static String TABLE_NAME = "Quiz";
 	public static String[][] SCHEMA = {{"creator_id", "INTEGER"}, {"random", "BOOL"}, 
 		{"practice", "BOOL"}, {"immediate", "BOOL"}, {"one_page", "BOOL"}, {"title", "TEXT"}, {"descr", "TEXT"}, {"category", "TEXT"}};
-	public final static int I_CREATORID = 2, I_RANDOM = 3, I_PRAC = 4, I_IMMED = 5, I_ONEPAGE = 6, I_TITLE = 7, I_DESCR = 8, I_CATEGORY = 9;
+	public final static int I_CREATORID = 2, I_RANDOM = 3, I_PRAC = 4, I_IMMED = 5, I_ONEPAGE = 6, I_TITLE = 7, I_DESCR = 8, I_CATEGORY = 9; // TODO: @makazone - replace magic numbers by N_PRE_COL
 	public static String[][] FOREIGN_KEYS = {{"creator_id", "User", "id"}};
 
 	public Quiz(String title, String descr, String category, boolean onePage, boolean practice, boolean immediateCheck, boolean random, int creatorID) throws SQLException
@@ -184,6 +184,7 @@ public class Quiz extends PersistentModel{
 	public void parse(List<String> dbEntry) throws IllegalArgumentException, SQLException {
 		super.parse(dbEntry);
 		
+		setCreatorID(Integer.parseInt(dbEntry.get(I_CREATORID)));
 		setImmediateCheckEnab(getBool(dbEntry.get(I_IMMED)));
 		setRandom(getBool(dbEntry.get(I_RANDOM)));
 		setOnePage(getBool(dbEntry.get(I_ONEPAGE)));
@@ -212,8 +213,14 @@ public class Quiz extends PersistentModel{
 	public boolean isRandomized()
 	{ return randomized; }
 	
-	public int getCreatorID()
-	{ return creatorID; }
+	public int getCreatorID() { 
+		if(creatorID == 0) {
+			System.err.print("Quiz.java:217 Zero Creator ID error: " + creatorID + "QuizId: " + this.getId());
+		}
+		return creatorID; }
+	public void setCreatorID(int creatorId) {
+		this.creatorID = creatorId;
+	}
 
 	// URL to access quiz
 	public String getURL() 
@@ -259,7 +266,7 @@ public class Quiz extends PersistentModel{
 		try {
 			System.out.println("MAKING QUIZ ACTIVITY in Quiz: line 260");
 			System.out.println("creatorID " + creatorID);
-			return new Activity(creatorID, User.get(creatorID).getName(), this.getCreatedAt(), "created a new Quiz", title);
+			return new Activity(this.getCreatorID(), User.get(this.getCreatorID()).getName(), this.getCreatedAt(), "created a new Quiz", title);
 		} catch (SQLException e) {
 			System.err.println("SQLException looking up user");
 			e.printStackTrace();

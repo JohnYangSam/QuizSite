@@ -89,7 +89,7 @@
 				<h3>Recent Quizzes You Recently Created</h3>
 				<ul>
 				<%
-					List<Quiz> quizListByUser = (List<Quiz>)request.getAttribute("quizListByUser");
+					List<Quiz> quizListByUser = null; //(List<Quiz>)request.getAttribute("quizListByUser");
 					if(quizListByUser == null || quizListByUser.size() == 0) {
 						out.println("<p>You did not recently create any quizzes.</p>");
 					} else {

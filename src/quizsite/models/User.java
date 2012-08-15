@@ -312,6 +312,7 @@ public class User extends PersistentModel{
 		try {
 			List<User> friends = this.getFriends();
 			for(User friend : friends) {
+				System.out.println("User.java:315 friend.getId() :" + friend.getId());
 				friendActivities.addAll(friend.getUserActivities());
 			}
 		} catch (SQLException e) {
@@ -337,6 +338,7 @@ public class User extends PersistentModel{
 		//Get the recent activities of the user
 		List<Attempt> attemptsByUser = Attempt.ofUser(this);
 		List<Quiz> quizListByUser = Quiz.indexCreatedBy(this);
+		System.out.println("quizListByUser User.java:341: " + quizListByUser + " size: " + quizListByUser.size());
 		List<Achievement> achievements = Achievement.ofUser(this);
 	
 		//Aggregate them in a list of Activity objects and sort by creation date
@@ -347,6 +349,9 @@ public class User extends PersistentModel{
 		}
 		
 		for(Quiz quiz : quizListByUser) {
+			if(quiz.getCreatorID() == 0)
+				System.err.println("ERROR, 0 id value");
+			System.out.println("User.java: 351 QuizId: "+ quiz.getId() + "creatorId: " + quiz.getCreatorID());
 			activities.add(quiz.getActivity());
 		}
 		

@@ -117,6 +117,7 @@ public class InitDatabaseListener implements ServletContextListener {
 		// create some quizzes
 		Quiz[] quizzes = new Quiz[3];
 		(quizzes[0] = new Quiz("Quiz1","This is the first test quiz","a test category",false, true, false, true, users[0].getId())).save();
+		System.err.println("InitDatabaseListener:120 Quiz 3 init creatorID: " + users[0].getId());
 		(quizzes[1] = new Quiz("Quiz2","This is the second test quiz","another test category",true, true, false, true, users[1].getId())).save();
 		(quizzes[2] = new Quiz("Quiz3","This is the third test quiz","a different test category",false, false, false, true, users[2].getId())).save();
 
