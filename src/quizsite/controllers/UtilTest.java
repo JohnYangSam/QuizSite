@@ -27,4 +27,9 @@ public class UtilTest {
 			assertEquals(testAndStrings[i], Util.join(testCsvCases[i], " AND "));
 		}
 	}
+	
+	@Test
+	public void testReadMode() {
+		assertEquals("PRODUCTION", Util.readMode());
+	}
 }

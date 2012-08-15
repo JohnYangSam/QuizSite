@@ -57,9 +57,12 @@ public class CreateQuizController extends HttpServlet {
 			boolean practice 		= (request.getParameter("practiceEnabled") == null)?false:true;
 			boolean immediateCheck  = (request.getParameter("immediateCheck") == null)?false:true;
 			boolean random 			= (request.getParameter("isRandom") == null)?false:true;
+			String title			= request.getParameter("quiz_title");
+			String descr			= request.getParameter("quiz_descr");
+			String category			= request.getParameter("quiz_category");
 			int creatorID 			= currentUser.getId();
 		
-			Quiz newQuiz = new Quiz(onePage, practice, immediateCheck, random, creatorID);
+			Quiz newQuiz = new Quiz(title, descr, category, onePage, practice, immediateCheck, random, creatorID);
 			int newQuizId	 = newQuiz.save();
 			
 			int numOfQuestions = Integer.parseInt(request.getParameter("numOfQuest"));
