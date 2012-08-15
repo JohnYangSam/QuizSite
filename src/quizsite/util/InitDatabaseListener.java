@@ -44,6 +44,9 @@ public class InitDatabaseListener implements ServletContextListener {
 			dropTables();
 			createTables();
 			initTestData();
+			XMLParser parseQuizFromXML = new XMLParser(1);
+			//parseQuizFromXML.getQuizzesFromXML("src/quizsite/util/quiz-xml/bunny.xml");
+			//parseQuizFromXML.getQuizzesFromXML("~/WebContent/quiz-xml/cities.xml");
 		} catch (Exception e) {
 			System.err.println("QuizSite : Error : While dropping and creating tables");
 			e.printStackTrace();

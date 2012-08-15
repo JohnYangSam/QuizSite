@@ -69,7 +69,7 @@ public abstract class Question extends PersistentModel {
 	public static String[][] SCHEMA = { {"quiz_id", "INTEGER"}, {"body", "TEXT"}, {"type", "TINYTEXT"}, {"answers", "TEXT"}, {"auxiliary", "TEXT"}};
 	public static String[][] FOREIGN_KEYS = { {"quiz_id", "Quiz", "id"} };
 //	public static String[] INDEX = {"type"}; /** Which columns should be indexed for faster search? */
-	protected final static int I_BODY = 2, I_QUIZ_ID = 1, I_ANSWERS = 5, I_TYPE = 3, I_AUXILIARY = 6;
+	protected final static int I_BODY = 3, I_QUIZ_ID = 2, I_ANSWERS = 5, I_TYPE = 4, I_AUXILIARY = 6;
 	
 	@Override
 	public Object[] getFields() {
@@ -183,7 +183,7 @@ public abstract class Question extends PersistentModel {
 	public void setAnswers(Set<String> newAnsw)
 	{ answers = newAnsw; }
 	
-	private String serializeAnswers() {
+	public static String serializeAnswers(Set<String> answers) {
 		String serialized = "";
 		for (Iterator<String> iterator = answers.iterator(); iterator.hasNext();) {
 			String answer = (String) iterator.next();
@@ -192,9 +192,10 @@ public abstract class Question extends PersistentModel {
 		return serialized.substring(0, serialized.length() - 5);
 	}
 	
-	private Set<String> unserializeAnswers(String answ)
+	public static Set<String> unserializeAnswers(String answ)
 	{
-		Set<String> answersSet = new HashSet<String>(Arrays.asList(answ.trim().split("{!~!}")));
+		String[] unsArr = answ.trim().split("{!~!}");
+		Set<String> answersSet = new HashSet<String>(Arrays.asList(unsArr));
 		return answersSet;
 	}
 }

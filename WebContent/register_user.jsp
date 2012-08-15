@@ -51,7 +51,7 @@
 					</ul>
 				</form>
 				<div class="no_account">
-					<a href="/home">Home</a>
+					<a href="index.jsp">Home</a>
 				</div>
 			</div>
 		

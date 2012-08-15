@@ -19,26 +19,19 @@ public class QuestionTest {
 	private Set<String> answers;
 	private Question questObj;
 	
-	@Before
-	public void setUp() throws Exception {
-		DatabaseConnection.switchModeTo(DatabaseConnection.Mode.TEST);
-		answers  = new HashSet<String>(Arrays.asList("a","b","c"));
-		questObj = new ResponseQuestion(answers, "text", 1);
-		DatabaseConnection.dropTablesIfExist(questObj.getTableName());
-	}
-
 	@Test
-	public void testGetScore() {
-		Set<String> userAnswers = new HashSet<String>(Arrays.asList("b", "a"));
-		assertEquals(2, questObj.getScore(userAnswers));
-		
-		userAnswers = new HashSet<String>(Arrays.asList("d"));
-		assertEquals(0, questObj.getScore(userAnswers));
+	public void testSerialize()
+	{
+		Set<String> a = new HashSet<String>(Arrays.asList("ab","nh"));
+		String serialize = Question.serializeAnswers(a);
+		assertTrue("nh{!~!}ab".equals(serialize));
 	}
-
-	@After
-	public void tearDown() throws Exception {
-		DatabaseConnection.dropTablesIfExist(questObj.getTableName());
-		DatabaseConnection.switchModeTo(DatabaseConnection.Mode.PRODUCTION);
+	
+	@Test
+	public void testUnSerialize()
+	{
+		String a = "nh{!~!}ab";
+		Set<String> b = Question.unserializeAnswers(a);
+		int fd = 1;
 	}
 }

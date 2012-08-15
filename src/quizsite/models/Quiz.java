@@ -28,7 +28,7 @@ public class Quiz extends PersistentModel{
 	public static String TABLE_NAME = "Quiz";
 	public static String[][] SCHEMA = {{"creator_id", "INTEGER"}, {"random", "BOOL"}, 
 		{"practice", "BOOL"}, {"immediate", "BOOL"}, {"one_page", "BOOL"}, {"title", "TEXT"}, {"descr", "TEXT"}, {"category", "TEXT"}};
-	public final static int I_CREATORID = 1, I_RANDOM = 2, I_PRAC = 3, I_IMMED = 4, I_ONEPAGE = 5, I_TITLE = 6, I_DESCR = 7, I_CATEGORY = 8;
+	public final static int I_CREATORID = 2, I_RANDOM = 3, I_PRAC = 4, I_IMMED = 5, I_ONEPAGE = 6, I_TITLE = 7, I_DESCR = 8, I_CATEGORY = 9;
 	public static String[][] FOREIGN_KEYS = {{"creator_id", "User", "id"}};
 
 	public Quiz(String title, String descr, String category, boolean onePage, boolean practice, boolean immediateCheck, boolean random, int creatorID) throws SQLException
@@ -172,7 +172,7 @@ public class Quiz extends PersistentModel{
 		setRandom(getBool(dbEntry.get(I_RANDOM)));
 		setOnePage(getBool(dbEntry.get(I_ONEPAGE)));
 		setPractiseEnab(getBool(dbEntry.get(I_PRAC)));
-		setCategory(dbEntry.get(I_CATEGORY));
+		setTitle(dbEntry.get(I_TITLE));
 		setDescr(dbEntry.get(I_DESCR));
 		setCategory(dbEntry.get(I_CATEGORY));
 	}
