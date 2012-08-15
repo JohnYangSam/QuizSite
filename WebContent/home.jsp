@@ -149,7 +149,7 @@
 		<!-- RIGHT PANEL -->
 		<div id="rightPanel">
 			<div id="popularQuizes">
-				<h3>Top Five Most Popular Quizzes</h3>
+				<h3>Most Popular Quizzes</h3>
 				<ul>
 				<%
 					List<Quiz> quizListByPopularity = (List<Quiz>)request.getAttribute("quizListByPopularity");
@@ -173,7 +173,7 @@
 				</ul>
 			</div>
 			<div id="recentlyCreatedQuizes">
-				<h3>Top Five Most Recently Created Quizzes</h3>
+				<h3>Most Recently Created Quizzes</h3>
 				<ul>
 				<% 
 					//2
