@@ -26,8 +26,6 @@ public class Util {
 	public static final String USER_SESSION_KEY = "CURRENT_USER_ID";
 	public static final String RECEIVED_MSG_LIST_KEY = "RECEIVED_MESSAGES";
 	public static final String SENT_MSG_LIST_KEY = "SENT_MESSAGES";
-	//SHOULD THE BELOW BE THERE?!?
-	//public static final String CURRENT_USER_KEY = "CURRENT_USER";
 
 	/** Views */
 	public static final String LOGIN_VIEW = "login_user.jsp";
