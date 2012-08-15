@@ -118,9 +118,9 @@ public class Quiz extends PersistentModel{
 			});
 		
 //TESTING Code
-		for(Quiz quiz : quizList) {
-			System.err.println(quiz.getNumberOfAttempts());
-		}
+//		for(Quiz quiz : quizList) {
+//			System.err.println(quiz.getNumberOfAttempts());
+//		}
 		
 		return quizList;
 	}
