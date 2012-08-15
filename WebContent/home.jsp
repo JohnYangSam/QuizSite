@@ -45,9 +45,12 @@
 				<ul>	
 				<%
 					List<Message> messages = request.getAttribute("messages");
-					if(messages == null) out.println("<p>No recent messages.</p>");
-					for(int i = 0; i < 5 && i < messages.size(); ++i) {
-						Message message = messsages.get(i);
+					if(messages == null) {
+						out.println("<p>No recent messages.</p>");
+					} else {
+						for(int i = 0; i < 5 && i < messages.size(); ++i) {
+							Message message = messsages.get(i);
+						}
 					}
 				%>
 				</ul>	
@@ -60,18 +63,21 @@
 				<%
 				//3
 					List<Attempt> attemptsByTime = (List<Attempt>)request.getAttribute("attemptsByTime");
-					if(attempsByTime == null) out.println("<p>No recently taken quizzes.</p>");
-					for(int i = 0; i < 5 && i < attemptsByTime.size(); ++i) {
-						Attempt attempt = attemptsByTime.get(i);
-						Quiz quiz = attempt.getQuiz();
-						out.println("<li>");
-						out.println("<div class='data'>");
-						out.println("<p>");
-						out.print("You attempted "+quiz.getTitle()+" on "+attempt.getCreatedAt()+" and recieved a score of "+attempt.getScore());	
-						out.println("</p>");
-						out.println("</div>");	
-						out.println("</li>");
-					}	
+					if(attempsByTime == null) {
+						out.println("<p>No recently taken quizzes.</p>");
+					} else {
+						for(int i = 0; i < 5 && i < attemptsByTime.size(); ++i) {
+							Attempt attempt = attemptsByTime.get(i);
+							Quiz quiz = attempt.getQuiz();
+							out.println("<li>");
+							out.println("<div class='data'>");
+							out.println("<p>");
+							out.print("You attempted "+quiz.getTitle()+" on "+attempt.getCreatedAt()+" and recieved a score of "+attempt.getScore());	
+							out.println("</p>");
+							out.println("</div>");	
+							out.println("</li>");
+						}	
+					}
 				%>
 				</ul>
 			</div>
@@ -80,16 +86,20 @@
 				<ul>
 				<%
 					List<Quiz> quizListByUser = (List<Quiz>)request.getAttribute("quizListByUser");
-					if(quizListByUser == null) out.println("<p>You did not recently create any quizzes.</p>");
-					for(int i = 0; i < 5 && i < quizListByUser.size(); ++i) {
-						Quiz quiz = quizListByUser.get(i);	
-						out.println("<li>");
-						out.println("<div class='data'>");
-						out.println("<p>");
-						out.print("You created "+quiz.getTitle()+" on "+attempt.getCreatedAt()+ ". So far it has been attempted "+quiz.getAttempts()+" times.");	
-						out.println("</p>");
-						out.println("</div>");	
-						out.println("</li>");
+					if(quizListByUser == null) {
+						out.println("<p>You did not recently create any quizzes.</p>");
+					} else {
+						for(int i = 0; i < 5 && i < quizListByUser.size(); ++i) {
+							Quiz quiz = quizListByUser.get(i);	
+							out.println("<li>");
+							out.println("<div class='data'>");
+							out.println("<p>");
+							out.print("You created "+quiz.getTitle()+" on "+quiz.getCreatedAt()+ ". So far it has been attempted "+quiz.getAttempts()+" times.");	
+							out.println("</p>");
+							out.println("</div>");	
+							out.println("</li>");
+						}
+					}	
 				%>
 				</ul>
 			</div>	
@@ -102,8 +112,14 @@
 				<ul>	
 				<%
 				//NEED TO CREATE THE ABILITY TO GET ANNOUNCEMENTS!
-				List<Annoucement> announcements = (List<Announcement>)request.getAttribute("announcements");
-				if(announcements == null) out.println("<p>There are no recent announcements.</p>");
+				List<Announcement> announcements = (List<Announcement>)request.getAttribute("announcements");
+				if(announcements == null) {
+					out.println("<p>There are no recent announcements.</p>");
+				} else {
+				
+					//Print out the Announcements
+					
+				}
 				%>
 				</ul>
 			</div>
@@ -114,11 +130,14 @@
 				<%
 				//7
 				List<Activity> friendActivities = (List<Activity>)request.getAttribute("friendActivities");
-				if(friendActivities == null) out.println("<p>There is no recent friend activity.</p>");
-				for(Activity activity : friendActivities) {
-					out.println("<li>");
-					out.println(activity.getActivityPrintString());
-					out.println("</li>");
+				if(friendActivities == null) {
+					out.println("<p>There is no recent friend activity.</p>");
+				} else {
+					for(Activity activity : friendActivities) {
+						out.println("<li>");
+						out.println(activity.getActivityPrintString());
+						out.println("</li>");
+					}
 				}
 				%>
 				</ul>
@@ -132,22 +151,25 @@
 				<ul>
 				<%
 					List<Quiz> quizListByPopularity = (List<Quiz>)request.getAttribute("quizListByPopularity");
-					if(quizListByPopularity == null) out.println("<p>There are no popular quizzes.</p>");
-					for(int i = 0; i < 5 && i < quizListByPopularity.size(); ++i) {
-						try {	
-							Quiz quiz = quizListByPopularity.get(i);
-							out.println("<li>");
-							out.println("<div class='data'>");
-							out.println("<p>");
-							out.print("<span class='number'>"+i+") </span>");
-							out.print(quiz.getQuizTitleLink());	
-							out.print(" created on " + quiz.getCreatedAt());
-							out.println("</p>");
-							out.println("</div>");
-							out.println("</li>");
-						} catch (SQLException e) {
-							System.err.println("SQL error while getting quiz print string");
-							e.printStackTrace();
+					if(quizListByPopularity == null) {
+						out.println("<p>There are no popular quizzes.</p>");
+					} else {
+						for(int i = 0; i < 5 && i < quizListByPopularity.size(); ++i) {
+							try {	
+								Quiz quiz = quizListByPopularity.get(i);
+								out.println("<li>");
+								out.println("<div class='data'>");
+								out.println("<p>");
+								out.print("<span class='number'>"+i+") </span>");
+								out.print(quiz.getQuizTitleLink());	
+								out.print(" created on " + quiz.getCreatedAt());
+								out.println("</p>");
+								out.println("</div>");
+								out.println("</li>");
+							} catch (SQLException e) {
+								System.err.println("SQL error while getting quiz print string");
+								e.printStackTrace();
+							}
 						}
 					}
 				%>
@@ -159,22 +181,25 @@
 				<% 
 					//2
 					List<Quiz> quizListByCreationTime = (List<Quiz>)request.getAttribute("quizListByCreationTime");
-					if(quisListByCreationTime == null) out.println("<p>There are no recently created quizzes.</p>");
-					for(int i = 0; i < 5 && i < quizListByCreationTime.size(); ++i) {
-						try { 
-							Quiz quiz = quizListByCreationTime.get(i);
-							out.println("<li>");
-							out.println("<div class='data'>");
-							out.println("<p>");
-							out.print("<span class='number'>"+i+") </span>");
-							out.print(quiz.getQuizTitleLink());	
-							out.print(" attempted " + quiz.getAttempts() + " times");
-							out.println("</p>");
-							out.println("</div>");
-							out.println("</li>");
-						} catch (SQLException e) {
-							System.err.println("Error getting number of attempts for quiz print string");
-							e.printStackTrace();
+					if(quizListByCreationTime == null) {
+						out.println("<p>There are no recently created quizzes.</p>");
+					} else {
+						for(int i = 0; i < 5 && i < quizListByCreationTime.size(); ++i) {
+							try { 
+								Quiz quiz = quizListByCreationTime.get(i);
+								out.println("<li>");
+								out.println("<div class='data'>");
+								out.println("<p>");
+								out.print("<span class='number'>"+i+") </span>");
+								out.print(quiz.getQuizTitleLink());	
+								out.print(" attempted " + quiz.getAttempts() + " times");
+								out.println("</p>");
+								out.println("</div>");
+								out.println("</li>");
+							} catch (SQLException e) {
+								System.err.println("Error getting number of attempts for quiz print string");
+								e.printStackTrace();
+							}
 						}
 					}
 				%>
