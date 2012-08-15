@@ -17,6 +17,9 @@ public class Quiz extends PersistentModel{
 	private boolean practice;
 	private boolean immediateCheck;
 	private boolean randomized;
+	private String title;
+	private String descr; 
+	private String category;
 
 	private int creatorID;
 
@@ -24,13 +27,16 @@ public class Quiz extends PersistentModel{
 
 	public static String TABLE_NAME = "Quiz";
 	public static String[][] SCHEMA = {{"creator_id", "INTEGER"}, {"random", "BOOL"}, 
-		{"practice", "BOOL"}, {"immediate", "BOOL"}, {"one_page", "BOOL"}};
-	public final static int I_CREATORID = 1, I_RANDOM = 2, I_PRAC = 3, I_IMMED = 4, I_ONEPAGE = 5;
+		{"practice", "BOOL"}, {"immediate", "BOOL"}, {"one_page", "BOOL"}, {"title", "TEXT"}, {"descr", "TEXT"}, {"category", "TEXT"}};
+	public final static int I_CREATORID = 1, I_RANDOM = 2, I_PRAC = 3, I_IMMED = 4, I_ONEPAGE = 5, I_TITLE = 6, I_DESCR = 7, I_CATEGORY = 8;
 	public static String[][] FOREIGN_KEYS = {{"creator_id", "User", "id"}};
 
-	public Quiz(boolean onePage, boolean practice, boolean immediateCheck, boolean random, int creatorID) throws SQLException
+	public Quiz(String title, String descr, String category, boolean onePage, boolean practice, boolean immediateCheck, boolean random, int creatorID) throws SQLException
 	{
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
+		this.title			= title;
+		this.descr			= descr;
+		this.category		= category;
 		this.randomized		= random;
 		this.onePage	 	= onePage;
 		this.practice 	 	= practice;
@@ -101,6 +107,30 @@ public class Quiz extends PersistentModel{
 		return quizList;
 	}
 	
+	public static List<Quiz> indexByNumberOfAttempts() throws SQLException {
+		List<Quiz> quizList = Quiz.index();
+		Collections.sort(quizList,
+			new Comparator<Quiz>() {
+				@Override
+				public int compare(Quiz q1, Quiz q2) {
+					try {
+						return q1.getNumberOfAttempts() - q2.getNumberOfAttempts();
+					} catch (Exception e) {
+						System.err.println("Error finding quiz num attempts in indexByNumberOfAttempts");
+						e.printStackTrace();
+						return 0;
+					}
+				}
+			});
+		
+//TESTING Code
+//		for(Quiz quiz : quizList) {
+//			System.err.println(quiz.getNumberOfAttempts());
+//		}
+		
+		return quizList;
+	}
+	
 	public static List<Quiz> parseRows(List<List<String> > rows) throws SQLException {
 		List<Quiz> ret = new ArrayList<Quiz>();
 		for (List<String> row : rows) {
@@ -123,7 +153,7 @@ public class Quiz extends PersistentModel{
 
 	@Override
 	public Object[] getFields() {
-		Object[] objs = new Object[] {getCreatorID(), setBool(isRandomized()), setBool(isPracticeEnabled()), setBool(isImmediate()), setBool(isOnePage())};
+		Object[] objs = new Object[] {getCreatorID(), setBool(isRandomized()), setBool(isPracticeEnabled()), setBool(isImmediate()), setBool(isOnePage()), getTitle(), getDescr(), getCategory()};
 		return objs;
 	}
 
@@ -142,6 +172,9 @@ public class Quiz extends PersistentModel{
 		setRandom(getBool(dbEntry.get(I_RANDOM)));
 		setOnePage(getBool(dbEntry.get(I_ONEPAGE)));
 		setPractiseEnab(getBool(dbEntry.get(I_PRAC)));
+		setCategory(dbEntry.get(I_CATEGORY));
+		setDescr(dbEntry.get(I_DESCR));
+		setCategory(dbEntry.get(I_CATEGORY));
 	}
 	
 	private boolean getBool(String bstr)
@@ -185,6 +218,18 @@ public class Quiz extends PersistentModel{
 	public void setUrl(String newUrl)
 	{ url = newUrl; }
 	
+	public String getTitle() { return title; }
+	
+	public void setTitle(String newTitle) { title = newTitle; }
+	
+	public String getDescr() { return descr; }
+	
+	public void setDescr(String newDescr) { descr = newDescr; }
+	
+	public String getCategory() { return category; }
+	
+	public void setCategory(String newCategory) { category = newCategory; }
+
 	public List<Attempt> getAttempts() throws SQLException {
 		return Attempt.atQuiz(this);
 	}
