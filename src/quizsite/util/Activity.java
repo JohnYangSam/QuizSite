@@ -15,6 +15,7 @@ public class Activity {
 	private String subject;
 	
 	public Activity(int userId, String userName, String date, String verb, String subject) {
+		System.err.println("(Activity Constructor: line 18) Making an activity with userId: " + userId);
 		this.userId = userId;
 		this.userName = userName;
 		this.date = date;

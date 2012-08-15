@@ -43,6 +43,8 @@ public class Quiz extends PersistentModel{
 		this.practice 	 	= practice;
 		this.immediateCheck = immediateCheck;
 		this.creatorID 		= creatorID;
+		if(creatorID == 0)
+			System.err.println(" THIS IS A ZERO USER MADE ON QUIZ: " + title);
 
 	}
 	
@@ -255,9 +257,11 @@ public class Quiz extends PersistentModel{
 	@Override
 	public Activity getActivity() {
 		try {
+			System.out.println("MAKING QUIZ ACTIVITY in Quiz: line 260");
+			System.out.println("creatorID " + creatorID);
 			return new Activity(creatorID, User.get(creatorID).getName(), this.getCreatedAt(), "created a new Quiz", title);
 		} catch (SQLException e) {
-			System.out.println("SQLException looking up user");
+			System.err.println("SQLException looking up user");
 			e.printStackTrace();
 			return new Activity(0, "", "", "", "");
 		}
