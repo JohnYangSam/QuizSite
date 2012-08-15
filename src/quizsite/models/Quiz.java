@@ -170,6 +170,14 @@ public class Quiz extends PersistentModel{
 	{ url = newUrl; }
 	
 	
+	public List<Attempt> getAttempts() throws SQLException {
+		return Attempt.atQuiz(this);
+	}
+	
+	public int getNumberOfAttempts() throws SQLException {
+		return getAttempts().size();
+	}
+	
 	/* Comparator inner classes used to sort auizes by different fields */
 	private class QuizSortByDateCreated implements Comparator<Quiz> {
 		@Override
