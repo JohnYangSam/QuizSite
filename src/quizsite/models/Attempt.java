@@ -45,8 +45,12 @@ public class Attempt extends PersistentModel {
 		List<Attempt> attemptsList = ofUserByDate(user);
 		Collections.sort(attemptsList,
 			new Comparator<Attempt>() {
-				
-		}
+				@Override
+				public int compare(Attempt o1, Attempt o2) {
+					return o1.getCreatedAt().compareTo(o2.getCreatedAt());
+				}
+		});
+		return attemptsList;
 	}
 	
 	public static List<Attempt> ofUserAtQuiz(User user, Quiz quiz) throws SQLException {

@@ -56,14 +56,18 @@ public class HomeController extends HttpServlet {
 		 */
 
 		try {
-			//Get quizzes arrays
+			//Get lists
 			List<Quiz> quizListByPopularity = Quiz.indexByNumberOfAttempts();
 			List<Quiz> quizListByCreationTime = Quiz.indexByCreationTime();
 			List<Attempt> attemptsByTime = Attempt.ofUserByDate(current);
-			Quiz.indexCreatedBy(current);
-			Achievement.ofUser(current);
-			Message.indexToUserByDate(current);
-		
+			List<Quiz> quizListByUser = Quiz.indexCreatedBy(current);
+			List<Achievement> achievements = Achievement.ofUser(current);
+			List<Message> messages = Message.indexToUserByDate(current);
+			
+			List<User> friends = current.getFriends();
+			for(User friend : friends) {
+				
+			}
 			
 			
 			
