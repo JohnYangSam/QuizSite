@@ -42,7 +42,7 @@ public class Attempt extends PersistentModel {
 	}
 	
 	public static List<Attempt> ofUserByDate(User user) throws SQLException {
-		List<Attempt> attemptsList = ofUserByDate(user);
+		List<Attempt> attemptsList = ofUser(user);
 		Collections.sort(attemptsList,
 			new Comparator<Attempt>() {
 				@Override

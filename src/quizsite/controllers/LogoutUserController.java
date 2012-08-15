@@ -47,6 +47,7 @@ public class LogoutUserController extends HttpServlet {
 			request.setAttribute("failureMessage","You are logged out");
 			RequestDispatcher dispatch = request.getRequestDispatcher("/index.jsp");
 			//Remove the userId attribute from the session to successfully logout
+			session.setAttribute(Util.USER_SESSION_KEY, null);
 			session.removeAttribute(Util.USER_SESSION_KEY);
 			dispatch.forward(request, response);
 			return;

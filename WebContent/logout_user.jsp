@@ -45,5 +45,6 @@
 		</div>
 		<br />
 		<p>DEBUG: logout_user.jsp</p>
+		<% Util.printUserSessionId(request); %>	
 	</body>
 </html>

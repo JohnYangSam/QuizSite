@@ -146,13 +146,17 @@ public class Util {
 	 */
 
 	public static String generateSalt() {
-		String saltStr = "";
-		Random r = new SecureRandom();
-		byte[] salt = new byte[20];
-		r.nextBytes(salt);
-		saltStr = new String(salt);
-
-		return saltStr;
+		Random random = new Random();
+		char[] randomChars = "abcdefghijklmnopqrstuvwzyz1234567890".toCharArray();
+		StringBuilder saltBuilder = new StringBuilder();
+		//User 20 character length salt as recommended for crypto
+		for(int i =0; i <20; ++i) {
+			char randomChar = randomChars[random.nextInt(randomChars.length)];
+			saltBuilder.append(randomChar);
+		}
+	
+		System.out.println("Salt made: " + saltBuilder.toString());
+		return saltBuilder.toString();
 	}
 
 
@@ -174,6 +178,7 @@ public class Util {
 			byte[] passwordAndSaltDigestBytes = messageDigest.digest();
 			result = hexToString(passwordAndSaltDigestBytes);
 		} catch (Exception e) {
+			System.err.println("Error making salted hash: ");
 			e.printStackTrace();
 		}
 		return result;
@@ -216,6 +221,12 @@ public class Util {
 			result[i/2] = (byte) Integer.parseInt(hex.substring(i, i+2), 16);
 		}
 		return result;
+	}
+	
+	/* DEBUGGING METHODS!!! ---------------- */
+	public static void printUserSessionId(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		System.out.println("Current User ID; " + session.getAttribute(Util.USER_SESSION_KEY));
 	}
 
 }

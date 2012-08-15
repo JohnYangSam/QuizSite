@@ -53,5 +53,7 @@
 
 <br />
 <p> DEBUG: inbox.jsp </p>
+<% Util.printUserSessionId(request); %>	
+
 </body>
 </html>

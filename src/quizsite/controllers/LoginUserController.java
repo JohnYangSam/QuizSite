@@ -98,6 +98,7 @@ public class LoginUserController extends HttpServlet {
 		
 		//TESTING CODE
 		System.out.println("Mis match password? ");
+		System.out.println("password: " + password);
 		
 		RequestDispatcher dispatch = request.getRequestDispatcher(Util.LOGIN_VIEW);
 		dispatch.forward(request, response);
@@ -115,7 +116,8 @@ public class LoginUserController extends HttpServlet {
 			String saltedHash = Util.makeSaltedHash(password, salt);
 		
 			//TEST CODE
-			System.err.println(saltedHash);
+			System.err.println("SaltedHash from input: " + saltedHash + " and salt: " + salt);
+			System.err.print("SaltedHash from Table " + user.getPasswordSaltedHash());
 			
 			return user.getPasswordSaltedHash().equals(saltedHash);
 		} catch (Exception e) {

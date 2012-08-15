@@ -61,6 +61,6 @@
 		
 		<br />
 		<p> DEBUG: index.jsp </p>
-		
+		<% Util.printUserSessionId(request); %>
 	</body>
 </html>

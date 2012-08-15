@@ -29,9 +29,7 @@
 				<h3><a href="inbox">Inbox</a></h3>
 				<p>Recent Messages</p>
 				<div id="messageBox">
-				<%
-					request.getAttribute(arg0)	
-				%>	
+				<% Util.printUserSessionId(request); %>	
 				
 				</div>
 			</div>
