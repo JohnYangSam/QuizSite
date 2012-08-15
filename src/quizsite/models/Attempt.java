@@ -12,7 +12,7 @@ public class Attempt extends PersistentModel {
 	private int score;
 	private User attempter;
 
-	protected static String TABLE_NAME = "Attempt";
+	public static String TABLE_NAME = "Attempt";
 	protected static String[][] SCHEMA = 
 		{{ "quiz_id", "INTEGER"}, {"attempter_id", "INTEGER"}, {"score", "INTEGER"}};
 	public static int 	I_QUIZ_ID = PersistentModel.N_PRE_COL,
