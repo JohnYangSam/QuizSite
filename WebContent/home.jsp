@@ -9,6 +9,23 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<%
 			/* User current = (User) request.getAttribute(Util.CURRENT_USER_KEY); */
+		//3
+			List<Attempt> attemptsByTime = Attempt.ofUserByDate(user);
+			request.setAttribute("attemptsByTime", attemptsByTime);
+			//4
+			List<Quiz> quizListByUser = Quiz.indexCreatedBy(user);
+			request.setAttribute("quizListByUser", quizListByUser);
+			//5
+			List<Achievement> achievements = Achievement.ofUser(user);
+			request.setAttribute("achievements", achievements);
+			//6
+			List<Message> messages = Message.indexToUserByDate(user);
+			request.setAttribute("messages", messages);
+			//7
+			List<Activity> friendActivities = user.getFriendActivitiesByDate();
+			reque
+		
+		
 		%>
 		<jsp:include page="_general_head_info.jsp" />
 		<title>Welcome!</title>
@@ -62,10 +79,35 @@
 		<div id="rightPanel">
 			<div id="popularQuizes">
 				<h3>Top Five Most Popular Quizzes</h3>
-
+				<%
+					List<Quiz> quizListByPopularity = new request.getAttribute("quizListByPopularity");
+					for(int i = 0; i < 5; ++i) {
+						Quiz quiz = quizListByPopularity[i];
+						out.println("<div class='data'>");
+						out.println("<p>");
+						out.print("<span class='number'>"+i+") </span>");
+						out.print("<a href="/displaquiz.getTitle());
+						out.print(" " + quiz.getAttempts());
+						out.println("</p>");
+						out.println("</div>");
+					}
+				%>	
 			</div>
 			<div id="recentlyCreatedQuizes">
 				<h3>Top Five Recently Created Quizzes</h3>
+				<% 
+					//2
+					List<Quiz> quizListByCreationTime = request.getAttribute("quizListByCreationTime");
+					for(int i = 0; i < 5; ++i) {
+						Quiz quiz = quizListByCreationTime[i];
+						out.println("<div class='data'>");
+						out.println("<p>");
+						out.print("<span class='number'>"+i+") </span>");
+						out.print(quiz.getTitle());
+						out.println("</p>");
+						out.println("</div>");
+					}
+				%>	
 
 			</div>
 		</div>
