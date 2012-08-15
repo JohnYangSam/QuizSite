@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import quizsite.models.Question;
+import quizsite.util.Activity;
 
 public class PictureQuestion extends Question {
 	private String imageUrl;
@@ -34,5 +35,11 @@ public class PictureQuestion extends Question {
 
 	@Override
 	protected String getAuxiliary() { return imageUrl; }
+
+	@Override
+	public Activity getActivity() {
+		//THIS DOES NOT NEED TO BE IMPLEMENTED
+		return null;
+	}
 
 }

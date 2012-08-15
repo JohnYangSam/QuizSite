@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import quizsite.models.Question;
+import quizsite.util.Activity;
 
 public class FillBlankQuestion extends Question {
 	
@@ -51,5 +52,11 @@ public class FillBlankQuestion extends Question {
 	{
 		String[] data = firstSecond.split("{!~!}");
 		return data;
+	}
+
+	@Override
+	public Activity getActivity() {
+		// THIS DOES NOT NEED AN ACTIVITY METHOD
+		return null;
 	}
 }

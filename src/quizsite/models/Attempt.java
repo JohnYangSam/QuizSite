@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import quizsite.util.Activity;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 
@@ -144,6 +145,11 @@ public class Attempt extends PersistentModel {
 
 	public User getAttempter() {
 		return attempter;
+	}
+
+	@Override
+	public Activity getActivity() {
+		return new Activity(attempter.getId(), attempter.getName(), getCreatedAt(), "scored " + score + " on", quiz.getTitle());
 	}
 	
 }

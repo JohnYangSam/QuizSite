@@ -2,6 +2,7 @@ package quizsite.controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -16,6 +17,8 @@ import quizsite.models.Attempt;
 import quizsite.models.Message;
 import quizsite.models.Quiz;
 import quizsite.models.User;
+import quizsite.util.Activity;
+import quizsite.util.PersistentModel;
 
 /**
  * Servlet implementation class homeController
@@ -37,10 +40,10 @@ public class HomeController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Check user login
-		User current = Util.signInOrRedirect(request, response);
+		User user = Util.signInOrRedirect(request, response);
 		
-		System.out.println("Outside redirect in home controller hit: " + current);
-		if(current == null) return;
+		System.out.println("Outside redirect in home controller hit: " + user);
+		if(user == null) return;
 		
 		/*
 		 * We want to output:
@@ -56,32 +59,41 @@ public class HomeController extends HttpServlet {
 		 */
 
 		try {
-			//Get lists
+			//Get and set the two main activity lists
+		
+			//1
 			List<Quiz> quizListByPopularity = Quiz.indexByNumberOfAttempts();
+			request.setAttribute("quizListByPopularity", quizListByPopularity);
+			//2
 			List<Quiz> quizListByCreationTime = Quiz.indexByCreationTime();
-			List<Attempt> attemptsByTime = Attempt.ofUserByDate(current);
-			List<Quiz> quizListByUser = Quiz.indexCreatedBy(current);
-			List<Achievement> achievements = Achievement.ofUser(current);
-			List<Message> messages = Message.indexToUserByDate(current);
-			
-			List<User> friends = current.getFriends();
-			for(User friend : friends) {
-				
-			}
-			
-			
+			request.setAttribute("quizListByCreationTime", quizListByCreationTime);
+			//3
+			List<Attempt> attemptsByTime = Attempt.ofUserByDate(user);
+			request.setAttribute("attemptsByTime", attemptsByTime);
+			//4
+			List<Quiz> quizListByUser = Quiz.indexCreatedBy(user);
+			request.setAttribute("quizListByUser", quizListByUser);
+			//5
+			List<Achievement> achievements = Achievement.ofUser(user);
+			request.setAttribute("achievements", achievements);
+			//6
+			List<Message> messages = Message.indexToUserByDate(user);
+			request.setAttribute("messages", messages);
+			//7
+			List<Activity> friendActivities = user.getFriendActivitiesByDate();
+			request.setAttribute("friendActivities", friendActivities);
 			
 		} catch (SQLException e) {
 			System.err.println("There was an error drawing information about the current user");
 			e.printStackTrace();
 		}
 		
-		
-		
 		RequestDispatcher dispatch = request.getRequestDispatcher("home.jsp");
 		dispatch.forward(request, response);
 		return;
 	}
+	
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

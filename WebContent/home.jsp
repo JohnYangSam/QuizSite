@@ -23,13 +23,14 @@
 		<div id="leftPanel">
 			<div id="achievements">
 				<h3>Recent Achievements</h3>
-
+				<%
+					session.getAttribute(Util.USER_SESSION_KEY);
+				%>
 			</div>
 			<div id="messages">
 				<h3><a href="inbox">Inbox</a></h3>
 				<p>Recent Messages</p>
 				<div id="messageBox">
-				<% Util.printUserSessionId(request); %>	
 				
 				</div>
 			</div>
@@ -75,6 +76,8 @@
 		</div>
 
 		<!-- INCLUDE FOOTER -->
-		<jsp:include page="_footer.jsp" />	
+		<jsp:include page="_footer.jsp" />
+			
+		<% Util.printUserSessionId(request); %>	
 	</body>
 </html>

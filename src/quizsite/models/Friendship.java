@@ -8,6 +8,7 @@ import java.util.Set;
 
 
 
+import quizsite.util.Activity;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 
@@ -180,6 +181,11 @@ public class Friendship extends PersistentModel {
 
 	public Status getStatus() {
 		return status;
+	}
+
+	@Override
+	public Activity getActivity() {
+		return new Activity(initiator.getId(), initiator.getName(), getCreatedAt(), status.toString(), responder.getName());
 	}
 
 

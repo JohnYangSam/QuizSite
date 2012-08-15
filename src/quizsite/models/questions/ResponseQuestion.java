@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Set;
 
 import quizsite.models.Question;
+import quizsite.util.Activity;
 
 public class ResponseQuestion extends Question {
 
@@ -16,5 +17,11 @@ public class ResponseQuestion extends Question {
 
 	@Override
 	protected String getAuxiliary() { return null; }
+
+	@Override
+	public Activity getActivity() {
+		//THIS DOES NOT NEED TO BE IMPLEMENTED
+		return null;
+	}
 
 }

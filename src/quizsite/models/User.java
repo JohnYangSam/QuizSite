@@ -6,9 +6,12 @@ package quizsite.models;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import quizsite.models.Message.Type;
+import quizsite.util.Activity;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 import quizsite.controllers.Util;
@@ -283,6 +286,65 @@ public class User extends PersistentModel{
 		User u = User.get(userID);
 		int nQuizzes = Quiz.indexCreatedBy(u).size();
 		Achievement.updateForCreator(u, nQuizzes);
+	}
+
+	/**
+	 * Returns a List<Activity of the Activities of the friends of the user
+	 * sorted by date from most recently down.
+	 */
+	public List<Activity> getFriendActivitiesByDate() {
+		List<Activity> friendActivities = new ArrayList<Activity>();
+		try {
+			List<User> friends = this.getFriends();
+			for(User friend : friends) {
+				friendActivities.addAll(friend.getUserActivities());
+			}
+		} catch (SQLException e) {
+			System.out.println("Error querying to get friend activities.");
+			e.printStackTrace();
+		}
+		Collections.sort(friendActivities, 
+			new Comparator<Activity>() {
+				@Override
+				public int compare(Activity a1, Activity a2) {
+					return a1.getDate().compareTo(a2.getDate());
+				}
+			
+			});
+		return friendActivities;
+	}
+	
+
+	/**
+	 * Returns a List<Activity> of the activities of the user
+	 */
+	public List<Activity> getUserActivities() throws SQLException {
+		//Get the recent activities of the user
+		List<Attempt> attemptsByUser = Attempt.ofUser(this);
+		List<Quiz> quizListByUser = Quiz.indexCreatedBy(this);
+		List<Achievement> achievements = Achievement.ofUser(this);
+	
+		//Aggregate them in a list of Activity objects and sort by creation date
+		List<Activity> activities = new ArrayList<Activity>();
+		
+		for(Attempt attempt : attemptsByUser) {
+			activities.add(attempt.getActivity());
+		}
+		
+		for(Quiz quiz : quizListByUser) {
+			activities.add(quiz.getActivity());
+		}
+		
+		for(Achievement achievement : achievements) {
+			activities.add(achievement.getActivity());
+		}
+		
+		return activities;
+	}
+
+	@Override
+	public Activity getActivity() {
+		return new Activity(this.getId(), userName, this.getCreatedAt(), "joined", "QuizSite!");
 	}
 	
 

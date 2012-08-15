@@ -10,6 +10,7 @@ import java.util.List;
 import quizsite.models.Friendship;
 import quizsite.models.Message;
 import quizsite.models.User;
+import quizsite.util.Activity;
 
 /**
  * 
@@ -54,6 +55,12 @@ public class FriendRequest extends Message {
 	public void parse(List<String> dbEntry) throws IllegalArgumentException, SQLException {
 		super.parse(dbEntry);
 		// Not parsing callbackURL
+	}
+
+	@Override
+	public Activity getActivity() {
+		// THIS DOES NOT NEED TO BE IMPLEMENTED
+		return null;
 	}
 	
 

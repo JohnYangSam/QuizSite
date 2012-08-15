@@ -62,6 +62,13 @@ public abstract class PersistentModel {
 	 * @return
 	 */
 	public abstract Object[] getFields();
+	
+	/**
+	 * Makes an Activity for a given instance that can be used
+	 * to sort and print out the model instance.
+	 * 
+	 */
+	public abstract Activity getActivity();
 
 	/** Pass in the static fields containing the meta data, while */ 
 	public PersistentModel(String tableName, String[][] schema, String[][] foreignKeys) throws SQLException {

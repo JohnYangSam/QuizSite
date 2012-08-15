@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import quizsite.util.Activity;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 
@@ -170,6 +171,11 @@ public class Achievement extends PersistentModel {
 		if (!ach.doesExist()) {
 			ach.save();
 		}
+	}
+
+	@Override
+	public Activity getActivity() {
+		return new Activity(user.getId(), user.getName(), getCreatedAt(), "achieved", type.getTitle());
 	}
 
 }

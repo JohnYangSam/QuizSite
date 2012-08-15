@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import quizsite.models.Question;
+import quizsite.util.Activity;
 
 public class RadioQuestion extends Question {
 
@@ -53,5 +54,11 @@ public class RadioQuestion extends Question {
 		}
 		
 		return ser.substring(0, ser.length()-5);
+	}
+
+	@Override
+	public Activity getActivity() {
+		//THIS DOES NOT NEED TO BE IMPLEMENTED
+		return null;
 	}
 }
