@@ -51,45 +51,42 @@ public class CreateQuizController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO all blank strings and fields should be correctly set after I write an actual view 
 		try {
-			
-			System.out.println(request.getParameterMap());
-			
 			User currentUser = new User(1);//Util.signInOrRedirect(request, response);
 			
-			boolean onePage 		= false;
-			boolean practice 		= false;
-			boolean immediateCheck  = false;
-			boolean random 			= false;
+			boolean onePage 		= (request.getParameter("onePage") == null)?false:true;
+			boolean practice 		= (request.getParameter("practiceEnabled") == null)?false:true;
+			boolean immediateCheck  = (request.getParameter("immediateCheck") == null)?false:true;
+			boolean random 			= (request.getParameter("isRandom") == null)?false:true;
 			int creatorID 			= currentUser.getId();
 		
 			Quiz newQuiz = new Quiz(onePage, practice, immediateCheck, random, creatorID);
 			int newQuizId	 = newQuiz.save();
 			
-			int numOfQuestions = 1;
+			int numOfQuestions = Integer.parseInt(request.getParameter("numOfQuest"));
 			for (int i = 0; i < numOfQuestions; i++) {
 				
-				String type    = "checkbox"; 
-				String text    = ""; 
+				String type    = request.getParameter("type:"+i); 
+				String text    = request.getParameter("text:"+i); 
 				// all answers should be separeted by a ;
-				Set<String> answers = new HashSet<String>(Arrays.asList("".split(";")));
+				Set<String> answers = new HashSet<String>(Arrays.asList(request.getParameter("answers:"+i).trim().split(";")));
 				
 				Question q = null;
 				if (Question.Type.CHECKBOX.equals(type))
 				{
-					List<String> opts = new ArrayList<String>();
+					List<String> opts = new ArrayList<String>(Arrays.asList(request.getParameter("options:"+i).trim().split(";")));
 					q = new CheckboxQuestion(answers, text, newQuizId, opts);
 				} else if (Question.Type.FILL_BLANK.equals(type))
 				{
-					String first  = "";
-					String second = ""; 
+					String first  = request.getParameter("firstPart:"+i);
+					String second = request.getParameter("secondPart:"+i); 
 					q = new FillBlankQuestion(answers, first, second, newQuizId);
 				} else if (Question.Type.PICTURE.equals(type))
 				{
-					String picURL = "";
+					String picURL = request.getParameter("picUrl:"+i);
 					q = new PictureQuestion(answers, text, newQuizId, picURL);
 				} else if (Question.Type.RADIO.equals(type))
 				{
-					List<String> opts = new ArrayList<String>();
+					List<String> opts = new ArrayList<String>(Arrays.asList(request.getParameter("options:"+i).trim().split(";")));
 					q = new RadioQuestion(answers, text, newQuizId, opts);
 				} else if (Question.Type.RESPONSE.equals(type))
 				{
@@ -107,6 +104,7 @@ public class CreateQuizController extends HttpServlet {
 		}
 		
 		// TODO redirect user somewhere after succesull adding of a question
+		System.out.println("Saved");
 	}
 
 }
