@@ -46,11 +46,11 @@ public class FillBlankQuestion extends Question {
 	{ return secondPart; }
 
 	@Override
-	protected String getAuxiliary() { return firstPart + "{!~!}" + secondPart; }
+	protected String getAuxiliary() { return firstPart + "<>!<>" + secondPart; }
 	
 	private String[] unserialize(String firstSecond)
 	{
-		String[] data = firstSecond.split("{!~!}");
+		String[] data = firstSecond.split("<>!<>");
 		return data;
 	}
 

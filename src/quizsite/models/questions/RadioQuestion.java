@@ -15,7 +15,7 @@ public class RadioQuestion extends Question {
 	
 	public RadioQuestion(Set<String> answers, String text, int quiz_id, List<String> opts) throws SQLException {
 		super(text, answers, quiz_id);
-		setType(Type.CHECKBOX);
+		setType(Type.RADIO);
 		setOptions(opts);
 	}
 	
@@ -41,7 +41,7 @@ public class RadioQuestion extends Question {
 	}
 	
 	private List<String> unserialize(String opt) {
-		List<String> opts = new ArrayList<String>(Arrays.asList(opt.trim().split("{!~!}")));
+		List<String> opts = new ArrayList<String>(Arrays.asList(opt.trim().split("<>!<>")));
 		return opts;
 	}
 
@@ -50,7 +50,7 @@ public class RadioQuestion extends Question {
 		String ser = "";
 	
 		for (int i = 0; i < opt.size(); i++) {
-			ser += opt.get(i) + "{!~!}";
+			ser += opt.get(i) + "<>!<>";
 		}
 		
 		return ser.substring(0, ser.length()-5);
