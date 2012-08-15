@@ -187,14 +187,14 @@ public abstract class Question extends PersistentModel {
 		String serialized = "";
 		for (Iterator<String> iterator = answers.iterator(); iterator.hasNext();) {
 			String answer = (String) iterator.next();
-			serialized += answer.trim() + "{!~!}"; // have to come up with a good delimiter, this one looks good...
+			serialized += answer.trim() + "<>!<>"; // have to come up with a good delimiter, this one looks good...
 		}
 		return serialized.substring(0, serialized.length() - 5);
 	}
 	
 	public Set<String> unserializeAnswers(String answ)
 	{
-		String[] unsArr = answ.trim().split("{!~!}");
+		String[] unsArr = answ.trim().split("<>!<>");
 		Set<String> answersSet = new HashSet<String>(Arrays.asList(unsArr));
 		return answersSet;
 	}

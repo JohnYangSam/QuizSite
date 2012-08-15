@@ -71,10 +71,10 @@ public class HomeController extends HttpServlet {
 			List<Attempt> attemptsByTime = Attempt.ofUserByDate(user);
 			request.setAttribute("attemptsByTime", attemptsByTime);
 			//4
-			List<Quiz> quizListByUser = Quiz.indexCreatedBy(user);
+			List<Quiz> quizListByUser = Quiz.indexCreatedByUserAndByDate(user);
 			request.setAttribute("quizListByUser", quizListByUser);
 			//5
-			List<Achievement> achievements = Achievement.ofUser(user);
+			List<Achievement> achievements = user.getAchievementsByDate();
 			request.setAttribute("achievements", achievements);
 			//6
 			List<Message> messages = Message.indexToUserByDate(user);

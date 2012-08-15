@@ -29,7 +29,7 @@ public class Quiz extends PersistentModel{
 	public static String TABLE_NAME = "Quiz";
 	public static String[][] SCHEMA = {{"creator_id", "INTEGER"}, {"random", "BOOL"}, 
 		{"practice", "BOOL"}, {"immediate", "BOOL"}, {"one_page", "BOOL"}, {"title", "TEXT"}, {"descr", "TEXT"}, {"category", "TEXT"}};
-	public final static int I_CREATORID = 2, I_RANDOM = 3, I_PRAC = 4, I_IMMED = 5, I_ONEPAGE = 6, I_TITLE = 7, I_DESCR = 8, I_CATEGORY = 9;
+	public final static int I_CREATORID = 2, I_RANDOM = 3, I_PRAC = 4, I_IMMED = 5, I_ONEPAGE = 6, I_TITLE = 7, I_DESCR = 8, I_CATEGORY = 9; // TODO: @makazone - replace magic numbers by N_PRE_COL
 	public static String[][] FOREIGN_KEYS = {{"creator_id", "User", "id"}};
 
 	public Quiz(String title, String descr, String category, boolean onePage, boolean practice, boolean immediateCheck, boolean random, int creatorID) throws SQLException
@@ -43,6 +43,8 @@ public class Quiz extends PersistentModel{
 		this.practice 	 	= practice;
 		this.immediateCheck = immediateCheck;
 		this.creatorID 		= creatorID;
+		if(creatorID == 0)
+			System.err.println(" THIS IS A ZERO USER MADE ON QUIZ: " + title);
 
 	}
 	
@@ -152,6 +154,19 @@ public class Quiz extends PersistentModel{
 		return parseRows(DatabaseConnection.indexWhere(TABLE_NAME, conditions));
 	}
 
+	/** Returns a list of quizzes created by a user and in order of date */
+	public static List<Quiz> indexCreatedByUserAndByDate(User user) throws SQLException {
+		List<Quiz> quizzes = Quiz.indexCreatedBy(user);
+		Collections.sort(quizzes,
+			new Comparator<Quiz>() {
+				@Override
+				public int compare(Quiz q1, Quiz q2) {
+					return q1.getCreatedAt().compareTo(q2.getCreatedAt());
+				}
+			});
+		return quizzes;
+	}
+
 	@Override
 	public Object[] getFields() {
 		Object[] objs = new Object[] {getCreatorID(), setBool(isRandomized()), setBool(isPracticeEnabled()), setBool(isImmediate()), setBool(isOnePage()), getTitle(), getDescr(), getCategory()};
@@ -169,6 +184,7 @@ public class Quiz extends PersistentModel{
 	public void parse(List<String> dbEntry) throws IllegalArgumentException, SQLException {
 		super.parse(dbEntry);
 		
+		setCreatorID(Integer.parseInt(dbEntry.get(I_CREATORID)));
 		setImmediateCheckEnab(getBool(dbEntry.get(I_IMMED)));
 		setRandom(getBool(dbEntry.get(I_RANDOM)));
 		setOnePage(getBool(dbEntry.get(I_ONEPAGE)));
@@ -197,8 +213,14 @@ public class Quiz extends PersistentModel{
 	public boolean isRandomized()
 	{ return randomized; }
 	
-	public int getCreatorID()
-	{ return creatorID; }
+	public int getCreatorID() { 
+		if(creatorID == 0) {
+			System.err.print("Quiz.java:217 Zero Creator ID error: " + creatorID + "QuizId: " + this.getId());
+		}
+		return creatorID; }
+	public void setCreatorID(int creatorId) {
+		this.creatorID = creatorId;
+	}
 
 	// URL to access quiz
 	public String getURL() 
@@ -242,11 +264,24 @@ public class Quiz extends PersistentModel{
 	@Override
 	public Activity getActivity() {
 		try {
-			return new Activity(creatorID, User.get(creatorID).getName(), this.getCreatedAt(), "created a new Quiz", title);
+			System.out.println("MAKING QUIZ ACTIVITY in Quiz: line 260");
+			System.out.println("creatorID " + creatorID);
+			return new Activity(this.getCreatorID(), User.get(this.getCreatorID()).getName(), this.getCreatedAt(), "created a new Quiz", title);
 		} catch (SQLException e) {
-			System.out.println("SQLException looking up user");
+			System.err.println("SQLException looking up user");
 			e.printStackTrace();
 			return new Activity(0, "", "", "", "");
 		}
+	}
+
+	/**
+	 * Gets an action print string for the quiz. Similar to the getActivity followed
+	 * by getActivityPrintString but with subtle differences that are object centric (like
+	 * the link) versus the more user centric activity.
+	 */
+	public String getQuizTitleLink() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<a href='/displayQuiz.jsp?quizId="+this.getId()+"'>"+this.getTitle()+"</a>");
+		return sb.toString();
 	}
 }

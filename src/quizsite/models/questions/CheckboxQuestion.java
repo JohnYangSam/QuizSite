@@ -41,7 +41,7 @@ public class CheckboxQuestion extends Question {
 	}
 	
 	private List<String> unserialize(String opt) {
-		List<String> opts = new ArrayList<String>(Arrays.asList(opt.trim().split("{!~!}")));
+		List<String> opts = new ArrayList<String>(Arrays.asList(opt.trim().split("<>!<>")));
 		return opts;
 	}
 
@@ -50,7 +50,7 @@ public class CheckboxQuestion extends Question {
 		String ser = "";
 	
 		for (int i = 0; i < opt.size(); i++) {
-			ser += opt.get(i) + "{!~!}";
+			ser += opt.get(i) + "<>!<>";
 		}
 		
 		return ser.substring(0, ser.length()-5);

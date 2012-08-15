@@ -7,11 +7,11 @@
 	//System.out.println("Outside redirect in home controller hit: " + current);
 	//if(current == null) return;
 	
-	int quizid = Integer.parseInt(request.getParameter("quizid")); 
+	int quizid = Integer.parseInt(request.getParameter("quizId")); 
 	Quiz quiz  = Quiz.get(quizid);
 	
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
