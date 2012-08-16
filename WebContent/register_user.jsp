@@ -6,14 +6,20 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-		<link href="css/style.css" rel="stylesheet" type="text/css" />
 		<link href="css/homePage.css" rel="stylesheet" type="text/css" />
-
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
+	
+		<!-- ADD GENERAL HEAD FILE -->
+		<jsp:include page="_general_head_info.jsp" />
+		
 		<title>Quizbook - Register User</title>
 	</head>
 	<body>
 		<div class="main">
+		<!--  INCLUDE HEADER -->
+		<jsp:include page="_header.jsp"/>
 		
+		<!-- MAIN CONTENT START -->		
 			<!-- FAILURE MESSAGE goes here is the user entered bad input -->
 			<div class="error" id="failureMessage">
 				<% 
@@ -56,15 +62,11 @@
 			</div>
 		
 			<div class="description">
-				<h2>Welcome to COOL_NAME</h2>
+				<h2>Welcome to QUIZ BOOK! </h2>
 				<p>
-					Some text Some text Some text Some text Some text Some text
-					Some text Some textSome text Some text Some text Some text 
-					Some text 
-				</p>
+								</p>
 			</div>
 		</div>
 		<br />
-			<p>DEBUG: register_user.jsp</p>
 	</body>
 </html>
