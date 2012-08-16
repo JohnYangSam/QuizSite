@@ -52,7 +52,7 @@ public class EvalQuizController extends HttpServlet {
 			
 			for (int i = 0; i < q.size(); i++) {
 				int qid = q.get(i).getId();
-				String[] answer = request.getParameterValues("answer"+qid+"[]"); 
+				String answer = request.getParameter("answer"+qid); 
 				score += q.get(i).getScore(new HashSet<String>(Arrays.asList(answer)));				
 			}
 		} catch (SQLException e) {
