@@ -32,6 +32,7 @@
 		<div class="main">
 			<h1> <%= quiz.getTitle() %> </h1>
 			<p> <%= quiz.getDescr() %> </p>
+			<a href="take_quiz?quizid=<%= quizid %>"><h3>Take this quiz!</h3></a>
 			<div class="quizSettings">
 				<ul>
 					<li>
@@ -107,7 +108,7 @@
 					out.println("<li>");
 					out.println("<div class='data'>");
 					out.println("<p>");
-					out.print("<a href='display_user.jsp?userId='"+attempter.getId()+"'>"+attempter.getName()+"</a> "+topAttempts.get(i).getCreatedAt()+" and recieved a score of "+topAttempts.get(i).getScore()+" "+((i==0)?"I'm the greatest":""));	
+					out.print("<a href='display_user.jsp?userId='"+attempter.getId()+"'>"+attempter.getName()+"</a> "+topAttempts.get(i).getCreatedAt()+" and recieved a score of "+topAttempts.get(i).getScore()+" "+((i==0)?"":""));	
 					out.println("</p>");
 					out.println("</div>");	
 					out.println("</li>");
@@ -116,7 +117,7 @@
 		</li>
 	</ul>
 </div>
+</div>
 <a href="#">challenge your friend</a> <br/>
-<a href="takeQuiz.jsp?quizid=<%= quizid %>">take this quiz!</a>
 </body>
 </html>
