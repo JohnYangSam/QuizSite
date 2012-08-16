@@ -34,16 +34,6 @@
 		
 		<!-- data-___ is the only kind of customized attributes allowed in HTML5 -->
 		<div id="stash" style="display: none">
-		    <div id="Checkbox">
-		        <div class="question">
-		            <label>Checkbox Question | </label>
-		            Question Description <input type="text" data-name="text" />
-		            Options<textarea data-name="options"> </textarea>
-		            Answers <textarea data-name="answers"> </textarea>
-		            <p>Please separate options and answers by semi-colons " ; " please NO trailing ;'s at the end!</p>
-		            <input type="hidden" data-name="type" value="checkbox"/>
-		        </div>
-		    </div>
 		    <div id="Fill_Blank">
 		        <div class="question">
 		            <label>Fill In the Blank Question | </label>
@@ -53,6 +43,16 @@
 					Text to the right <input type="text" data-name="secondPart" />
 		            <input type="hidden" data-name="type" value="fill_blank"/>
 		            <p>Answers are separated by semi-colons. Please NO trailing ;'s at the end!)!</p>
+		        </div>
+		    </div>
+		    <div id="Checkbox">
+		        <div class="question">
+		            <label>Checkbox Question | </label>
+		            Question Description <input type="text" data-name="text" />
+		            Options<textarea data-name="options"> </textarea>
+		            Answers <textarea data-name="answers"> </textarea>
+		            <p>Please separate options and answers by semi-colons " ; " please NO trailing ;'s at the end!</p>
+		            <input type="hidden" data-name="type" value="checkbox"/>
 		        </div>
 		    </div>
 		    <div id="Picture">
@@ -91,8 +91,8 @@
 		to be separated by semi-colons ( ; ) and trailing semi colons are not valid!</p>
 		<div id="choice" class="options">
 		    <select id="selection">
-		      <option>Checkbox</option>
 		      <option>Fill_Blank</option>
+		      <option>Checkbox</option>
 		      <option>Picture</option>
 		      <option>Radio</option>
 		      <option>Response</option>

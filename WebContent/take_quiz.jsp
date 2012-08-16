@@ -15,27 +15,43 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet" href="css/take_quiz.css" type="text/css">
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
-<% if (isMultiple) { %>
-<script type="text/javascript" src="javascript/take_quiz_multi.js"></script>
-<% } %>
-<script type="text/javascript" src="javascript/remote_eval_quiz.js"></script>
-<title><%=quiz.getTitle()%></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
+	
+	<!-- ADD GENERAL HEAD FILE -->
+	<jsp:include page="_general_head_info.jsp" />
+	
+	<link rel="stylesheet" href="css/take_quiz.css" type="text/css">
+	<script type="text/javascript"
+		src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+	
+	<% if (isMultiple) { %>
+	<script type="text/javascript" src="javascript/take_quiz_multi.js"></script>
+	<% } %>
+	<script type="text/javascript" src="javascript/remote_eval_quiz.js"></script>
+	<title><%=quiz.getTitle()%></title>
+
 </head>
 <body>
-	<div class="container">
-		<form action="EvalQuizController" method="post" id="question_form">
-			<%
+	<!--  INCLUDE HEADER -->
+	<jsp:include page="_header.jsp" />
+
+	<!-- MAIN CONTENT START -->
+	<div class="main">
+
+
+
+
+		<div class="container">
+			<form action="EvalQuizController" method="post" id="question_form">
+				<%
 				for (int i = 0; i < questions.size(); i++) {
 					Question crrQuest = questions.get(i);
 					String type = crrQuest.getType();
 			%>
 
-			<div id="question_num_<%=i%>" class="question">
-				<%
+				<div id="question_num_<%=i%>" class="question">
+					<%
 					if (Question.Type.CHECKBOX.equals(type)) {
 							CheckboxQuestion q = (CheckboxQuestion) crrQuest;
 							List<String> options = q.getOptions();
@@ -91,21 +107,25 @@
 						out.print("<br/>");
 						out.print("<br/>");
 						%>
-				<% if (i < questions.size() - 1 ) {
+					<% if (i < questions.size() - 1 ) {
 					if ( isMultiple) {
 				%>
-				<button class="button_next" data-next-question="<%= (i+1) %>">Next</button>
-				<% }} else { %>
-				<input id="send_button" type="submit" value="Check me!" /> <input
-					type="hidden" name="quizid" value="<%=quiz.getId()%>" />
-				<% } %>
-			</div>
-			<%	} %>
+					<button class="button_next" data-next-question="<%= (i+1) %>">Next</button>
+					<% }} else { %>
+					<input id="send_button" type="submit" value="Check me!" /> <input
+						type="hidden" name="quizid" value="<%=quiz.getId()%>" />
+					<% } %>
+				</div>
+				<%	} %>
 
-		</form>
+			</form>
+
+		</div>
+		<div id="send_result" class="container"></div>
 
 	</div>
-	<div id="send_result" class="container"></div>
 
+	<!-- INCLUDE FOOTER -->
+	<jsp:include page="_footer.jsp" />
 </body>
 </html>
