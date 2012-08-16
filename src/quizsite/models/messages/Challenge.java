@@ -43,7 +43,7 @@ public class Challenge extends Message {
 		this.quiz = quiz;
 		formatString = "%1$s has challenged %2$s to a %3$s";
 		if (quiz != null && sender != null && recipient != null) {
-			setBody( formatBody( sender.getId(), recipient.getId(), Util.wrapURL(quiz.getURL(), "quiz")) );
+			setBody( formatBody( sender.getName(), recipient.getName(), Util.wrapURL(quiz.getURL(), "quiz")) );
 		}
 	}
 

@@ -224,7 +224,7 @@ public class Quiz extends PersistentModel{
 
 	// URL to access quiz
 	public String getURL() 
-	{ return "takeQuiz.jsp?quizid=" + getId(); } 
+	{ return "displayQuiz.jsp?quizId=" + getId(); } 
 	
 	public void setOnePage(boolean prop)
 	{ onePage = prop; }

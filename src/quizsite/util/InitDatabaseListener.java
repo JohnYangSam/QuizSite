@@ -42,7 +42,7 @@ public class InitDatabaseListener implements ServletContextListener {
 		try {
 			DatabaseConnection.switchModeTo(TestingMode.MODE);
 //			dropTables();
-			//createTables();
+			createTables();
 //			initTestData();
 			//InitQuizzes.createQuizzesFromXML();
 			//XMLParser parseQuizFromXML = new XMLParser(1);
