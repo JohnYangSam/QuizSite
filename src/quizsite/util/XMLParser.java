@@ -55,7 +55,7 @@ public class XMLParser extends DefaultHandler{
         boolean immediateCorrection  = (rootElem.getAttribute("immediate-correction").equals("true"))?true:false;
         String title				 = rootElem.getChildTextTrim("title"); 
         String descr 				 = rootElem.getChildTextTrim("description");
-        String category				 = rootElem.getChildTextTrim("category");
+        String category				 = (rootElem.getChildTextTrim("category") == null)?"":rootElem.getChildTextTrim("category");
         
         Quiz newQuiz				 = new Quiz(title, descr, category, onePage, practice, immediateCorrection, random, userID);
         int newQuizID 				 = newQuiz.save();

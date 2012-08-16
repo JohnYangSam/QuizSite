@@ -10,9 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import quizsite.models.Question;
-import quizsite.models.Quiz;
-import quizsite.models.User;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.XMLParser;
 
@@ -23,10 +20,6 @@ public class XMLParserTest {
 	@Before
 	public void setUp() throws Exception {
 		DatabaseConnection.switchModeTo(DatabaseConnection.Mode.TEST);
-		User newUser = new User(1);
-		
-		DatabaseConnection.dropTablesIfExist(Question.TABLE_NAME);
-		DatabaseConnection.dropTablesIfExist(Quiz.TABLE_NAME);
 	}
 
 	@After
@@ -37,7 +30,7 @@ public class XMLParserTest {
 	public void test() {
 		try {
 			parser = new XMLParser(1);
-			//parser.getQuizzesFromXML("WebContent/quiz-xml/bunny.xml");
+			parser.getQuizzesFromXML("WebContent/quiz-xml/bunny.xml");
 			parser.getQuizzesFromXML("WebContent/quiz-xml/cities.xml");
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block

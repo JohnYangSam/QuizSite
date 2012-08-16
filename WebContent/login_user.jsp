@@ -8,10 +8,16 @@
 
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
 		<link href="css/homePage.css" rel="stylesheet" type="text/css" />
-
+	
+		<!-- ADD GENERAL HEAD FILE -->
+		<jsp:include page="_general_head_info.jsp" />
+		
 		<title>Quizbook - Login</title>
 	</head>
-	<body>
+	<body>		<!--  INCLUDE HEADER -->
+		<jsp:include page="_header.jsp"/>
+		
+		<!-- MAIN CONTENT START -->
 		<div class="main">
 		
 			<!-- FAILURE MESSAGE goes here is the user entered bad input -->

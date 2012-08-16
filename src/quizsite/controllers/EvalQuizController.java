@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,7 +21,7 @@ import quizsite.models.Quiz;
 /**
  * Servlet implementation class EvalQuizController
  */
-@WebServlet("/EvalQuizController")
+@WebServlet({"/EvalQuizController", "/eval_quiz"})
 public class EvalQuizController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -53,7 +54,8 @@ public class EvalQuizController extends HttpServlet {
 			for (int i = 0; i < q.size(); i++) {
 				int qid = q.get(i).getId();
 				String answer = request.getParameter("answer"+qid); 
-				score += q.get(i).getScore(new HashSet<String>(Arrays.asList(answer)));				
+				Set<String> receivedAnswers = new HashSet<String>(Arrays.asList(answer));
+				score += q.get(i).getScore(receivedAnswers);				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -71,8 +73,8 @@ public class EvalQuizController extends HttpServlet {
 			}
 		}
 		
-		System.out.println("total score = "+score);
-		request.setAttribute("successMessage", "total score = "+score);
+		System.out.println("total score = "+score + (System.currentTimeMillis() - Long.parseLong(request.getParameter("startTime"))));
+		request.setAttribute("successMessage", "total score = "+score+ " time taken - "+(System.currentTimeMillis() - Long.parseLong(request.getParameter("startTime"))));
 		RequestDispatcher dispatch = request.getRequestDispatcher("_notify_message.jsp");
 		dispatch.forward(request, response);
 	}

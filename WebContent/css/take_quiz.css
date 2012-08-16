@@ -1,0 +1,15 @@
+div.container {
+	width: 80%;
+	margin: 1px auto;
+	padding : 20px;
+	border: 2px solid lightgray;
+	
+}
+div#send_result {
+	text-align: center;
+	padding: 10px;
+	display: none;
+	width: 60%;
+	margin: 0px auto;
+	border: 1px dashed blue;
+}
