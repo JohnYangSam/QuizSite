@@ -1,0 +1,55 @@
+th {
+	border-bottom : 2px solid blue;
+}
+
+td {
+	border-bottom : 1px dashed gray;
+	padding: 4px;
+}
+div.container {
+	width: 80%;
+	margin: 1px auto;
+	padding : 20px;
+	border: 2px solid lightgray;
+	
+}
+div#send_result {
+	text-align: center;
+	padding: 10px;
+	display: none;
+	width: 60%;
+	margin: 0px auto;
+	border: 1px dashed blue;
+}
+
+br {
+	line-height:300%;
+}
+
+th.to, th.from, td.to, td.from {
+	width:10%;
+}
+
+th.date,td.date {
+	width: 10%;
+}
+
+th.body, td.body {
+	width:55%;
+}
+
+th.subject, td.subject {
+	width:15%;
+}
+
+table {
+	width:100%;
+}
+
+ul {
+	list-style: none;
+}
+
+li {
+	margin: 20px;
+}

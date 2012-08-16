@@ -101,18 +101,17 @@ public class InitDatabaseListener implements ServletContextListener {
 		Friendship[] fs = new Friendship[TOTAL_TEST_FS];
 		FriendRequest[] fr = new FriendRequest[TOTAL_TEST_FS];
 
-		fs[0] = Friendship.get((fr[0] = new FriendRequest(users[0], users[1], "")).send());
-		fs[1] = Friendship.get((fr[1] = new FriendRequest(users[3], users[1], "")).send());
-		fs[2] = Friendship.get((fr[2] = new FriendRequest(users[4], users[1], "")).send());
-		fs[3] = Friendship.get((fr[3] = new FriendRequest(users[0], users[2], "")).send());
-		fs[4] = Friendship.get((fr[4] = new FriendRequest(users[3], users[2], "")).send());
-		fs[5] = Friendship.get((fr[5] = new FriendRequest(users[4], users[2], "")).send());
+		for (int i = 0; i < TOTAL_TEST_USERS - 1; i++) {
+			for (int j = i + 1; j < TOTAL_TEST_USERS; j++) {
+				(new FriendRequest(users[i], users[j], "")).save();
+			}
+		}
 
 		// Accept some, reject some, keep rest pending
-		fs[0].accept();
-		fs[1].accept();
-		fs[2].reject();
-		fs[3].reject();
+//		fs[0].accept();
+//		fs[1].accept();
+//		fs[2].reject();
+//		fs[3].reject();
 
 
 		// create some quizzes

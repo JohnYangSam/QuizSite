@@ -6,22 +6,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import java.lang.*;
 
 
+
+import quizsite.models.messages.FriendRequest;
 import quizsite.util.Activity;
 import quizsite.util.DatabaseConnection;
 import quizsite.util.PersistentModel;
 
 public class Friendship extends PersistentModel {
 	public static String TABLE_NAME = "Friendship";
-	public static String[][] SCHEMA = {{"initiator_id", "INTEGER"}, {"responder_id","INTEGER"}, {"status", "TINYTEXT"}};
+	public static String[][] SCHEMA = {{"initiator_id", "INTEGER"}, {"responder_id","INTEGER"}, {"status", "TINYTEXT"}, {"friend_request_id", "INTEGER"}};
 	public final static int I_INTIATOR_ID = PersistentModel.N_PRE_COL,
-							I_RESPONDER_ID =  PersistentModel.N_PRE_COL + 1;
-	protected static String[][] FOREIGN_KEYS = {{"initiator_id", User.TABLE_NAME, "id"}, {"responder_id", User.TABLE_NAME, "id"}};
+							I_RESPONDER_ID =  PersistentModel.N_PRE_COL + 1,
+							I_STATUS =  PersistentModel.N_PRE_COL + 2,
+							I_FRIEND_REQUEST_ID =  PersistentModel.N_PRE_COL + 3;
+	
+	protected static String[][] FOREIGN_KEYS = {{"initiator_id", User.TABLE_NAME, "id"}, {"responder_id", User.TABLE_NAME, "id"}, {"friend_request_id", FriendRequest.TABLE_NAME, "id"}};
 	
 	private User initiator;
 	private User responder;
 	private Status status;
+	private int friendRequestId;
 
 	public enum Status {
 		PENDING, ACCEPTED, REJECTED;
@@ -42,13 +49,39 @@ public class Friendship extends PersistentModel {
 		}
 	}
 
-	public Friendship(User initiator, User responder) throws SQLException {
+	public Friendship(User initiator, User responder, int friendRequestId) throws SQLException {
 		super(TABLE_NAME, SCHEMA, FOREIGN_KEYS);
 		setInitiator(initiator);
 		setResponder(responder);
 		setStatus(Status.PENDING);
+		setFriendRequestId(friendRequestId);
 	}
 
+	public Friendship(User user, User user2) throws SQLException {
+		this(user,user2, -1);
+	}
+	
+	public static Friendship getByFriendRequestId(int friendReqId) throws Exception {
+		String[][] conditions = { {"friend_request_id", "=", "" + friendReqId} };
+		List<List<String> > rows = DatabaseConnection.indexWhere(TABLE_NAME, conditions);
+		List<Friendship> fl =  parseRows(rows);
+		switch (fl.size()) {
+		case 0:
+			return null;
+		case 1:
+			return fl.get(0);
+		default:
+			throw new Exception("ALERT! Each friend request should ahve only one corresponding friendship entry");
+		}
+	}
+
+	public void setFriendRequestId(int friendRequestId) {
+		this.friendRequestId = friendRequestId;
+	}
+
+	public int getFriendRequestId() {
+		return this.friendRequestId;
+	}
 	/** Accepts and updates db*/
 	public void accept() throws SQLException {
 		setStatus(Status.ACCEPTED);
@@ -115,7 +148,7 @@ public class Friendship extends PersistentModel {
 	public static List<Friendship> parseRows(List<List<String>> rows) throws SQLException {
 		List<Friendship> ret = new ArrayList<Friendship>();
 		for (List<String> row : rows) {
-			Friendship curr = new Friendship(null, null); 
+			Friendship curr = new Friendship(null, null, -1); 
 			curr.parse(row);
 			ret.add(curr);
 		}
@@ -126,7 +159,7 @@ public class Friendship extends PersistentModel {
 	public static Friendship get(int id) throws SQLException {
 		List<String> entry = DatabaseConnection.get(TABLE_NAME, id);
 		if (entry != null) {
-			Friendship curr = new Friendship(null, null);
+			Friendship curr = new Friendship(null, null, -1);
 			curr.parse(entry);
 			return curr;
 		} else {
@@ -146,13 +179,14 @@ public class Friendship extends PersistentModel {
 		super.parse(dbEntry); //This takes care of the id which is the first attribute for
 		setInitiator(User.get(Integer.parseInt(dbEntry.get(I_INTIATOR_ID))));
 		setResponder(User.get(Integer.parseInt(dbEntry.get(I_RESPONDER_ID))));
-		setStatus(status);
+		setStatus(dbEntry.get(I_STATUS));
+		setFriendRequestId(Integer.parseInt((dbEntry.get(I_FRIEND_REQUEST_ID))));
 	}
 	
 
 	@Override
 	public Object[] getFields() {
-		Object[] objs = new Object[] {getInitiator().getId(), getResponder().getId(), getStatus()};
+		Object[] objs = new Object[] {getInitiator().getId(), getResponder().getId(), getStatus().toString(), getFriendRequestId()};
 		return objs;
 	}
 	
