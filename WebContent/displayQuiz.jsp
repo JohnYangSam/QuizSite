@@ -98,7 +98,7 @@
 					out.println("<li>");
 					out.println("<div class='data'>");
 					out.println("<p>");
-					out.print("<a href='display_user.jsp?userId='"+attempter.getId()+"'>"+attempter.getName()+"</a> "+topAttempts.get(i).getCreatedAt()+" and recieved a score of "+topAttempts.get(i).getScore()+" "+((i==0)?"I'm the greatest":""));	
+					out.print("<a href='display_user.jsp?userId='"+attempter.getId()+"'>"+attempter.getName()+"</a> "+topAttempts.get(i).getCreatedAt()+" and recieved a score of "+topAttempts.get(i).getScore());	
 					out.println("</p>");
 					out.println("</div>");	
 					out.println("</li>");
