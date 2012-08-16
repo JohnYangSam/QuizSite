@@ -35,7 +35,6 @@
 	<input type="text" name="answer1"/>
 	<input type="submit"/>
 </form>
-<!-- 
 <form action="EvalQuizController" method="post">
 	<%
 	for(int i=0; i < questions.size(); i++)
@@ -100,7 +99,6 @@
 	<input type="submit" value="Check me!" />
 	<input type="hidden" name="quizid" value="<%= quiz.getId() %>"/>
 </form>
-   -->
 </div>
 </body>
 </html>
