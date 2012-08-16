@@ -73,14 +73,7 @@ public class EvalQuizController extends HttpServlet {
 			}
 		}
 		
-<<<<<<< HEAD
-		System.out.println("total score = "+score + (System.currentTimeMillis() - Long.parseLong(request.getParameter("startTime"))));
 		request.setAttribute("successMessage", "total score = "+score+ " time taken = "+(System.currentTimeMillis() - Long.parseLong(request.getParameter("startTime"))));
-=======
-		System.out.println("total score = "+score);
-		request.setAttribute("successMessage", "total score = "+score+ " time taken = "+(System.currentTimeMillis() - 
-				Long.parseLong(request.getParameter("startTime"))));
->>>>>>> d72aacff3bf74572face60ac9d9ccd636a51291c
 		RequestDispatcher dispatch = request.getRequestDispatcher("_notify_message.jsp");
 		dispatch.forward(request, response);
 	}

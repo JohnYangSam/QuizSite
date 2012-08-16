@@ -53,9 +53,9 @@ public class CreateQuizController extends HttpServlet {
 		// TODO all blank strings and fields should be correctly set after I write an actual view 
 		Quiz newQuiz;
 		try {
-			User currentUser = new User(1);//Util.signInOrRedirect(request, response);
+			User currentUser = Util.signInOrRedirect(request, response);
 			
-			boolean onePage 		= (request.getParameter("onePage") == null)?false:true;
+			boolean onePage 		= (request.getParameter("onePage").equals("onePageEnabled"))?true:false;
 			boolean practice 		= (request.getParameter("practiceEnabled") == null)?false:true;
 			boolean immediateCheck  = (request.getParameter("immediateCheck") == null)?false:true;
 			boolean random 			= (request.getParameter("isRandom") == null)?false:true;
@@ -100,11 +100,12 @@ public class CreateQuizController extends HttpServlet {
 				
 				q.save();
 				
-		request.setAttribute("failureMessage", "You sucessfully created a quiz!");
-		RequestDispatcher dispatch = request.getRequestDispatcher("displayQuiz.jsp?quizId="+newQuiz.getId());
-		dispatch.forward(request, response);
-		return;	
 			}
+			
+			request.setAttribute("failureMessage", "You sucessfully created a quiz!");
+			RequestDispatcher dispatch = request.getRequestDispatcher("displayQuiz.jsp?quizId="+newQuiz.getId());
+			dispatch.forward(request, response);
+			return;	
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
