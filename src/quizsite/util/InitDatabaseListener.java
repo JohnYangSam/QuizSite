@@ -41,9 +41,9 @@ public class InitDatabaseListener implements ServletContextListener {
 		//the tables will remain empty
 		try {
 			DatabaseConnection.switchModeTo(TestingMode.MODE);
-			dropTables();
+//			dropTables();
 			//createTables();
-			initTestData();
+//			initTestData();
 			//InitQuizzes.createQuizzesFromXML();
 			//XMLParser parseQuizFromXML = new XMLParser(1);
 			//parseQuizFromXML.getQuizzesFromXML("src/quizsite/util/quiz-xml/bunny.xml");

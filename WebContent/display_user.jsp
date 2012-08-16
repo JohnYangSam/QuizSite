@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="quizsite.util.*,quizsite.controllers.*, quizsite.models.*, java.util.*, java.lang.Integer.*" %>
-
+<%
+User current = Util.signInOrRedirect(request, response);
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -42,6 +44,7 @@
 					out.println("<p>Sorry, that user could not be found.</p>");
 				} else	 {
 					out.println("<h2>"+user.getName()+"</h2>");
+					out.println("<a href='send_friend_request?initiator_id=" + current.getId() + "&responder_id=" + user.getId() + "'> Send a friend request! </a>");
 					out.println("<ul>");
 					out.println(" QuizBook member since " + user.getCreatedAt() + ".");
 					out.println("<li>Contact: "+user.getEmail()+" </li>");	

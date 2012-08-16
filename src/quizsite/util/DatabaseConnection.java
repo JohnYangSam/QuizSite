@@ -77,7 +77,7 @@ public class DatabaseConnection {
 			stmt = conn.createStatement();
 			String useDB = "USE " + mode.getDatabase();
 			stmt.executeQuery(useDB);
-			System.out.println(useDB);
+//			System.out.println(useDB);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -108,7 +108,7 @@ public class DatabaseConnection {
 	 * Used to execute raw SQL queries
 	 */
 	public ResultSet executeQuery(String sqlQuery) throws SQLException {
-		System.out.println(sqlQuery);
+//		System.out.println(sqlQuery);
 		return stmt.executeQuery(sqlQuery);
 	}
 
@@ -116,7 +116,7 @@ public class DatabaseConnection {
 	 * Execute updates on the table - INSERT, UPDATE, DELETE
 	 * */
 	public int executeUpdate(String sqlQuery) throws SQLException {
-		System.out.println(sqlQuery);
+//		System.out.println(sqlQuery);
 		return stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
 	}
 
@@ -207,7 +207,7 @@ public class DatabaseConnection {
 		}, " , ");
 		
 		String createTableQuery = "CREATE TABLE IF NOT EXISTS " + pm.getTableName() + "(" + unifiedSchema + ")"; 
-		System.out.println(createTableQuery);
+//		System.out.println(createTableQuery);
 		int result = db.executeUpdate(createTableQuery);
 		db.close();
 		return result;
