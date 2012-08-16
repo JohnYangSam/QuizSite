@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="quizsite.util.*,quizsite.controllers.*, quizsite.models.*, java.util.*" %>
+<%@ page import="quizsite.util.*,quizsite.controllers.*, quizsite.models.*, java.util.*, java.lang.Integer.*" %>
 
 <!DOCTYPE html>
 <html>
@@ -26,18 +26,21 @@
 		<%
 		//NOTE: The user id (or profile id and user in this case is NOT the currently logged in)
 		//user but instead related to the profile that the user is viewing.
-			Integer userIdObj = (Integer) request.getAttribute("userId");
-			if(userIdObj == null) {
+			String userIdStr = request.getParameter("userId");
+			int userId = -1;	
+			try {		
+			userId = Integer.parseInt(userIdStr);
+			} catch (Exception e) { /* Ignore */ }
+		
+			if(userIdStr == "" || userId == 0) {
 				out.println("<h2>User not found</h2>");
 				out.println("<p>Sorry, that user could not be found.</p>");
 			} else {
-				int userId = userIdObj.intValue();
 				User user = User.get(userId);
 				if(user == null) {
 					out.println("<h2>User not found</h2>");
 					out.println("<p>Sorry, that user could not be found.</p>");
 				} else	 {
-				
 					out.println("<h2>"+user.getName()+"</h2>");
 					out.println("<ul>");
 					out.println(" QuizBook member since " + user.getCreatedAt() + ".");
