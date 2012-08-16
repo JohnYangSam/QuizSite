@@ -32,3 +32,4 @@ Object userIdObj = session.getAttribute(Util.USER_SESSION_KEY);
 </div>
 
 
+<jsp:include page="_notify_message.jsp" />

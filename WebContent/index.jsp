@@ -47,12 +47,8 @@
 			</div>
 			
 			<div class="description">
-				<h2>Welcome to COOL_NAME</h2>
-				<p>
-					Some text Some text Some text Some text Some text Some text
-					Some text Some textSome text Some text Some text Some text 
-					Some text 
-				</p>	
+				<h2>Welcome to QUIZ BOOK</h2>
+				<p> Come on in, sign up and start quizzing!</p>	
 			</div>	
 		</div>
 		
@@ -60,7 +56,5 @@
 		<jsp:include page="_footer.jsp" />	
 		
 		<br />
-		<p> DEBUG: index.jsp </p>
-		<% Util.printUserSessionId(request); %>
 	</body>
 </html>
