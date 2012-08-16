@@ -8,18 +8,21 @@
 
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
 		<link href="css/homePage.css" rel="stylesheet" type="text/css" />
+		<jsp:include page="_general_head_info.jsp" />
 
 		<title>Quizbook - Login</title>
 	</head>
 	<body>
 		<div class="main">
+		<!--  INCLUDE HEADER -->
+		<jsp:include page="_header.jsp"/>
 		
+		<!-- MAIN CONTENT START -->		
 			<!-- FAILURE MESSAGE goes here is the user entered bad input -->
 			<div class="error" id="failureMessage">
 				<% 
 				String failureMessage = (String)request.getAttribute("failureMessage");
 				if(failureMessage == null) {
-					out.println("<h2> Sign up to start quizzing! </h2>");
 				} else {
 					out.println("<h2>" + failureMessage + "</h2>");	
 				}	
@@ -44,7 +47,5 @@
 			</div>	
 		</div>
 		<br />
-		<p>DEBUG: logout_user.jsp</p>
-		<% Util.printUserSessionId(request); %>	
 	</body>
 </html>

@@ -13,37 +13,46 @@
 %>
 <!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-<h1> <%= quiz.getTitle() %> </h1>
-<p> <%= quiz.getDescr() %> </p>
-<div class="quizSettings">
-	<ul>
-		<li>
-			Category: <%= quiz.getCategory() %>
-		</li>
-		<li>
-			Is random - <%= quiz.isRandomized() %>
-		</li>
-		<li>
-			Is one page - <%= quiz.isOnePage() %>
-		</li>
-		<li>
-			Is immediate - <%= quiz.isImmediate() %>
-		</li>
-		<li>
-			Is practice enabled - <%= quiz.isPracticeEnabled() %>
-		</li>
-		<li>
-			<a href="display_user.jsp?userId=<%= quiz.getCreatorID() %>">creator</a>
-		</li>
-	</ul>
-</div>
-<div>
-	<ul>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
+	
+		<!-- ADD GENERAL HEAD FILE -->
+		<jsp:include page="_general_head_info.jsp" />
+		
+		<title>QuizBook Quiz!</title>
+	</head>
+	<body>
+	
+		<!--  INCLUDE HEADER -->
+		<jsp:include page="_header.jsp"/>
+		
+		<!-- MAIN CONTENT START -->	
+		<div class="main">
+			<h1> <%= quiz.getTitle() %> </h1>
+			<p> <%= quiz.getDescr() %> </p>
+			<div class="quizSettings">
+				<ul>
+					<li>
+						Category: <%= quiz.getCategory() %>
+					</li>
+					<li>
+						Is random - <%= quiz.isRandomized() %>
+					</li>
+					<li>
+						Is one page - <%= quiz.isOnePage() %>
+					</li>
+					<li>
+						Is immediate - <%= quiz.isImmediate() %>
+					</li>
+					<li>
+						Is practice enabled - <%= quiz.isPracticeEnabled() %>
+					</li>
+				</ul>
+			</div>
+			<div>
+				<ul>
 		<li>
 		<h3>Your attempts</h3>
 		<%

@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -50,6 +51,7 @@ public class CreateQuizController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO all blank strings and fields should be correctly set after I write an actual view 
+		Quiz newQuiz;
 		try {
 			User currentUser = new User(1);//Util.signInOrRedirect(request, response);
 			
@@ -62,7 +64,7 @@ public class CreateQuizController extends HttpServlet {
 			String category			= request.getParameter("quiz_category");
 			int creatorID 			= currentUser.getId();
 		
-			Quiz newQuiz = new Quiz(title, descr, category, onePage, practice, immediateCheck, random, creatorID);
+			newQuiz = new Quiz(title, descr, category, onePage, practice, immediateCheck, random, creatorID);
 			int newQuizId	 = newQuiz.save();
 			
 			int numOfQuestions = Integer.parseInt(request.getParameter("numOfQuest"));
@@ -97,6 +99,11 @@ public class CreateQuizController extends HttpServlet {
 				} else throw new Exception("Invalid type of a question!");			
 				
 				q.save();
+				
+		request.setAttribute("failureMessage", "You sucessfully created a quiz!");
+		RequestDispatcher dispatch = request.getRequestDispatcher("displayQuiz.jsp?quizId="+newQuiz.getId());
+		dispatch.forward(request, response);
+		return;	
 			}
 			
 		} catch (SQLException e) {
@@ -106,8 +113,8 @@ public class CreateQuizController extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		// TODO redirect user somewhere after succesull adding of a question
-		System.out.println("Saved");
+		// TODO redirect user somewhere after successfully adding of a question
+		//System.out.println("Saved");
 	}
 
 }

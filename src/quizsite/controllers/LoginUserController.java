@@ -81,7 +81,7 @@ public class LoginUserController extends HttpServlet {
 				System.out.println("userId being sent to session at login: " + userId);
 				
 				//Send to the main view
-				RequestDispatcher dispatch = request.getRequestDispatcher("home");
+				RequestDispatcher dispatch = request.getRequestDispatcher(Util.HOME_VIEW);
 				dispatch.forward(request, response);
 				return;
 			}
@@ -125,6 +125,7 @@ public class LoginUserController extends HttpServlet {
 			e.printStackTrace();
 			return false;
 		}
+		
 	}
 
 }
