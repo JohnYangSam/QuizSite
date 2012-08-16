@@ -1,0 +1,64 @@
+README.TXT CS108 Final Project
+Vighnesh Rege, Makar Stetsenko, John Yang-Sammataro
+3 Person team:
+  Web page design may look rought as long as it is functional
+  Recommended history
+
+Features completed:
+
+QUESTIONS and ANSWERS:
+  All required question types are supported:
+    Question-Response
+    Fill in the Blank
+    Multiple Choice
+    Picture-Response Questions
+    Multiple answers can be specified.
+
+  Please note that input is delicate, however. Multiple answers are
+  separated by semilcolons but trailing semi-colons will cause errors.
+
+QUIZ PROPERTIES AND OPTIONS
+  Of the REQUIRED we have implemented:
+    Random questions
+    One Page vs. Multi Page quizes correction
+    Practice Mode - Tests can be chosen to be practice (attempts
+don't count)
+
+    Note: Immediate correction infrastructure is implemented but we did not have time to make it visible
+
+SCORING
+
+  Each quiz will rank performers in terms of score on the page
+  The time is tracked and displayed at the end of each completion of a
+test 
+
+USERS
+  LOGIN - User login and password store is completed with hashing.
+  EXTENSION - User name and passwords are stored with salting through
+a 20 character random string in addition to the standard hashing.
+
+FRIENDS
+  USERS can become friends by
+  1) Clicking on a user link in one of the news feeds to go to the
+user's page and befriend them with the link
+  2) Looking the user up in a list of users (found through a link on
+the top navigation bar), going to their profile, and friendign them.
+
+HISTORY
+  The user's past quiz performance is displayed on each user's profile
+page and an abreviated version is displayed on the homepage
+
+PAGES
+  The Homepage
+
+SUMMARY OF EXTENSIONS:
+
+EXTENSION
+  ACHIEVEMENTS - All achievements are implemented for users and
+displayed on homepages and individual user pages
+
+  PASSWORD SALTING - User name and passwords are stored with salting through
+a 20 character random string in addition to the standard hashing.
+
+  
+
