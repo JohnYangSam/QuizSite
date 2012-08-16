@@ -52,7 +52,7 @@
 			for(int j=0; j < options.size(); j++)
 			{
 				out.print("<label for='"+q.getId()+j+"'>"+options.get(j)+"</label>");
-				out.print("<input type='checkbox' name='answer"+q.getId()+" value='"+options.get(j)+"' id='"+q.getId()+j+"'/>");
+				out.print("<input type='checkbox' name='answer"+q.getId()+"[]' value='"+options.get(j)+"' id='"+q.getId()+j+"'/>");
 				if (j % 2 == 0)
 					out.print("<br/>");
 			}

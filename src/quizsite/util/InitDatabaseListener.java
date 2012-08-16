@@ -41,13 +41,13 @@ public class InitDatabaseListener implements ServletContextListener {
 		//the tables will remain empty
 		try {
 			DatabaseConnection.switchModeTo(TestingMode.MODE);
-//			dropTables();
-//			createTables();
-//			initTestData();
-			
-//			XMLParser parseQuizFromXML = new XMLParser(1);
+			dropTables();
+			//createTables();
+			initTestData();
+			//InitQuizzes.createQuizzesFromXML();
+			//XMLParser parseQuizFromXML = new XMLParser(1);
 			//parseQuizFromXML.getQuizzesFromXML("src/quizsite/util/quiz-xml/bunny.xml");
-			//parseQuizFromXML.getQuizzesFromXML("~/WebContent/quiz-xml/cities.xml");
+			//parseQuizFromXML.getQuizzesFromXML("testQuiz.xml");
 		} catch (Exception e) {
 			System.err.println("QuizSite : Error : While dropping and creating tables");
 			e.printStackTrace();

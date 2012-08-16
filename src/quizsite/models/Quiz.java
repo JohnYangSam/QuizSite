@@ -281,7 +281,7 @@ public class Quiz extends PersistentModel{
 	 */
 	public String getQuizTitleLink() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<a href='/displayQuiz.jsp?quizId="+this.getId()+"'>"+this.getTitle()+"</a>");
+		sb.append("<a href='displayQuiz.jsp?quizId="+this.getId()+"'>"+this.getTitle()+"</a>");
 		return sb.toString();
 	}
 }

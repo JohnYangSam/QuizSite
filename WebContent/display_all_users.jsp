@@ -17,7 +17,7 @@
 	
 	<body>
 		<!--  INCLUDE HEADER -->
-		<jsp:include page="_header.jsp"/>
+		<jsp:include page="_header.jsp" />
 		
 		<!-- MAIN CONTENT START -->	
 		<div class="main">
@@ -28,7 +28,7 @@
 			for(User user : users) {
 				out.println("<li>");
 				out.print("<a href='display_user.jsp?userId="+user.getId()+"'>" + user.getName()+"</a> ");
-				out.print(" QuizBook user since " + user.getCreatedAt() + ".");	
+				out.print(" QuizBook member since " + user.getCreatedAt() + ".");
 				//out. send_friend_request? initiator_Id responder_Id 	
 				out.println("</li>");	
 			}
