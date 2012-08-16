@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -59,6 +60,9 @@ public class EvalQuizController extends HttpServlet {
 		}
 		
 		System.out.println("total score = "+score);
+		request.setAttribute("successMessage", "total score = "+score);
+		RequestDispatcher dispatch = request.getRequestDispatcher("_notify_message.jsp");
+		dispatch.forward(request, response);
 	}
 
 }
