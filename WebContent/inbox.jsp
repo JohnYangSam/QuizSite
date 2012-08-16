@@ -6,7 +6,8 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
+	
 		<script type="text/javascript"
 			src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
 		<script type="text/javascript" src="javascript/inboxPage.js"></script>
@@ -123,25 +124,21 @@
 					<ul>
 						<li><label>To: </label></li>
 						<li> 
-							<textarea name="to" id="compose_to" cols=100></textarea>
+							<textarea name="to" id="compose_to" cols=60></textarea>
 						</li>
 						<li><label>Subject: </label></li>
 						<li>  
-							<textarea name="subject" id="compose_subject" cols=100></textarea>
+							<textarea name="subject" id="compose_subject" cols=60></textarea>
 						</li>
 						<li> <label>Body: </label> </li> 
 						<li>
-							<textarea name="body" id="compose_body" rows=10 cols=100></textarea>
+							<textarea name="body" id="compose_body" rows=10 cols=60></textarea>
 						</li>
 						<li>
 							<input id="send_button" type="submit" value="Send!" />
 						</li>
 					</ul>
 				</form>
-				<p>DEBUG: inbox.jsp</p>
-				<%
-			Util.printUserSessionId(request);
-		%>
 			</div>
 	
 		</div>

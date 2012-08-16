@@ -18,7 +18,7 @@ import quizsite.models.messages.FriendRequest;
 /**
  * Servlet implementation class SendChallengeRequestController
  */
-@WebServlet("/SendChallengeRequestController")
+@WebServlet({"/SendChallengeRequestController", "/challenge"})
 public class SendChallengeRequestController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -38,13 +38,13 @@ public class SendChallengeRequestController extends HttpServlet {
 		if (current == null) return;
 
 		Integer initiatorId = Integer.parseInt(request.getParameter("initiator_id"));
-		Integer responderId = Integer.parseInt(request.getParameter("responder_id"));
+		String responderUserName = request.getParameter("responder_user_name");
 		Integer quizId = Integer.parseInt(request.getParameter("quiz_id"));
 		
 		User recipient;
 		try {
 			Quiz quiz = Quiz.get(quizId);
-			if (initiatorId != null && responderId != null && initiatorId == current.getId() && (recipient = User.get(responderId)) != null) {
+			if (initiatorId != null && responderUserName != null && initiatorId == current.getId() && (recipient = User.getUserByName(responderUserName)) != null) {
 				(new Challenge(current, recipient, quiz, "Quiz Challenge!")).send();
 				
 				request.setAttribute("successMessage", "Sent");

@@ -142,7 +142,7 @@ public class User extends PersistentModel{
 	@Override
 	public boolean equals(Object user) {
 		User other = (User) user;
-		return (getId() == other.getId()) && getCreatedAt().equals(other.getCreatedAt()) && getUserName().equals(other.getUserName()) && getEmail().equals(other.getEmail());
+		return (getId() == other.getId()) ;
 	}
 	
 	/**

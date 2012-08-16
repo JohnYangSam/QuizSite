@@ -1,5 +1,6 @@
 @charset "utf-8";
 body { 
+	padding-top:60px;
 	margin:0; 
 	padding:0; 
 	background: none; 
@@ -16,6 +17,6 @@ html {
 /* main */
 .main {
 	width:750px; 
-	padding:100px 0 0 0; 
+	padding:100px 60px 0 0; 
 	margin:0 auto;
 }

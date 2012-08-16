@@ -33,6 +33,27 @@
 			<h1> <%= quiz.getTitle() %> </h1>
 			<p> <%= quiz.getDescr() %> </p>
 			<a href="take_quiz?quizid=<%= quizid %>"><h3>Take this quiz!</h3></a>
+			
+			<br />
+			<h3> Challenge a friend !</h3>
+			<form action="challenge" method="post">
+				<% List<User> friends = current.getFriends();%>
+				<select name="responder_user_name">
+				
+				<% 
+					for (User f : friends) { 
+						if (f.getId() != current.getId()) {
+				%>
+					<option><%= f.getUserName() %></option>
+				<% 
+						} 
+					}
+				%>
+				</select>
+				<input type="hidden" name="initiator_id" value="<%= current.getId() %>"/>
+				<input type="hidden" name="quiz_id" value="<%= quizid %>"/>
+				<input id="send_button" type="submit" value="Challenge!" />
+			</form>
 			<div class="quizSettings">
 				<ul>
 					<li>
@@ -118,6 +139,5 @@
 	</ul>
 </div>
 </div>
-<a href="#">challenge your friend</a> <br/>
 </body>
 </html>
