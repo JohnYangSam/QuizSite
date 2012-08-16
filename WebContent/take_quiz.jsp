@@ -117,7 +117,7 @@
 					<% } %>
 				</div>
 				<%	} %>
-				<input type="hidden" name="startTime" value="<%= System.currentTimeMillis() %>"/>
+                <input type="hidden" name="startTime" value="<%= System.currentTimeMillis() %>"/>
 			</form>
 
 		</div>
