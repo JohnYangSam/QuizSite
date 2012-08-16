@@ -26,7 +26,7 @@
 				<%
 					//5
 					List<Achievement> achievementsByTime = (List<Achievement>)request.getAttribute("achievements");
-					if(achievementsByTime == null) {
+					if(achievementsByTime == null || achievementsByTime.size() == 0) {
 						out.println("<p>You do not have any achievements yet.</p>");
 					} else {
 						for(int i = 0; i < achievementsByTime.size(); ++i) {
@@ -46,7 +46,7 @@
 				<ul>	
 				<%
 					List<Message> messages = (List<Message>)request.getAttribute("messages");
-					if(messages == null) {
+					if(messages == null || messages.size() == 0) {
 						out.println("<p>No recent messages.</p>");
 					} else {
 						for(int i = 0; i < 5 && i < messages.size(); ++i) {
@@ -64,7 +64,7 @@
 				<%
 				//3
 					List<Attempt> attemptsByTime = (List<Attempt>)request.getAttribute("attemptsByTime");
-					if(attemptsByTime == null) {
+					if(attemptsByTime == null || attemptsByTime.size() == 0) {
 						out.println("<p>No recently taken quizzes.</p>");
 					} else {
 						for(int i = 0; i < 5 && i < attemptsByTime.size(); ++i) {
@@ -115,7 +115,7 @@
 				<%
 				//NEED TO CREATE THE ABILITY TO GET ANNOUNCEMENTS!
 				List<Announcement> announcements = (List<Announcement>)request.getAttribute("announcements");
-				if(announcements == null) {
+				if(announcements == null || announcements.size() == 0) {
 					out.println("<p>There are no recent announcements.</p>");
 				} else {
 				
@@ -132,7 +132,7 @@
 				<%
 				//7
 				List<Activity> friendActivities = (List<Activity>)request.getAttribute("friendActivities");
-				if(friendActivities == null) {
+				if(friendActivities == null || friendActivities.size() == 0) {
 					out.println("<p>There is no recent friend activity.</p>");
 				} else {
 					for(Activity activity : friendActivities) {
@@ -153,7 +153,7 @@
 				<ul>
 				<%
 					List<Quiz> quizListByPopularity = (List<Quiz>)request.getAttribute("quizListByPopularity");
-					if(quizListByPopularity == null) {
+					if(quizListByPopularity == null || quizListByPopularity.size() == 0) {
 						out.println("<p>There are no popular quizzes.</p>");
 					} else {
 						for(int i = 0; i < 5 && i < quizListByPopularity.size(); ++i) {
@@ -178,7 +178,7 @@
 				<% 
 					//2
 					List<Quiz> quizListByCreationTime = (List<Quiz>)request.getAttribute("quizListByCreationTime");
-					if(quizListByCreationTime == null) {
+					if(quizListByCreationTime == null || quizListByCreationTime.size() == 0) {
 						out.println("<p>There are no recently created quizzes.</p>");
 					} else {
 						for(int i = 0; i < 5 && i < quizListByCreationTime.size(); ++i) {
