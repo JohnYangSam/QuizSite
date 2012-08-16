@@ -15,7 +15,7 @@ be placed within the header of every single view.jsp file -->
 		position: fixed;
 		left:0px;
 		right:0px;	
-		top: -25px;
+		top: -10px;
 		background-color: black;
 	}
 

@@ -65,7 +65,7 @@ public class Activity {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<div class='activity'>\n");
 		sb.append("<p>\n");
-		sb.append("<a href='/user?userId="+userId+"'>"+userName+"</a>");
+		sb.append("<a href='display_user.jsp?userId="+userId+"'>"+userName+"</a>");
 		sb.append(" " + verb + " " + subject + " on " + date + ".\n");
 		sb.append("</p>\n");
 		sb.append("</div>");

@@ -378,7 +378,9 @@ public class User extends PersistentModel{
 		try {	
 			HttpSession session = request.getSession();
 			Integer userId = (Integer) session.getAttribute(Util.USER_SESSION_KEY);
-			System.out.println("userId " + userId);
+			if(userId == null) return "Guest";
+			User user = User.get(userId);
+			if(user == null) return "Guest";
 			return User.get(userId).getName();
 		} catch (SQLException e) {
 			System.err.println("home.jsp:16 Error getting userName: ");
