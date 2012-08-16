@@ -30,7 +30,10 @@ public class Challenge extends Message {
 		setSubject(subject);
 	}
 
-	
+	public int send() throws SQLException {
+		return save();
+	}
+
 
 
 	/**
