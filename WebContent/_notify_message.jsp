@@ -3,7 +3,7 @@
     
 <% if (request.getAttribute("failureMessage") != null) { %>
 <div class="alert-failure">
-	<%= request.getAttribute("failureMessage") %>
+	<h3><%= request.getAttribute("failureMessage") %><h3>
 </div>
 <% } %>
 
