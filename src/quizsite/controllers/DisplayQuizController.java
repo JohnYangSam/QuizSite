@@ -42,14 +42,16 @@ public class DisplayQuizController extends HttpServlet {
 			if (quizId != null && (quiz = Quiz.get(quizId)) != null ) {
 				// quiz exists, let's check it's properties
 				if (quiz.isOnePage()) {
-					dispatch = request.getRequestDispatcher("display_quiz_one_page.jsp");
+					request.setAttribute("is_multiple", false);
+//					dispatch = request.getRequestDispatcher("display_quiz_one_page.jsp");
 				} else {	// multiple page
-					if (!quiz.isImmediate()) {
-						dispatch = request.getRequestDispatcher("display_quiz_multi_page.jsp");
-					} else { // immediate, multiple page
-						dispatch = request.getRequestDispatcher("display_quiz_multi_page_immed.jsp");
-					}
+					request.setAttribute("is_multiple", true);
+//					if (!quiz.isImmediate()) {
+//					} else { // immediate, multiple page
+//						dispatch = request.getRequestDispatcher("display_quiz_multi_page_immed.jsp");
+//					}
 				}
+				dispatch = request.getRequestDispatcher("take_quiz.jsp");
 				dispatch.forward(request, response);
 			}
 		} catch (SQLException e) {

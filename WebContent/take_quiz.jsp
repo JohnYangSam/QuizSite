@@ -10,15 +10,19 @@
 	int quizid = Integer.parseInt(request.getParameter("quizid"));
 	Quiz quiz = Quiz.get(quizid);
 	List<Question> questions = quiz.getQuestions();
+	Boolean isMultiple = (Boolean) request.getAttribute("is_multiple");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet" href="css/display_quiz_multi.css" type="text/css">
+<link rel="stylesheet" href="css/take_quiz.css" type="text/css">
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
-<script type="text/javascript" src="javascript/display_quiz_multi.js"></script>
+<% if (isMultiple) { %>
+<script type="text/javascript" src="javascript/take_quiz_multi.js"></script>
+<% } %>
+<script type="text/javascript" src="javascript/remote_eval_quiz.js"></script>
 <title><%=quiz.getTitle()%></title>
 </head>
 <body>
@@ -87,11 +91,13 @@
 						out.print("<br/>");
 						out.print("<br/>");
 						%>
-				<% if (i < questions.size() - 1) {%>
+				<% if (i < questions.size() - 1 ) {
+					if ( isMultiple) {
+				%>
 				<button class="button_next" data-next-question="<%= (i+1) %>">Next</button>
-				<% } else { %>
-				<input type="submit" value="Check me!" /> <input type="hidden"
-					name="quizid" value="<%=quiz.getId()%>" />
+				<% }} else { %>
+				<input id="send_button" type="submit" value="Check me!" /> <input
+					type="hidden" name="quizid" value="<%=quiz.getId()%>" />
 				<% } %>
 			</div>
 			<%	} %>
@@ -99,6 +105,7 @@
 		</form>
 
 	</div>
+	<div id="send_result" class="container"></div>
 
 </body>
 </html>

@@ -21,7 +21,7 @@ import quizsite.models.Quiz;
 /**
  * Servlet implementation class EvalQuizController
  */
-@WebServlet("/EvalQuizController")
+@WebServlet({"/EvalQuizController", "/eval_quiz"})
 public class EvalQuizController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
