@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import quizsite.models.Attempt;
 import quizsite.models.Question;
 import quizsite.models.Quiz;
 
@@ -43,7 +44,7 @@ public class EvalQuizController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int quizid 		 = Integer.parseInt(request.getParameter("quizid"));
-		Quiz quiz;
+		Quiz quiz = null;
 		int score = 0;
 		try {
 			quiz = Quiz.get(quizid);
@@ -51,12 +52,23 @@ public class EvalQuizController extends HttpServlet {
 			
 			for (int i = 0; i < q.size(); i++) {
 				int qid = q.get(i).getId();
-				String[] answer = request.getParameterValues("answer"+qid+"[]"); 
+				String answer = request.getParameter("answer"+qid); 
 				score += q.get(i).getScore(new HashSet<String>(Arrays.asList(answer)));				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		if (!quiz.isPracticeEnabled())
+		{
+			try {
+				Attempt attpt = new Attempt(quiz, Util.signInOrRedirect(request, response), score);
+				attpt.save();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		System.out.println("total score = "+score);
