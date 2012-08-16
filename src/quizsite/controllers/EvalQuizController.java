@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -52,7 +53,8 @@ public class EvalQuizController extends HttpServlet {
 			for (int i = 0; i < q.size(); i++) {
 				int qid = q.get(i).getId();
 				String answer = request.getParameter("answer"+qid); 
-				score += q.get(i).getScore(new HashSet<String>(Arrays.asList(answer)));				
+				Set<String> receivedAnswers = new HashSet<String>(Arrays.asList(answer));
+				score += q.get(i).getScore(receivedAnswers);				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
