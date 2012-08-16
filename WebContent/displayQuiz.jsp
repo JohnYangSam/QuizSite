@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="quizsite.util.*, quizsite.controllers.*, quizsite.models.*" %>
+<%@ page import="quizsite.util.*, quizsite.controllers.*, quizsite.models.*, java.util.*" %>
 <%
-	//User current = Util.signInOrRedirect(request, response);
+	User current = Util.signInOrRedirect(request, response);
 	
-	//System.out.println("Outside redirect in home controller hit: " + current);
-	//if(current == null) return;
+	System.out.println("Outside redirect in home controller hit: " + current);
+	if(current == null) return;
 	
 	int quizid = Integer.parseInt(request.getParameter("quizId")); 
 	Quiz quiz  = Quiz.get(quizid);
@@ -37,6 +37,25 @@
 		<li>
 			Is practice enabled - <%= quiz.isPracticeEnabled() %>
 		</li>
+	</ul>
+</div>
+<div>
+	<ul>
+	<%
+		List<Attempt> attempts = Attempt.ofUserAtQuiz(current, quiz);
+		
+		for(int i = 0; i < attempts.size(); ++i) {
+			Attempt attempt = attempts.get(i);
+			out.println("<li>");
+			out.println("<div class='data'>");
+			out.println("<p>");
+			out.print("You attempted "+quiz.getQuizTitleLink()+" on "+attempt.getCreatedAt()+" and recieved a score of "+attempt.getScore());	
+			out.println("</p>");
+			out.println("</div>");	
+			out.println("</li>");
+		}	
+		
+	%>
 	</ul>
 </div>
 <a href="#">challenge your friend</a> <br/>
